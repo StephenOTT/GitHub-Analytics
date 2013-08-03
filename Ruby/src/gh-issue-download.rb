@@ -17,6 +17,8 @@ class IssueDownload
 		@db = @client['test']
 		@coll = @db['githubIssues']
 		@coll.remove		
+		@collComments = @db['githubComments']
+		@collComments.remove		
 	
 	end
 	
@@ -55,6 +57,24 @@ class IssueDownload
 	
 	end
 	
+	
+	# find records in Mongodb that have a comments field value of 1 or higher
+	# returns only the number field
+	def findIssuesWithComments
+	
+		self.ghConfigAutoTraversal
+	
+		#find filter is based on: http://stackoverflow.com/a/10443659
+		issuesWithComments = @coll.find({"comments" => {"$gt" => 0}}, {:fields => {"_id" => 0, "number" => 1}}).to_a
+		
+		issuesWithComments.each do |x|
+ 			 puts x["number"]
+ 			 issueComments = Octokit.issue_comments(@repository.to_s, x["number"].to_s)
+ 			 @collComments.insert(issueComments)
+		end 
+				
+
+end
 
 
 end
