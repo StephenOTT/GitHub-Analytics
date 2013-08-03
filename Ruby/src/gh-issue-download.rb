@@ -16,12 +16,14 @@ class IssueDownload
 		@client = MongoClient.new('localhost', 27017)
 		@db = @client['test']
 		@coll = @db['githubIssues']
-		@coll.remove		
+		@coll.remove
+		
 		@collComments = @db['githubComments']
 		@collComments.remove		
 	
 	end
 	
+	# TODO add authentication as a option for go live as Github Rate Limit is 60 hits per hour when unauthenticated by 5000 per hour when authenticated.
 	def ghAuthenticate
 		puts "Enter GitHub Username:"
 		username = gets
@@ -35,8 +37,8 @@ class IssueDownload
 	end
 	
 	
-	def getIssues
-		
+	def ghConfigAutoTraversal
+	
 		# Auto-Pagination feature that increments through all pages of issues:
 		# See: http://rdoc.info/gems/octokit/Octokit/Configuration#DEFAULT_AUTO_TRAVERSAL-constant
 		# See:https://github.com/octokit/octokit.rb/pull/64 
@@ -44,16 +46,23 @@ class IssueDownload
   		c.auto_traversal = true
 		end
 		
+	
+	end
+	
+	
+	def getIssues
 		
+		self.ghConfigAutoTraversal
+		
+		# TODO get list_issues working with options hash: Specifically need Open and Closed issued to be captured
 		issueResults = Octokit.list_issues (@repository.to_s)
-		#return JSON.pretty_generate(issueResults.first)
+		#return JSON.pretty_generate(issueResults.first) 
 		return issueResults
 	end
 	
 	
 	def putIntoMongo
 		@coll.insert(getIssues)
-		
 	
 	end
 	
@@ -79,6 +88,9 @@ end
 
 end
 
-start = IssueDownload.new("wet-boew/wet-boew")
+#start = IssueDownload.new("wet-boew/wet-boew")
+start = IssueDownload.new("wet-boew/wet-boew-drupal")
+#start = IssueDownload.new("StephenOTT/Test1")
 #puts start.getIssues
 start.putIntoMongo
+start.findIssuesWithComments
