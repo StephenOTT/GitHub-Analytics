@@ -10,9 +10,9 @@ class IssueDownload
 	def initialize (repository)
 		
 		@repository = repository
-		
+	
 		# TODO work on better way to handle organization and repositories as vairables.
-		@organization = ""
+		@organization = "wet-boew"
 		
 		# MongoDB Database Connect
 		@client = MongoClient.new('localhost', 27017)
@@ -21,9 +21,12 @@ class IssueDownload
 		@coll = @db['githubIssues']
 		@coll.remove
 
-
 		@collRepoEvents = @db["githubRepoEvents"]
 		@collRepoEvents.remove
+
+		@collOrgMembers = @db["githubOrgMembers"]
+		@collOrgMembers.remove
+
 		
 	end
 	
@@ -57,6 +60,11 @@ class IssueDownload
 	def putIntoMongoCollRepoEvents (mongoPayload)
 		@collRepoEvents.insert(mongoPayload)
 		puts "Repo Events Added, Count added to Mongodb: " + @collRepoEvents.count.to_s
+	end
+
+	def putIntoMongoCollOrgMembers (mongoPayload)
+		@collOrgMembers.insert(mongoPayload)
+		puts "Org Members Added, Count added to Mongodb: " + @collOrgMembers.count.to_s
 	end
 	
 	
@@ -112,6 +120,5 @@ start.ghAuthenticate
 start.putIntoMongoCollIssues(start.getIssues)
 start.findIssuesWithComments
 start.putIntoMongoCollRepoEvents(start.getRepositoryEvents)
-
-
+start.putIntoMongoCollOrgMembers(start.getOrgMemberList)
 
