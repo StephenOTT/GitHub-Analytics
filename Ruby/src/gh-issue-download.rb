@@ -26,8 +26,6 @@ class IssueDownload
 
 		@collOrgMembers = @db["githubOrgMembers"]
 		@collOrgMembers.remove
-
-		
 	end
 	
 	# TODO add authentication as a option for go live as Github Rate Limit is 60 hits per hour when unauthenticated by 5000 per hour when authenticated.
@@ -41,7 +39,6 @@ class IssueDownload
 		password = ""
 		@ghClient = Octokit::Client.new(:login => username.to_s, :password => password.to_s, :auto_traversal => true)		
 	end
-	
 		
 	def getIssues
 				
@@ -50,7 +47,6 @@ class IssueDownload
 		puts "Got issues, Github raite limit remaining: " + @ghClient.ratelimit_remaining.to_s
 		return issueResults
 	end
-	
 	
 	def putIntoMongoCollIssues (mongoPayload)
 		@coll.insert(mongoPayload)
@@ -66,7 +62,6 @@ class IssueDownload
 		@collOrgMembers.insert(mongoPayload)
 		puts "Org Members Added, Count added to Mongodb: " + @collOrgMembers.count.to_s
 	end
-	
 	
 	# find records in Mongodb that have a comments field value of 1 or higher
 	# returns only the number field
@@ -96,7 +91,6 @@ class IssueDownload
 
 	end
 
-
 	def getRepositoryEvents
 		respositoryEvents = @ghClient.repository_events (@repository.to_s)
 		puts "Got Repository Events, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
@@ -109,7 +103,30 @@ class IssueDownload
 		puts "Got Organization member list, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
 		return orgMemberList
 	end
+	
+	def getOrgTeamsList
+		orgTeamsList = @ghClient.organization_teams (@organization.to_s)
+		puts "Got Organization Teams list, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
+		return orgTeamsList
+	end
 
+	def getOrgTeamInfo (teamId)
+		orgTeamInfo = @ghClient.team (teamId)
+		puts "Got Team info for Team: #{teamId}, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
+		return orgMemberList
+	end
+
+	def getOrgTeamMembers (teamId)
+		orgTeamMembers = @ghClient.team_members (teamId)
+		puts "Got members list of team: #{teamId}, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
+		return orgTeamMembers
+	end
+
+	def getOrgTeamRepos (teamId)
+		orgTeamRepos = @ghClient.team_repositories (teamId)
+		puts "Got list of repos for team: #{teamId}, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
+		return orgTeamRepos
+	end
 
 end
 
