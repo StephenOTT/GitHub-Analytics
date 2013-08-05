@@ -74,6 +74,6 @@ Primary use at this point is project management based analytics that are not cur
 
 ## To Do:
 
-1. Downloading of Events into Mongodb
-2. Convert to Rails app
-3. Downloading of Team data
+- [x] Downloading of Repo Events into Mongodb
+- [ ] Convert to Rails app
+- [ ] Downloading of Team data
