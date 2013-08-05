@@ -11,12 +11,19 @@ class IssueDownload
 		
 		@repository = repository
 		
+		# TODO work on better way to handle organization and repositories as vairables.
+		@organization = ""
+		
 		# MongoDB Database Connect
 		@client = MongoClient.new('localhost', 27017)
 		@db = @client['test']
 		
 		@coll = @db['githubIssues']
 		@coll.remove
+
+
+		@collRepoEvents = @db["githubRepoEvents"]
+		@collRepoEvents.remove
 		
 	end
 	
@@ -37,16 +44,19 @@ class IssueDownload
 				
 		# TODO get list_issues working with options hash: Specifically need Open and Closed issued to be captured
 		issueResults = @ghClient.list_issues (@repository.to_s)
-		#return JSON.pretty_generate(issueResults.first) 
-		puts "Github raite limit remaining: " + @ghClient.ratelimit_remaining.to_s
+		puts "Got issues, Github raite limit remaining: " + @ghClient.ratelimit_remaining.to_s
 		return issueResults
 	end
 	
 	
-	def putIntoMongo
-		@coll.insert(getIssues)
-		puts "Issues added to Mongodb: " + @coll.count.to_s
-	
+	def putIntoMongoCollIssues (mongoPayload)
+		@coll.insert(mongoPayload)
+		puts "Issues Added, Count added to Mongodb: " + @coll.count.to_s
+	end
+
+	def putIntoMongoCollRepoEvents (mongoPayload)
+		@collRepoEvents.insert(mongoPayload)
+		puts "Repo Events Added, Count added to Mongodb: " + @collRepoEvents.count.to_s
 	end
 	
 	
@@ -57,6 +67,7 @@ class IssueDownload
 		#find filter is based on: http://stackoverflow.com/a/10443659
 		issuesWithComments = @coll.find({"comments" => {"$gt" => 0}}, {:fields => {"_id" => 0, "number" => 1}}).to_a
 		
+		# Cycle through each issue number that was found in the mongodb collection and look up the comments related to that issue and update the issue mongodb document with the comments as a array
 		issuesWithComments.each do |x|
  			 puts x["number"]
  			 issueComments = @ghClient.issue_comments(@repository.to_s, x["number"].to_s)
@@ -67,13 +78,29 @@ class IssueDownload
 			 	{ "$push" => {"comments_Text" => issueComments}}
 			 	)
 			 
+			 # Used as a count for number of issues with comments
 			 i += 1
 
 		end 
-		puts "Github raite limit remaining: " + @ghClient.ratelimit_remaining.to_s
-		puts "Github issues with comments: " + i.to_s		
+		 
+		 puts "Updated all Issues with Comments Github raite limit remaining: " + @ghClient.ratelimit_remaining.to_s
+		 puts "Github issues with comments: " + i.to_s		
 
-end
+	end
+
+
+	def getRepositoryEvents
+		respositoryEvents = @ghClient.repository_events (@repository.to_s)
+		puts "Got Repository Events, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
+		return respositoryEvents
+	end
+
+	#TODO This still needs work to function correctly.  Need to add new collection in db and a way to handle variable for the specific org to get data from
+	def getOrgMemberList
+		orgMemberList = @ghClient.organization_members (@organization.to_s)
+		puts "Got Organization member list, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
+		return orgMemberList
+	end
 
 
 end
@@ -81,10 +108,10 @@ end
 #start = IssueDownload.new("wet-boew/wet-boew")
 start = IssueDownload.new("wet-boew/wet-boew-drupal")
 #start = IssueDownload.new("StephenOTT/Test1")
-#puts start.getIssues
 start.ghAuthenticate
-start.putIntoMongo
+start.putIntoMongoCollIssues(start.getIssues)
 start.findIssuesWithComments
+start.putIntoMongoCollRepoEvents(start.getRepositoryEvents)
 
 
 
