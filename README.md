@@ -77,3 +77,17 @@ Primary use at this point is project management based analytics that are not cur
 - [x] Downloading of Repo Events into Mongodb
 - [ ] Convert to Rails app
 - [ ] Downloading of Team data
+
+
+
+## Future Analysis Mongodb queries:
+---
+
+1. Query for providing a breakdown of each of the different types of Events and the counts for each event type in the collection.
+
+'''
+db.githubRepoEvents.aggregate(  [    { $group : { _id : "$type" , Count : { $sum : 1 } } }  ])
+'''
+
+
+
