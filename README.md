@@ -77,6 +77,7 @@ Primary use at this point is project management based analytics that are not cur
 - [x] Downloading of Repo Events into Mongodb
 - [ ] Convert to Rails app
 - [ ] Downloading of Team data
+- [ ] Turn Github DateTime string into recognized Mongodb dateTime.  Currently github datetime string is not properly recognized by Mongodb. 
 
 
 
