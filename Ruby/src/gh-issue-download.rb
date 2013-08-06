@@ -1,6 +1,7 @@
 require 'octokit'
 require 'json'
 require 'mongo'
+require 'gchart'
 
 include Mongo
 
@@ -97,7 +98,7 @@ class IssueDownload
 		return respositoryEvents
 	end
 
-	#TODO This still needs work to function correctly.  Need to add new collection in db and a way to handle variable for the specific org to get data from
+	# TODO This still needs work to function correctly.  Need to add new collection in db and a way to handle variable for the specific org to get data from
 	def getOrgMemberList
 		orgMemberList = @ghClient.organization_members (@organization.to_s)
 		puts "Got Organization member list, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
@@ -128,14 +129,49 @@ class IssueDownload
 		return orgTeamRepos
 	end
 
+	# Sample method for showing the processing of data from coll and producing a Chart
+	def analyzeEventsTypes
+		
+		# Query Mongodb and group event Types from RepoEvents collection and produce a count
+		eventsTypesAnalysis = @collRepoEvents.aggregate([
+			{"$group" => {_id: "$type", Count: {"$sum" => 1}}}
+		])
+
+		aValues=[]
+		aLegends=[]
+
+		# pass through each of the hases in the array eventsTypesAnalysis array and process then values into the new aValues and aLegends arrays
+		eventsTypesAnalysis.each do |x|
+			
+			# generates a multidimensional array with each value in the eventsTypesAnalysis
+			aValues.push([x["Count"]])
+
+			# Produces a clean regular array with legend values based on the Type from the eventsTypesAnalysis query
+			aLegends.push(x["_id"])
+		end
+
+		# For testing purposes
+		puts aValues
+		puts aLegends
+
+		# Generates a URL from the Google charts api using the gchart gem
+		chartURL = Gchart.bar(:title => "Event Types",
+        	:data => aValues, 
+        	:bar_colors => 'FF0000,267678,FF0055,0800FF,00FF00',
+        	:stacked => false, :size => '500x200',
+        	:legend => aLegends)
+
+		return chartURL
+	end
 end
 
 #start = IssueDownload.new("wet-boew/wet-boew")
-start = IssueDownload.new("wet-boew/wet-boew-drupal")
-#start = IssueDownload.new("StephenOTT/Test1")
+#start = IssueDownload.new("wet-boew/wet-boew-drupal")
+start = IssueDownload.new("StephenOTT/Test1")
 start.ghAuthenticate
 start.putIntoMongoCollIssues(start.getIssues)
 start.findIssuesWithComments
 start.putIntoMongoCollRepoEvents(start.getRepositoryEvents)
 start.putIntoMongoCollOrgMembers(start.getOrgMemberList)
+puts start.analyzeEventsTypes
 
