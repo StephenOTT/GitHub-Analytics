@@ -59,7 +59,9 @@ Primary use at this point is project management based analytics that are not cur
 38. Creation of new repos
 39. deletion of repos
 40. Repos analysis: languages, teams, branches, tags, deletions of repos, contributors, etc.  Meant to be high level for reporting.
-
+41. bar graph is issue activity (number of posts broken down by time)
+42. Add special characters to GitHub post + time value to do time tracking within issues.  Github GFM text does not show all text.
+43. Track Thanks yous.  Tracking when a user submits a pull request or issue and people thank you for submitting.  See if that person is more likely to submit another issue/pull request (because people thanked them they are more likely to submit more requests/issues in the future).
 
 
 ###Events Analysis:
@@ -76,7 +78,7 @@ Primary use at this point is project management based analytics that are not cur
 
 - [x] Downloading of Repo Events into Mongodb
 - [ ] Convert to Rails app
-- [ ] Downloading of Team data
+- [x] Downloading of Team data
 - [ ] Turn Github DateTime string into recognized Mongodb dateTime.  Currently github datetime string is not properly recognized by Mongodb. 
 
 
