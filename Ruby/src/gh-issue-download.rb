@@ -2,6 +2,7 @@ require 'octokit'
 require 'json'
 require 'mongo'
 require 'gchart'
+require 'date'
 
 include Mongo
 
@@ -45,10 +46,14 @@ class IssueDownload
 				
 		# TODO get list_issues working with options hash: Specifically need Open and Closed issued to be captured
 		issueResults = @ghClient.list_issues (@repository.to_s)
+		issueResults.to_a
+		# puts issueResults
 		puts "Got issues, Github raite limit remaining: " + @ghClient.ratelimit_remaining.to_s
 		return issueResults
 	end
 	
+
+	# TODO preform DRY refactor for Mongodb insert
 	def putIntoMongoCollIssues (mongoPayload)
 		@coll.insert(mongoPayload)
 		puts "Issues Added, Count added to Mongodb: " + @coll.count.to_s
@@ -73,15 +78,21 @@ class IssueDownload
 		
 		# Cycle through each issue number that was found in the mongodb collection and look up the comments related to that issue and update the issue mongodb document with the comments as a array
 		issuesWithComments.each do |x|
- 			 puts x["number"]
- 			 issueComments = @ghClient.issue_comments(@repository.to_s, x["number"].to_s)
- 
+ 			puts x["number"]
+ 			issueComments = @ghClient.issue_comments(@repository.to_s, x["number"].to_s)
+ 			
+ 			# Updates comments_Text Created_at and updated_at fields  with proper time format for 
+ 			issueComments.each do |y|
+ 				y["created_at"] = DateTime.strptime(y["created_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+ 				y["updated_at"] = DateTime.strptime(y["updated_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+ 			end
  			 
-			 @coll.update(
-			 	{ "number" => x["number"]},
-			 	{ "$push" => {"comments_Text" => issueComments}}
-			 	)
+			@coll.update(
+				{ "number" => x["number"]},
+				{ "$push" => {"comments_Text" => issueComments}}
+				)
 			 
+
 			 # Used as a count for number of issues with comments
 			 i += 1
 
@@ -157,12 +168,32 @@ class IssueDownload
 		# Generates a URL from the Google charts api using the gchart gem
 		chartURL = Gchart.bar(:title => "Event Types",
         	:data => aValues, 
-        	:bar_colors => 'FF0000,267678,FF0055,0800FF,00FF00',
+        	#:bar_colors => 'FF0000,267678,FF0055,0800FF,00FF00',
         	:stacked => false, :size => '500x200',
         	:legend => aLegends)
 
 		return chartURL
 	end
+
+	def convertDatesInMongo ()
+
+			#fieldsToUpdate["created_at", "updated_at"]
+			@coll.find.each do |x|
+				createdAtDateTime = DateTime.strptime(x["created_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+				updatedAtDateTime = DateTime.strptime(x["updated_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+
+
+
+				@coll.update(
+					{"_id" => x["_id"] },
+					{"$set" => {"created_at" => createdAtDateTime, "updated_at" => updatedAtDateTime}}
+				)
+
+
+		end
+	end
+
+
 end
 
 #start = IssueDownload.new("wet-boew/wet-boew")
@@ -174,4 +205,4 @@ start.findIssuesWithComments
 start.putIntoMongoCollRepoEvents(start.getRepositoryEvents)
 start.putIntoMongoCollOrgMembers(start.getOrgMemberList)
 puts start.analyzeEventsTypes
-
+start.convertDatesInMongo
