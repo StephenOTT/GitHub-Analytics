@@ -47,14 +47,11 @@ class IssueDownload
 		# TODO get list_issues working with options hash: Specifically need Open and Closed issued to be captured
 		issueResults = @ghClient.list_issues (@repository.to_s)
 		issueResults.to_a
-		return self.convertIssueDatesInMongo(issueResults)
 
-		# puts issueResults
 		puts "Got issues, Github raite limit remaining: " + @ghClient.ratelimit_remaining.to_s
-		
+		return self.convertIssueDatesInMongo(issueResults)
 	end
 	
-
 	# TODO preform DRY refactor for Mongodb insert
 	def putIntoMongoCollIssues (mongoPayload)
 		@coll.insert(mongoPayload)
@@ -82,15 +79,7 @@ class IssueDownload
 		issuesWithComments.each do |x|
  			puts x["number"]
  			issueComments = @ghClient.issue_comments(@repository.to_s, x["number"].to_s)
- 			
- 			
- 			
- 			# Updates comments_Text Created_at and updated_at fields  with proper time format for 
- 			#issueComments.each do |y|
- 			#	y["created_at"] = DateTime.strptime(y["created_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
- 			#	y["updated_at"] = DateTime.strptime(y["updated_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
- 			#end
- 			 
+ 			 			 
 			@coll.update(
 				{ "number" => x["number"]},
 				{ "$push" => {"comments_Text" => self.convertIssueCommentDatesInMongo(issueComments)}}
@@ -176,21 +165,6 @@ class IssueDownload
 		return chartURL
 	end
 
-	def convertIssueDatesInMongo ()
-
-		#fieldsToUpdate["created_at", "updated_at"]
-		@coll.find.each do |x|
-			createdAtDateTime = DateTime.strptime(x["created_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
-			updatedAtDateTime = DateTime.strptime(x["updated_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
-
-			@coll.update(
-				{"_id" => x["_id"] },
-				{"$set" => {"created_at" => createdAtDateTime, 
-							"updated_at" => updatedAtDateTime}}
-			)
-		end
-	end
-
 	def convertIssueCommentDatesInMongo (issueComments)
 
 		issueComments.each do |y|
@@ -212,8 +186,7 @@ class IssueDownload
 end
 
 #start = IssueDownload.new("wet-boew/wet-boew")
-#start = IssueDownload.new("wet-boew/wet-boew-drupal")
-start = IssueDownload.new("StephenOTT/Test1")
+start = IssueDownload.new("wet-boew/wet-boew-drupal")
 start.ghAuthenticate
 start.putIntoMongoCollIssues(start.getIssues)
 start.findIssuesWithComments
