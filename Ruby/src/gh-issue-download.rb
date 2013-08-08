@@ -92,15 +92,12 @@ class IssueDownload
 				{ "$push" => {"comments_Text" => issueComments}}
 				)
 			 
-
 			 # Used as a count for number of issues with comments
 			 i += 1
-
 		end 
 		 
 		 puts "Updated all Issues with Comments Github raite limit remaining: " + @ghClient.ratelimit_remaining.to_s
 		 puts "Github issues with comments: " + i.to_s		
-
 	end
 
 	def getRepositoryEvents
@@ -182,18 +179,13 @@ class IssueDownload
 				createdAtDateTime = DateTime.strptime(x["created_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
 				updatedAtDateTime = DateTime.strptime(x["updated_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
 
-
-
 				@coll.update(
 					{"_id" => x["_id"] },
-					{"$set" => {"created_at" => createdAtDateTime, "updated_at" => updatedAtDateTime}}
+					{"$set" => {"created_at" => createdAtDateTime, 
+								"updated_at" => updatedAtDateTime}}
 				)
-
-
 		end
 	end
-
-
 end
 
 #start = IssueDownload.new("wet-boew/wet-boew")
