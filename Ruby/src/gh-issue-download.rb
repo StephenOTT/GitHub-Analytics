@@ -47,9 +47,11 @@ class IssueDownload
 		# TODO get list_issues working with options hash: Specifically need Open and Closed issued to be captured
 		issueResults = @ghClient.list_issues (@repository.to_s)
 		issueResults.to_a
+		return self.convertIssueDatesInMongo(issueResults)
+
 		# puts issueResults
 		puts "Got issues, Github raite limit remaining: " + @ghClient.ratelimit_remaining.to_s
-		return issueResults
+		
 	end
 	
 
@@ -81,15 +83,17 @@ class IssueDownload
  			puts x["number"]
  			issueComments = @ghClient.issue_comments(@repository.to_s, x["number"].to_s)
  			
+ 			
+ 			
  			# Updates comments_Text Created_at and updated_at fields  with proper time format for 
- 			issueComments.each do |y|
- 				y["created_at"] = DateTime.strptime(y["created_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
- 				y["updated_at"] = DateTime.strptime(y["updated_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
- 			end
+ 			#issueComments.each do |y|
+ 			#	y["created_at"] = DateTime.strptime(y["created_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+ 			#	y["updated_at"] = DateTime.strptime(y["updated_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+ 			#end
  			 
 			@coll.update(
 				{ "number" => x["number"]},
-				{ "$push" => {"comments_Text" => issueComments}}
+				{ "$push" => {"comments_Text" => self.convertIssueCommentDatesInMongo(issueComments)}}
 				)
 			 
 			 # Used as a count for number of issues with comments
@@ -172,20 +176,39 @@ class IssueDownload
 		return chartURL
 	end
 
-	def convertDatesInMongo ()
+	def convertIssueDatesInMongo ()
 
-			#fieldsToUpdate["created_at", "updated_at"]
-			@coll.find.each do |x|
-				createdAtDateTime = DateTime.strptime(x["created_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
-				updatedAtDateTime = DateTime.strptime(x["updated_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+		#fieldsToUpdate["created_at", "updated_at"]
+		@coll.find.each do |x|
+			createdAtDateTime = DateTime.strptime(x["created_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+			updatedAtDateTime = DateTime.strptime(x["updated_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
 
-				@coll.update(
-					{"_id" => x["_id"] },
-					{"$set" => {"created_at" => createdAtDateTime, 
-								"updated_at" => updatedAtDateTime}}
-				)
+			@coll.update(
+				{"_id" => x["_id"] },
+				{"$set" => {"created_at" => createdAtDateTime, 
+							"updated_at" => updatedAtDateTime}}
+			)
 		end
 	end
+
+	def convertIssueCommentDatesInMongo (issueComments)
+
+		issueComments.each do |y|
+			y["created_at"] = DateTime.strptime(y["created_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+			y["updated_at"] = DateTime.strptime(y["updated_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+		end
+		return issueComments
+	end
+
+	def convertIssueDatesInMongo (issues)
+
+		issues.each do |y|
+			y["created_at"] = DateTime.strptime(y["created_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+			y["updated_at"] = DateTime.strptime(y["updated_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+		end
+		return issues
+	end
+
 end
 
 #start = IssueDownload.new("wet-boew/wet-boew")
@@ -197,4 +220,3 @@ start.findIssuesWithComments
 start.putIntoMongoCollRepoEvents(start.getRepositoryEvents)
 start.putIntoMongoCollOrgMembers(start.getOrgMemberList)
 puts start.analyzeEventsTypes
-start.convertDatesInMongo
