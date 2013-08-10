@@ -225,7 +225,7 @@ class IssueDownload
 
 end
 
-#start = IssueDownload.new("wet-boew/wet-boew")
+#start = IssueDownload.new("StephenOTT/Test1")
 start = IssueDownload.new("wet-boew/wet-boew-drupal")
 start.ghAuthenticate
 start.putIntoMongoCollIssues(start.getIssues)
