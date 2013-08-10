@@ -196,6 +196,33 @@ class IssueDownload
 		end
 		return repoEvents
 	end
+
+
+	def analyzeIssuesCreatedCountPerMonth 
+		
+		return issuesCreatedPerMonth = @coll.aggregate([
+		    { "$project" => {
+    			created_month: {
+    				"$month" => "$created_at" 
+    				}
+    			} 
+    		},
+		    { "$group" => {
+		    	_id: {
+		    		"created_month" => "$created_month"
+		    		},
+		    		number: {
+		    			"$sum" => 1 
+		    			}
+		    		}
+		    	},
+		    { "$sort" => {
+		    	"_id.created_month" => 1 
+		    	}
+		    }
+		])
+	end
+
 end
 
 #start = IssueDownload.new("wet-boew/wet-boew")
