@@ -80,6 +80,8 @@ Primary use at this point is project management based analytics that are not cur
 - [ ] Convert to Rails app
 - [x] Downloading of Team data
 - [ ] Turn Github DateTime string into recognized Mongodb dateTime.  Currently github datetime string is not properly recognized by Mongodb. 
+- [ ] refactor method usage of Date conversions
+- [ ] refactor analyze methods names and structure
 
 
 
