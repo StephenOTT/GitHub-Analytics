@@ -96,7 +96,8 @@ class IssueDownload
 	def getRepositoryEvents
 		respositoryEvents = @ghClient.repository_events (@repository.to_s)
 		puts "Got Repository Events, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
-		return respositoryEvents
+		
+		return self.convertRepoEventsDates(respositoryEvents)
 	end
 
 	# TODO This still needs work to function correctly.  Need to add new collection in db and a way to handle variable for the specific org to get data from
