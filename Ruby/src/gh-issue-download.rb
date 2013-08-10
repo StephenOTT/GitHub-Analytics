@@ -183,6 +183,13 @@ class IssueDownload
 		return issues
 	end
 
+	def convertRepoEventsDates (repoEvents)
+
+		repoEvents.each do |y|
+			y["created_at"] = DateTime.strptime(y["created_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+		end
+		return repoEvents
+	end
 end
 
 #start = IssueDownload.new("wet-boew/wet-boew")
