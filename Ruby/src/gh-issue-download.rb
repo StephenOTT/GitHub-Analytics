@@ -218,33 +218,17 @@ class IssueDownload
 		return repoEvents
 	end
 
-
 	def analyzeIssuesCreatedCountPerMonth 
 		
 		return issuesCreatedPerMonth = @coll.aggregate([
-		    { "$project" => {
-    			created_month: {
-    				"$month" => "$created_at" 
-    				}
-    			} 
-    		},
-		    { "$group" => {
-		    	_id: {
-		    		"created_month" => "$created_month"
-		    		},
-		    		number: {
-		    			"$sum" => 1 
-		    			}
-		    		}
-		    	},
-		    { "$sort" => {
-		    	"_id.created_month" => 1 
-		    	}
-		    }
+		    { "$project" => {created_month: {"$month" => "$created_at"}, state: 1}},
+		    { "$group" => {_id: {"created_month" => "$created_month", state: "$state"}, number: { "$sum" => 1 }}},
+		    {"$sort" => {"_id.created_month" => 1}},
 		])
 	end
 
 end
+
 
 #start = IssueDownload.new("StephenOTT/Test1")
 start = IssueDownload.new("wet-boew/wet-boew-drupal")
