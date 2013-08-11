@@ -56,8 +56,10 @@ class IssueDownload
 			:state => :closed
 			})
 
+		mergedIssuesOpenClose=issueResultsOpen+issueResultsClosed
+
 		puts "Got issues, Github raite limit remaining: " + @ghClient.ratelimit_remaining.to_s
-		return self.convertIssueDatesInMongo(issueResults)
+		return self.convertIssueDatesInMongo(mergedIssuesOpenClose)
 	end
 	
 	# TODO preform DRY refactor for Mongodb insert
