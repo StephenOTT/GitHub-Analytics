@@ -82,6 +82,8 @@ Primary use at this point is project management based analytics that are not cur
 - [ ] Turn Github DateTime string into recognized Mongodb dateTime.  Currently github datetime string is not properly recognized by Mongodb. 
 - [ ] refactor method usage of Date conversions
 - [ ] refactor analyze methods names and structure
+- [ ] refactor methods into multifile MVC part of rails conversion
+- 
 
 
 
