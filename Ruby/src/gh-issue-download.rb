@@ -85,16 +85,9 @@ class IssueDownload
 		i = 0
 		#find filter is based on: http://stackoverflow.com/a/10443659
 		issuesWithComments = @coll.find({
-			"comments" => {
-				"$gt" => 0
-				}
-			}, 
-				{:fields => {
-					"_id" => 0, 
-					"number" => 1
-					}
-				}
-			).to_a
+			"comments" => {"$gt" => 0}}, 
+				{:fields => {"_id" => 0, "number" => 1}}
+				).to_a
 		
 		# Cycle through each issue number that was found in the mongodb collection and look up the comments related to that issue and update the issue mongodb document with the comments as a array
 		issuesWithComments.each do |x|
