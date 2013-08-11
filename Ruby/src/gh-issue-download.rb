@@ -231,5 +231,7 @@ start.putIntoMongoCollIssues(start.getIssues)
 start.findIssuesWithComments
 start.putIntoMongoCollRepoEvents(start.getRepositoryEvents)
 start.putIntoMongoCollOrgMembers(start.getOrgMemberList)
-puts start.analyzeEventsTypes
-puts start.analyzeIssuesCreatedCountPerMonth
+#puts start.analyzeEventsTypes
+puts start.analyzeIssuesCreatedClosedCountPerMonth
+puts "************************"
+puts start.analyzeIssuesOpenClosedPerUserPerMonth
