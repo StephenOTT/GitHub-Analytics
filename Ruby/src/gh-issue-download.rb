@@ -62,18 +62,19 @@ class IssueDownload
 		return self.convertIssueDatesInMongo(mergedIssuesOpenClose)
 	end
 	
+
 	# TODO preform DRY refactor for Mongodb insert
-	def putIntoMongoCollIssues (mongoPayload)
+	def putIntoMongoCollIssues(mongoPayload)
 		@coll.insert(mongoPayload)
 		puts "Issues Added, Count added to Mongodb: " + @coll.count.to_s
 	end
 
-	def putIntoMongoCollRepoEvents (mongoPayload)
+	def putIntoMongoCollRepoEvents(mongoPayload)
 		@collRepoEvents.insert(mongoPayload)
 		puts "Repo Events Added, Count added to Mongodb: " + @collRepoEvents.count.to_s
 	end
 
-	def putIntoMongoCollOrgMembers (mongoPayload)
+	def putIntoMongoCollOrgMembers(mongoPayload)
 		@collOrgMembers.insert(mongoPayload)
 		puts "Org Members Added, Count added to Mongodb: " + @collOrgMembers.count.to_s
 	end
@@ -83,7 +84,6 @@ class IssueDownload
 	def findIssuesWithComments
 		i = 0
 		#find filter is based on: http://stackoverflow.com/a/10443659
-		issuesWithComments = @coll.find({"comments" => {"$gt" => 0}}, {:fields => {"_id" => 0, "number" => 1}}).to_a
 		issuesWithComments = @coll.find({
 			"comments" => {
 				"$gt" => 0
@@ -115,7 +115,7 @@ class IssueDownload
 	end
 
 	def getRepositoryEvents
-		respositoryEvents = @ghClient.repository_events (@repository.to_s)
+		respositoryEvents = @ghClient.repository_events(@repository.to_s)
 		puts "Got Repository Events, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
 		
 		return self.convertRepoEventsDates(respositoryEvents)
@@ -123,31 +123,31 @@ class IssueDownload
 
 	# TODO This still needs work to function correctly.  Need to add new collection in db and a way to handle variable for the specific org to get data from
 	def getOrgMemberList
-		orgMemberList = @ghClient.organization_members (@organization.to_s)
+		orgMemberList = @ghClient.organization_members(@organization.to_s)
 		puts "Got Organization member list, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
 		return orgMemberList
 	end
 	
 	def getOrgTeamsList
-		orgTeamsList = @ghClient.organization_teams (@organization.to_s)
+		orgTeamsList = @ghClient.organization_teams(@organization.to_s)
 		puts "Got Organization Teams list, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
 		return orgTeamsList
 	end
 
-	def getOrgTeamInfo (teamId)
-		orgTeamInfo = @ghClient.team (teamId)
+	def getOrgTeamInfo(teamId)
+		orgTeamInfo = @ghClient.team(teamId)
 		puts "Got Team info for Team: #{teamId}, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
 		return orgMemberList
 	end
 
-	def getOrgTeamMembers (teamId)
-		orgTeamMembers = @ghClient.team_members (teamId)
+	def getOrgTeamMembers(teamId)
+		orgTeamMembers = @ghClient.team_members(teamId)
 		puts "Got members list of team: #{teamId}, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
 		return orgTeamMembers
 	end
 
-	def getOrgTeamRepos (teamId)
-		orgTeamRepos = @ghClient.team_repositories (teamId)
+	def getOrgTeamRepos(teamId)
+		orgTeamRepos = @ghClient.team_repositories(teamId)
 		puts "Got list of repos for team: #{teamId}, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
 		return orgTeamRepos
 	end
@@ -192,7 +192,7 @@ class IssueDownload
 		return chartURL
 	end
 
-	def convertIssueCommentDatesInMongo (issueComments)
+	def convertIssueCommentDatesInMongo(issueComments)
 
 		issueComments.each do |y|
 			y["created_at"] = DateTime.strptime(y["created_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
@@ -201,7 +201,7 @@ class IssueDownload
 		return issueComments
 	end
 
-	def convertIssueDatesInMongo (issues)
+	def convertIssueDatesInMongo(issues)
 
 		issues.each do |y|
 			y["created_at"] = DateTime.strptime(y["created_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
@@ -210,7 +210,7 @@ class IssueDownload
 		return issues
 	end
 
-	def convertRepoEventsDates (repoEvents)
+	def convertRepoEventsDates(repoEvents)
 
 		repoEvents.each do |y|
 			y["created_at"] = DateTime.strptime(y["created_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
@@ -230,8 +230,9 @@ class IssueDownload
 end
 
 
+start = IssueDownload.new("CityofOttawa/Ottawa-ckan")
 #start = IssueDownload.new("StephenOTT/Test1")
-start = IssueDownload.new("wet-boew/wet-boew-drupal")
+#start = IssueDownload.new("wet-boew/wet-boew-drupal")
 start.ghAuthenticate
 start.putIntoMongoCollIssues(start.getIssues)
 start.findIssuesWithComments
