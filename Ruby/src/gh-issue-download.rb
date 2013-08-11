@@ -47,6 +47,16 @@ class IssueDownload
 		# TODO get list_issues working with options hash: Specifically need Open and Closed issued to be captured
 		issueResults = @ghClient.list_issues (@repository.to_s)
 		issueResults.to_a
+		issueResultsOpen = @ghClient.list_issues(@repository.to_s, {
+			:state => :Open
+			})
+		#issueResultsOpen.to_a
+
+
+
+		issueResultsClosed = @ghClient.list_issues(@repository.to_s, {
+			:state => :closed
+			})
 
 		puts "Got issues, Github raite limit remaining: " + @ghClient.ratelimit_remaining.to_s
 		return self.convertIssueDatesInMongo(issueResults)
