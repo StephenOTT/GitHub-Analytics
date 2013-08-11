@@ -150,12 +150,7 @@ class IssueDownload
 		
 		# Query Mongodb and group event Types from RepoEvents collection and produce a count
 		eventsTypesAnalysis = @collRepoEvents.aggregate([
-			{"$group" => {
-				_id: "$type", 
-				Count: {
-					"$sum" => 1}
-					}
-			}
+			{"$group" => { _id: "$type", count: {"$sum" => 1}}}
 		])
 
 		aValues=[]
