@@ -45,8 +45,6 @@ class IssueDownload
 	def getIssues
 				
 		# TODO get list_issues working with options hash: Specifically need Open and Closed issued to be captured
-		issueResults = @ghClient.list_issues (@repository.to_s)
-		issueResults.to_a
 		issueResultsOpen = @ghClient.list_issues(@repository.to_s, {
 			:state => :Open
 			})
