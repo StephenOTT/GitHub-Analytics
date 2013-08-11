@@ -206,7 +206,7 @@ class IssueDownload
 		return repoEvents
 	end
 
-	def analyzeIssuesCreatedCountPerMonth 
+	def analyzeIssuesCreatedClosedCountPerMonth 
 		
 		return issuesCreatedPerMonth = @coll.aggregate([
 		    { "$project" => {created_month: {"$month" => "$created_at"}, state: 1}},
