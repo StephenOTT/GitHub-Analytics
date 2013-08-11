@@ -48,9 +48,6 @@ class IssueDownload
 		issueResultsOpen = @ghClient.list_issues(@repository.to_s, {
 			:state => :open
 			})
-		#issueResultsOpen.to_a
-
-
 
 		issueResultsClosed = @ghClient.list_issues(@repository.to_s, {
 			:state => :closed
