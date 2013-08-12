@@ -219,7 +219,25 @@ class IssueDownload
 		    { "$project" => {created_month: {"$month" => "$created_at"}, state: 1, user:{login:1}}},
 		    { "$group" => {_id: {user:"$user.login", "created_month" => "$created_month", state: "$state"}, number: { "$sum" => 1 }}},
 		    {"$sort" => {"_id.user" => 1 ,"_id.created_month" => 1}},
+	def analyzeIssuesClosedDurationOpen
+		
+		issuesOpenClosedPerUser = @coll.aggregate([
+		    { "$match" => {state: "closed" }},
+		    { "$project" => {state: 1, created_at: 1, closed_at: 1, user:{login:1}}},
+		    { "$group" => {_id: {created_at:"$created_at",closed_at:"$closed_at", state:"$state", user:"$user.login"}}},
+		    { "$sort" => {"_id.created_at" => 1}}
 		])
+
+		issuesOpenClosedPerUser.each do |y|
+			durationDays = TimeDifference.between(y["_id"]["closed_at"], y["_id"]["created_at"]).in_days
+			durationWeeks = TimeDifference.between(y["_id"]["closed_at"], y["_id"]["created_at"]).in_weeks
+			durationMonths = TimeDifference.between(y["_id"]["closed_at"], y["_id"]["created_at"]).in_months
+			y["_id"]["duration_open_days"] = durationDays
+			y["_id"]["duration_open_weeks"] = durationWeeks
+			y["_id"]["duration_open_months"] = durationMonths
+		end
+
+		return issuesOpenClosedPerUser
 	end
 end
 
