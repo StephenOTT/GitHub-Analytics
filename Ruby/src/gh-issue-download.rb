@@ -194,6 +194,9 @@ class IssueDownload
 		issues.each do |y|
 			y["created_at"] = DateTime.strptime(y["created_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
 			y["updated_at"] = DateTime.strptime(y["updated_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+			if y["closed_at"] != nil
+				y["closed_at"] = DateTime.strptime(y["closed_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+			end
 		end
 		return issues
 	end
