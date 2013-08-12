@@ -222,8 +222,11 @@ class IssueDownload
 		
 		return issuesOpenClosedPerUser = @coll.aggregate([
 		    { "$project" => {created_month: {"$month" => "$created_at"}, state: 1, user:{login:1}}},
-		    { "$group" => {_id: {user:"$user.login", "created_month" => "$created_month", state: "$state"}, number: { "$sum" => 1 }}},
-		    {"$sort" => {"_id.user" => 1 ,"_id.created_month" => 1}},
+		    { "$group" => {_id: {user:"$user.login", "created_month" => "$created_month", state:"$state"}, number: { "$sum" => 1 }}},
+		    { "$sort" => {"_id.user" => 1 ,"_id.created_month" => 1}}
+		])
+	end
+
 	def analyzeIssuesClosedDurationOpen
 		
 		issuesOpenClosedPerUser = @coll.aggregate([
