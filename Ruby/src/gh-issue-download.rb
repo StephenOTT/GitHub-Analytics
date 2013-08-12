@@ -214,7 +214,7 @@ class IssueDownload
 		return issuesCreatedPerMonth = @coll.aggregate([
 		    { "$project" => {created_month: {"$month" => "$created_at"}, state: 1}},
 		    { "$group" => {_id: {"created_month" => "$created_month", state: "$state"}, number: { "$sum" => 1 }}},
-		    {"$sort" => {"_id.created_month" => 1}},
+		    { "$sort" => {"_id.created_month" => 1}}
 		])
 	end
 
