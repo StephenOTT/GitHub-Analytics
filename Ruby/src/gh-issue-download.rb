@@ -247,6 +247,19 @@ class IssueDownload
 
 		return issuesOpenClosedPerUser
 	end
+
+	def analyzeIssuesAssignedCountPerUser
+		
+		return issuesAssignedCountPerUser = @coll.aggregate([
+		    { "$project" => {assignee:{login: 1}, state: 1}},
+		    { "$group" => {_id: {assignee:"$assignee.login", state:"$state"}, number: { "$sum" => 1 }}},
+		    { "$sort" => {"_id.assignee" => 1 }}
+		])
+	end
+
+
+
+
 end
 
 
