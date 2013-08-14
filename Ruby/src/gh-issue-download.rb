@@ -237,9 +237,9 @@ class IssueDownload
 		])
 
 		issuesOpenClosedPerUser.each do |y|
-			durationDays = TimeDifference.between(y["_id"]["closed_at"], y["_id"]["created_at"]).in_days
-			durationWeeks = TimeDifference.between(y["_id"]["closed_at"], y["_id"]["created_at"]).in_weeks
-			durationMonths = TimeDifference.between(y["_id"]["closed_at"], y["_id"]["created_at"]).in_months
+			durationDays = TimeDifference.between(y["_id"]["created_at"], y["_id"]["closed_at"]).in_days
+			durationWeeks = TimeDifference.between(y["_id"]["created_at"], y["_id"]["closed_at"]).in_weeks
+			durationMonths = TimeDifference.between(y["_id"]["created_at"], y["_id"]["closed_at"]).in_months
 			y["_id"]["duration_open_days"] = durationDays
 			y["_id"]["duration_open_weeks"] = durationWeeks
 			y["_id"]["duration_open_months"] = durationMonths
