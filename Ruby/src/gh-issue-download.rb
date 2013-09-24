@@ -208,6 +208,30 @@ class AnalyzeGHData
 		    { "$group" => {_id: {"created_month" => "$created_month", "created_year" => "$created_year", state: "$state", "closed_month" => "$closed_month", "closed_year" => "$closed_year"}, number: { "$sum" => 1 }}},
 		    #{ "$sort" => {"_id.created_month" => 1}}
 		])
+
+		# puts issuesCreatedPerMonth
+
+		issuesOpenCount = @coll.aggregate([
+			{ "$match" => {state: {"$ne" => "closed"}}},
+		    { "$project" => {state: 1}},
+		    { "$group" => {_id: {state: "$state"}, number: { "$sum" => 1 }}},
+		])
+
+		newHashOpened={}
+		newHashClosed={}
+		issuesCreatedPerMonth.each do |x|
+				newHashOpened[Date.strptime(x["_id"].values_at('created_month', 'created_year').join(" "), '%m %Y')] = x["number"]
+			
+			if x["_id"]["closed_month"] != nil
+				newHashClosed[Date.strptime(x["_id"].values_at('closed_month', 'closed_year').join(" "), '%m %Y')] = x["number"]
+
+			end
+		end
+
+		dateConvert = DateManipulate.new()
+
+		return dateConvert.sortHashPlain(newHashOpened), dateConvert.sortHashPlain(newHashClosed), issuesOpenCount
+
 	end
 
 	def analyzeIssuesOpenClosedPerUserPerMonth
