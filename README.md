@@ -63,6 +63,8 @@ Primary use at this point is project management based analytics that are not cur
 42. Add special characters to GitHub post + time value to do time tracking within issues.  Github GFM text does not show all text.
 43. Track Thanks yous.  Tracking when a user submits a pull request or issue and people thank you for submitting.  See if that person is more likely to submit another issue/pull request (because people thanked them they are more likely to submit more requests/issues in the future).
 
+44. Use new BETA feature of MongoDB for Text Analysis/Text Search for providing Time Tracking feature.  Use invisible text in issues (html comments) to provide time tracking capability
+
 
 ###Events Analysis:
 
