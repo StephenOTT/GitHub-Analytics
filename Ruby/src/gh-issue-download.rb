@@ -256,6 +256,8 @@ class AnalyzeGHData
 			durationDays = TimeDifference.between(y["_id"]["created_at"], y["_id"]["closed_at"]).in_days
 			durationWeeks = TimeDifference.between(y["_id"]["created_at"], y["_id"]["closed_at"]).in_weeks
 			durationMonths = TimeDifference.between(y["_id"]["created_at"], y["_id"]["closed_at"]).in_months
+			durationFull = TimeDifference.between(y["_id"]["created_at"], y["_id"]["closed_at"]).in_general
+			y["_id"]["duration_open_full"] = durationFull
 			y["_id"]["duration_open_days"] = durationDays
 			y["_id"]["duration_open_weeks"] = durationWeeks
 			y["_id"]["duration_open_months"] = durationMonths
