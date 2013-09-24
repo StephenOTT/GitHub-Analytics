@@ -88,13 +88,13 @@ Primary use at this point is project management based analytics that are not cur
 ## To Do:
 
 - [x] Downloading of Repo Events into Mongodb
-- [ ] Convert to Rails app
+- [x] Convert to Sinatra app
 - [x] Downloading of Team data
-- [ ] Turn Github DateTime string into recognized Mongodb dateTime.  Currently github datetime string is not properly recognized by Mongodb. 
-- [ ] refactor method usage of Date conversions
+- [x] Turn Github DateTime string into recognized Mongodb dateTime.  Currently github datetime string is not properly recognized by Mongodb. 
+- [x] refactor method usage of Date conversions
 - [ ] refactor analyze methods names and structure
-- [ ] refactor methods into multifile MVC part of rails conversion
-- 
+- [ ] refactor methods into multifile MVC part of sinatra conversion
+- [ ] Build Dashboard that is equiv of the Github Survivor app (https://github.com/99designs/githubsurvivor)
 
 
 
