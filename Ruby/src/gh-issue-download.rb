@@ -202,10 +202,11 @@ class AnalyzeGHData
 
 	def analyzeIssuesCreatedClosedCountPerMonth 
 		
-		return issuesCreatedPerMonth = @coll.aggregate([
-		    { "$project" => {created_month: {"$month" => "$created_at"}, state: 1}},
-		    { "$group" => {_id: {"created_month" => "$created_month", state: "$state"}, number: { "$sum" => 1 }}},
-		    { "$sort" => {"_id.created_month" => 1}}
+		issuesCreatedPerMonth = @coll.aggregate([
+			{ "$match" => {closed_at: {"$ne" => nil}}},
+		    { "$project" => {created_month: {"$month" => "$created_at"}, created_year: {"$year" => "$created_at"}, closed_month: {"$month" => "$closed_at"}, closed_year: {"$year" => "$closed_at"}, state: 1}},
+		    { "$group" => {_id: {"created_month" => "$created_month", "created_year" => "$created_year", state: "$state", "closed_month" => "$closed_month", "closed_year" => "$closed_year"}, number: { "$sum" => 1 }}},
+		    #{ "$sort" => {"_id.created_month" => 1}}
 		])
 	end
 
