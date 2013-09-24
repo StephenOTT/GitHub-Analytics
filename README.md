@@ -73,6 +73,17 @@ Primary use at this point is project management based analytics that are not cur
 
 
 
+## Image Samples:
+
+![screen shot 2013-09-24 at 1 42 01 am](https://f.cloud.github.com/assets/1994838/1197485/553afd28-24dc-11e3-9d84-9c7b32bbe69b.png)
+![screen shot 2013-09-24 at 1 34 07 am](https://f.cloud.github.com/assets/1994838/1197486/5559f91c-24dc-11e3-9792-0c884526fd60.png)
+
+
+
+
+
+
+
 
 ## To Do:
 
@@ -95,6 +106,5 @@ Primary use at this point is project management based analytics that are not cur
 '''
 db.githubRepoEvents.aggregate(  [    { $group : { _id : "$type" , Count : { $sum : 1 } } }  ])
 '''
-
 
 
