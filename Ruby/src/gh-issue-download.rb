@@ -275,7 +275,20 @@ class AnalyzeGHData
 		])
 	end
 
+	# Sample method for showing the processing of data from coll and producing a Chart
+	def analyzeEventsTypes
+		
+		# Query Mongodb and group event Types from RepoEvents collection and produce a count
+		eventsTypesAnalysis = @collRepoEvents.aggregate([
+			{"$group" => { _id: "$type", count: {"$sum" => 1}}}
+		])
 
+		newHash={}
+		eventsTypesAnalysis.each do |x|
+			newHash[x["_id"]] = x["count"]
+		end
+		return newHash
+	end
 
 
 end
