@@ -180,6 +180,26 @@ class IssueDownload
 		return repoEvents
 	end
 
+end
+
+class AnalyzeGHData
+
+	def initialize
+		
+		# MongoDB Database Connect
+		@client = MongoClient.new('localhost', 27017)
+		@db = @client['Github']
+		
+		@coll = @db['githubIssues']
+
+		@collRepoEvents = @db["githubRepoEvents"]
+
+		@collOrgMembers = @db["githubOrgMembers"]
+	end
+
+
+
+
 	def analyzeIssuesCreatedClosedCountPerMonth 
 		
 		return issuesCreatedPerMonth = @coll.aggregate([
