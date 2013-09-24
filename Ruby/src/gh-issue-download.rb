@@ -294,19 +294,68 @@ class AnalyzeGHData
 end
 
 
-#start = IssueDownload.new("CityofOttawa/Ottawa-ckan")
-#start = IssueDownload.new("StephenOTT/Test1")
-start = IssueDownload.new("wet-boew/wet-boew-drupal")
-start.ghAuthenticate
-start.putIntoMongoCollIssues(start.getIssues)
-start.findIssuesWithComments
-start.putIntoMongoCollRepoEvents(start.getRepositoryEvents)
-start.putIntoMongoCollOrgMembers(start.getOrgMemberList)
-#puts start.analyzeEventsTypes
-puts start.analyzeIssuesCreatedClosedCountPerMonth
-puts "************************"
-puts start.analyzeIssuesOpenClosedPerUserPerMonth
-puts "************************"
-puts start.analyzeIssuesClosedDurationOpen
-puts "************************"
-puts start.analyzeIssuesAssignedCountPerUser
+class MyApp < Sinatra::Base
+
+  get '/' do
+
+    @foo = 'erb23'
+    analyze = AnalyzeGHData.new()
+  	# @hourBreakdown = column_chart(analyze.analyzeRestaurantInspectionsCount("hour"))
+  	# @weekBreakdown = column_chart(analyze.analyzeRestaurantInspectionsCount("week"))
+  	# @monthBreakdown = column_chart(analyze.analyzeRestaurantInspectionsCount("month"))
+  	# @dayOfWeekBreakdown = column_chart(analyze.analyzeRestaurantInspectionsCount("dayOfWeek"))
+
+  	# @restaurantCategoryCountBreakdown = pie_chart(analyze.analyzeRestaurantCategoryCount)
+  	# @restaurantCreationDateBreakdown = line_chart(analyze.analyzeRestaurantCreationDateCount)
+  	# @restaurantCreationDateBreakdownText = analyze.analyzeRestaurantCreationDateCount.to_s
+
+  	@eventTypesCount = pie_chart(analyze.analyzeEventsTypes)
+  	
+  	issuesCreatedMonthCount, issuesClosedMonthCount, issuesOpenCountPrep = analyze.analyzeIssuesCreatedClosedCountPerMonth
+ 	@issuesOpenCount = issuesOpenCountPrep[0]["number"]
+ 	@issuesCreatedClosedPerMonthCountGraph = line_chart [
+															{:name => "Open", :data => issuesCreatedMonthCount},
+															{:name => "Closed", :data => issuesClosedMonthCount}
+														]
+	@issuesOpenClosedPerUsedPerMonth = analyze.analyzeIssuesOpenClosedPerUserPerMonth.to_s
+
+	# puts analyze.analyzeIssuesOpenClosedPerUserPerMonth
+	# puts "************************"
+	# puts analyze.analyzeIssuesClosedDurationOpen
+	# puts "************************"
+	# puts analyze.analyzeIssuesAssignedCountPerUser
+
+    erb :index
+  end
+end
+
+# start = IssueDownload.new("CityofOttawa/Ottawa-ckan")
+# start = IssueDownload.new("StephenOTT/Test1")
+# start = IssueDownload.new("wet-boew/wet-boew-drupal")
+
+# start.ghAuthenticate
+# start.putIntoMongoCollIssues(start.getIssues)
+# start.findIssuesWithComments
+# start.putIntoMongoCollRepoEvents(start.getRepositoryEvents)
+# start.putIntoMongoCollOrgMembers(start.getOrgMemberList)
+
+MyApp.run!
+
+analyze = AnalyzeGHData.new()
+# puts analyze.analyzeEventsTypes
+# puts "************************"
+# puts analyze.analyzeIssuesCreatedClosedCountPerMonth
+# puts "************************"
+# puts analyze.analyzeIssuesOpenClosedPerUserPerMonth
+# puts "************************"
+# puts analyze.analyzeIssuesClosedDurationOpen
+# puts "************************"
+# puts analyze.analyzeIssuesAssignedCountPerUser
+
+# issuesCreatedMonthCount, issuesClosedMonthCount, issuesOpenCountPrep = analyze.analyzeIssuesCreatedClosedCountPerMonth
+#  puts issuesCreatedMonthCount
+#  puts issuesClosedMonthCount
+# puts issuesOpenCountPrep
+
+
+
