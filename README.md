@@ -110,3 +110,16 @@ db.githubRepoEvents.aggregate(  [    { $group : { _id : "$type" , Count : { $s
 '''
 
 
+
+## Issues API Issues:
+
+1. Issue and Issue Comment **revisions** that are exposed through API.  No event or record is created when a revision occurs.
+2. No event or record is created when an issue **comment is deleted**.
+3. No event or record is created when an issue **label** is applied or removed.
+4. No event or record is created when a **milestone** is applied or removed.
+5. No event or record is created when a issue **Assignee** is un-assigned, and the issue has not assignee.
+6. Issue Events do not have a payload in the API and therefore you must do another API call for details of the event.  Example: If a user is assigned a Issue Event is created but there is not details about which user was assigned.
+7. No Repo details other than the API url are not part of the Issue Events API.
+8. No event or record is created when a Label is created or deleted in a repo (this is the creation or deletion of a label for the entire repository).
+9. No event or record is created when a repo is un-stared.  A Repo Event is created when a repo is Stared, but not when it is un-stared.
+10. No event or record is created when a repo is Watched, ignored, or Not-Watching
