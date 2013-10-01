@@ -4,11 +4,12 @@ require 'mongo'
 require 'gchart'
 require 'date'
 require 'time_difference'
-require 'sinatra'
+# require 'sinatra'
 require 'chartkick'
 require 'erb'
 require 'groupdate'
 require '../../../add_missing_dates_ruby/add_missing_dates_months.rb'
+require 'pp'
 
 include Mongo
 
@@ -24,13 +25,16 @@ class IssueDownload
 		
 		# MongoDB Database Connect
 		@client = MongoClient.new('localhost', 27017)
-		@db = @client['Github']
+		@db = @client['Github2']
 		
 		@coll = @db['githubIssues']
 		@coll.remove
 
 		@collRepoEvents = @db["githubRepoEvents"]
 		@collRepoEvents.remove
+
+		@collRepoIssueEvents = @db["githubRepoIssueEvents"]
+		@collRepoIssueEvents.remove
 
 		@collOrgMembers = @db["githubOrgMembers"]
 		@collOrgMembers.remove
@@ -83,6 +87,11 @@ class IssueDownload
 		@collOrgMembers.insert(mongoPayload)
 		puts "Org Members Added, Count added to Mongodb: " + @collOrgMembers.count.to_s
 	end
+
+	def putIntoMongoCollRepoIssuesEvents(mongoPayload)
+		@collRepoIssueEvents.insert(mongoPayload)
+		puts "Org Members Added, Count added to Mongodb: " + @collRepoIssueEvents.count.to_s
+	end
 	
 	# find records in Mongodb that have a comments field value of 1 or higher
 	# returns only the number field
@@ -118,6 +127,29 @@ class IssueDownload
 		
 		return self.convertRepoEventsDates(respositoryEvents)
 	end
+
+	def getIssueEventsAllIssue
+
+		issueNumbers = @coll.aggregate([
+		    { "$project" => {number: 1}},
+		    { "$group" => {_id: {number: "$number"}}},
+		])
+		puts issueNumbers
+
+		issueNumbers.each do |x|
+			puts x["_id"]["number"]
+			issueEvents = @ghClient.issue_events(@repository, x["_id"]["number"])
+			# puts issueEvents
+			# puts "***"
+			if issueEvents.empty? == false
+				self.putIntoMongoCollRepoIssuesEvents(issueEvents)
+			end
+			# puts "Got Repository Events, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
+		end
+
+	end
+
+
 
 	# TODO This still needs work to function correctly.  Need to add new collection in db and a way to handle variable for the specific org to get data from
 	def getOrgMemberList
@@ -197,9 +229,6 @@ class AnalyzeGHData
 		@collOrgMembers = @db["githubOrgMembers"]
 	end
 
-
-
-
 	def analyzeIssuesCreatedClosedCountPerMonth 
 		
 		issuesCreatedPerMonth = @coll.aggregate([
@@ -208,8 +237,6 @@ class AnalyzeGHData
 		    { "$group" => {_id: {"created_month" => "$created_month", "created_year" => "$created_year", state: "$state", "closed_month" => "$closed_month", "closed_year" => "$closed_year"}, number: { "$sum" => 1 }}},
 		    #{ "$sort" => {"_id.created_month" => 1}}
 		])
-
-		# puts issuesCreatedPerMonth
 
 		issuesOpenCount = @coll.aggregate([
 			{ "$match" => {state: {"$ne" => "closed"}}},
@@ -231,16 +258,32 @@ class AnalyzeGHData
 		dateConvert = DateManipulate.new()
 
 		return dateConvert.sortHashPlain(newHashOpened), dateConvert.sortHashPlain(newHashClosed), issuesOpenCount
-
 	end
 
+	# TODO Need to rebuild this as the Events data should be used rather than Issues data
 	def analyzeIssuesOpenClosedPerUserPerMonth
-		
-		return issuesOpenClosedPerUser = @coll.aggregate([
-		    { "$project" => {created_month: {"$month" => "$created_at"}, state: 1, user:{login:1}}},
-		    { "$group" => {_id: {user:"$user.login", "created_month" => "$created_month", state:"$state"}, number: { "$sum" => 1 }}},
-		    { "$sort" => {"_id.user" => 1 ,"_id.created_month" => 1}}
+		issuesOpenClosedPerUser = @coll.aggregate([
+		    { "$project" => {created_month: {"$month" => "$created_at"}, created_year: {"$year" => "$created_at"}, state: 1, user:{login:1}}},
+		    { "$group" => {_id: {user:"$user.login", "created_month" => "$created_month", "created_year" => "$created_year", state:"$state"}, number: { "$sum" => 1 }}},
+		    { "$sort" => {"_id.user" => 1}}
 		])
+		# puts issuesOpenClosedPerUser
+
+		usersBase = []
+		issuesOpenClosedPerUser.each do |y|
+			usersBase << y["_id"]["user"] 
+		end
+		usersBase.uniq!
+		
+		usersBase.each do |ub|
+			issuesOpenClosedForUniqueUser = @coll.aggregate([
+			    { "$project" => {created_month: {"$month" => "$created_at"}, created_year: {"$year" => "$created_at"}, state: 1, user:{login:1}}},
+			    { "$match" => {user:{login:ub }}},
+			    { "$group" => {_id: {user:"$user.login", "created_month" => "$created_month", "created_year" => "$created_year", state:"$state"}, number: { "$sum" => 1 }}},
+			    # { "$sort" => {"_id.user" => 1}}
+			])
+			puts issuesOpenClosedForUniqueUser
+		end
 	end
 
 	def analyzeIssuesClosedDurationOpen
@@ -291,57 +334,68 @@ class AnalyzeGHData
 	end
 
 
+	def analyzeEvents_IssueCommmentEvent
+
+		issuesOpenClosedForUniqueUser = @collRepoEvents.aggregate([
+			# { "$project" => {payload:{action:1}, _id:1}},
+			# { "$match" => {type:"IssuesEvent"}},
+			{ "$group" => {_id: {"user" => "$actor.login","type" =>"$payload.action"}, number: { "$sum" => 1 }}},
+			{ "$sort" => {"_id.user" => 1}}
+		])
+		puts issuesOpenClosedForUniqueUser
+	end
 end
 
 
-class MyApp < Sinatra::Base
+# class MyApp < Sinatra::Base
 
-  get '/' do
+#   get '/' do
 
-    @foo = 'erb23'
-    analyze = AnalyzeGHData.new()
-  	# @hourBreakdown = column_chart(analyze.analyzeRestaurantInspectionsCount("hour"))
-  	# @weekBreakdown = column_chart(analyze.analyzeRestaurantInspectionsCount("week"))
-  	# @monthBreakdown = column_chart(analyze.analyzeRestaurantInspectionsCount("month"))
-  	# @dayOfWeekBreakdown = column_chart(analyze.analyzeRestaurantInspectionsCount("dayOfWeek"))
+#     @foo = 'erb23'
+#     analyze = AnalyzeGHData.new()
+#   	# @hourBreakdown = column_chart(analyze.analyzeRestaurantInspectionsCount("hour"))
+#   	# @weekBreakdown = column_chart(analyze.analyzeRestaurantInspectionsCount("week"))
+#   	# @monthBreakdown = column_chart(analyze.analyzeRestaurantInspectionsCount("month"))
+#   	# @dayOfWeekBreakdown = column_chart(analyze.analyzeRestaurantInspectionsCount("dayOfWeek"))
 
-  	# @restaurantCategoryCountBreakdown = pie_chart(analyze.analyzeRestaurantCategoryCount)
-  	# @restaurantCreationDateBreakdown = line_chart(analyze.analyzeRestaurantCreationDateCount)
-  	# @restaurantCreationDateBreakdownText = analyze.analyzeRestaurantCreationDateCount.to_s
+#   	# @restaurantCategoryCountBreakdown = pie_chart(analyze.analyzeRestaurantCategoryCount)
+#   	# @restaurantCreationDateBreakdown = line_chart(analyze.analyzeRestaurantCreationDateCount)
+#   	# @restaurantCreationDateBreakdownText = analyze.analyzeRestaurantCreationDateCount.to_s
 
-  	@eventTypesCount = pie_chart(analyze.analyzeEventsTypes)
+#   	@eventTypesCount = pie_chart(analyze.analyzeEventsTypes)
   	
-  	issuesCreatedMonthCount, issuesClosedMonthCount, issuesOpenCountPrep = analyze.analyzeIssuesCreatedClosedCountPerMonth
- 	@issuesOpenCount = issuesOpenCountPrep[0]["number"]
- 	@issuesCreatedClosedPerMonthCountGraph = line_chart [
-															{:name => "Open", :data => issuesCreatedMonthCount},
-															{:name => "Closed", :data => issuesClosedMonthCount}
-														]
-	@issuesOpenClosedPerUsedPerMonth = analyze.analyzeIssuesOpenClosedPerUserPerMonth.to_s
+#   	issuesCreatedMonthCount, issuesClosedMonthCount, issuesOpenCountPrep = analyze.analyzeIssuesCreatedClosedCountPerMonth
+#  	@issuesOpenCount = issuesOpenCountPrep[0]["number"]
+#  	@issuesCreatedClosedPerMonthCountGraph = line_chart [
+# 															{:name => "Open", :data => issuesCreatedMonthCount},
+# 															{:name => "Closed", :data => issuesClosedMonthCount}
+# 														]
+# 	@issuesOpenClosedPerUsedPerMonth = analyze.analyzeIssuesOpenClosedPerUserPerMonth
 
-	# puts analyze.analyzeIssuesOpenClosedPerUserPerMonth
-	# puts "************************"
-	# puts analyze.analyzeIssuesClosedDurationOpen
-	# puts "************************"
-	# puts analyze.analyzeIssuesAssignedCountPerUser
+# 	# puts analyze.analyzeIssuesOpenClosedPerUserPerMonth
+# 	# puts "************************"
+# 	# puts analyze.analyzeIssuesClosedDurationOpen
+# 	# puts "************************"
+# 	# puts analyze.analyzeIssuesAssignedCountPerUser
 
-    erb :index
-  end
-end
+#     erb :index
+#   end
+# end
 
 # start = IssueDownload.new("CityofOttawa/Ottawa-ckan")
-# start = IssueDownload.new("StephenOTT/Test1")
+start = IssueDownload.new("StephenOTT/Test1")
 # start = IssueDownload.new("wet-boew/wet-boew-drupal")
 
-# start.ghAuthenticate
-# start.putIntoMongoCollIssues(start.getIssues)
-# start.findIssuesWithComments
-# start.putIntoMongoCollRepoEvents(start.getRepositoryEvents)
+start.ghAuthenticate
+start.putIntoMongoCollIssues(start.getIssues)
+start.findIssuesWithComments
+start.putIntoMongoCollRepoEvents(start.getRepositoryEvents)
+start.getIssueEventsAllIssue
 # start.putIntoMongoCollOrgMembers(start.getOrgMemberList)
 
-MyApp.run!
+# MyApp.run!
 
-analyze = AnalyzeGHData.new()
+# analyze = AnalyzeGHData.new()
 # puts analyze.analyzeEventsTypes
 # puts "************************"
 # puts analyze.analyzeIssuesCreatedClosedCountPerMonth
@@ -353,9 +407,10 @@ analyze = AnalyzeGHData.new()
 # puts analyze.analyzeIssuesAssignedCountPerUser
 
 # issuesCreatedMonthCount, issuesClosedMonthCount, issuesOpenCountPrep = analyze.analyzeIssuesCreatedClosedCountPerMonth
-#  puts issuesCreatedMonthCount
-#  puts issuesClosedMonthCount
+# puts issuesCreatedMonthCount
+# puts issuesClosedMonthCount
 # puts issuesOpenCountPrep
-
+# analyze.analyzeIssuesOpenClosedPerUserPerMonth
+# analyze.analyzeEvents_IssueCommmentEvent
 
 

@@ -9,6 +9,10 @@ This is <%= @foo %>
 <p><%= @issuesOpenCount %> open issues remain unaccounted in the Closed data series because these issues don't have a closed date value </p>
 <hr>
 <%= @issuesOpenClosedPerUsedPerMonth %>
+<hr>
+<%= line_chart @issuesOpenClosedPerUsedPerMonth.map{|goal|
+    {:name => goal["_id"]["user"], :data => goal["number"] }
+} %>
 
 
 
