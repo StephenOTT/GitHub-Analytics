@@ -4,7 +4,7 @@ require 'mongo'
 require 'gchart'
 require 'date'
 require 'time_difference'
-# require 'sinatra'
+require 'sinatra'
 require 'chartkick'
 require 'erb'
 require 'groupdate'
@@ -347,53 +347,53 @@ class AnalyzeGHData
 end
 
 
-# class MyApp < Sinatra::Base
+class MyApp < Sinatra::Base
 
-#   get '/' do
+  get '/' do
 
-#     @foo = 'erb23'
-#     analyze = AnalyzeGHData.new()
-#   	# @hourBreakdown = column_chart(analyze.analyzeRestaurantInspectionsCount("hour"))
-#   	# @weekBreakdown = column_chart(analyze.analyzeRestaurantInspectionsCount("week"))
-#   	# @monthBreakdown = column_chart(analyze.analyzeRestaurantInspectionsCount("month"))
-#   	# @dayOfWeekBreakdown = column_chart(analyze.analyzeRestaurantInspectionsCount("dayOfWeek"))
+    @foo = 'erb23'
+    analyze = AnalyzeGHData.new()
+  	# @hourBreakdown = column_chart(analyze.analyzeRestaurantInspectionsCount("hour"))
+  	# @weekBreakdown = column_chart(analyze.analyzeRestaurantInspectionsCount("week"))
+  	# @monthBreakdown = column_chart(analyze.analyzeRestaurantInspectionsCount("month"))
+  	# @dayOfWeekBreakdown = column_chart(analyze.analyzeRestaurantInspectionsCount("dayOfWeek"))
 
-#   	# @restaurantCategoryCountBreakdown = pie_chart(analyze.analyzeRestaurantCategoryCount)
-#   	# @restaurantCreationDateBreakdown = line_chart(analyze.analyzeRestaurantCreationDateCount)
-#   	# @restaurantCreationDateBreakdownText = analyze.analyzeRestaurantCreationDateCount.to_s
+  	# @restaurantCategoryCountBreakdown = pie_chart(analyze.analyzeRestaurantCategoryCount)
+  	# @restaurantCreationDateBreakdown = line_chart(analyze.analyzeRestaurantCreationDateCount)
+  	# @restaurantCreationDateBreakdownText = analyze.analyzeRestaurantCreationDateCount.to_s
 
-#   	@eventTypesCount = pie_chart(analyze.analyzeEventsTypes)
+  	@eventTypesCount = pie_chart(analyze.analyzeEventsTypes)
   	
-#   	issuesCreatedMonthCount, issuesClosedMonthCount, issuesOpenCountPrep = analyze.analyzeIssuesCreatedClosedCountPerMonth
-#  	@issuesOpenCount = issuesOpenCountPrep[0]["number"]
-#  	@issuesCreatedClosedPerMonthCountGraph = line_chart [
-# 															{:name => "Open", :data => issuesCreatedMonthCount},
-# 															{:name => "Closed", :data => issuesClosedMonthCount}
-# 														]
-# 	@issuesOpenClosedPerUsedPerMonth = analyze.analyzeIssuesOpenClosedPerUserPerMonth
+  	issuesCreatedMonthCount, issuesClosedMonthCount, issuesOpenCountPrep = analyze.analyzeIssuesCreatedClosedCountPerMonth
+ 	@issuesOpenCount = issuesOpenCountPrep[0]["number"]
+ 	@issuesCreatedClosedPerMonthCountGraph = line_chart [
+															{:name => "Open", :data => issuesCreatedMonthCount},
+															{:name => "Closed", :data => issuesClosedMonthCount}
+														]
+	@issuesOpenClosedPerUsedPerMonth = analyze.analyzeIssuesOpenClosedPerUserPerMonth
 
-# 	# puts analyze.analyzeIssuesOpenClosedPerUserPerMonth
-# 	# puts "************************"
-# 	# puts analyze.analyzeIssuesClosedDurationOpen
-# 	# puts "************************"
-# 	# puts analyze.analyzeIssuesAssignedCountPerUser
+	# puts analyze.analyzeIssuesOpenClosedPerUserPerMonth
+	# puts "************************"
+	# puts analyze.analyzeIssuesClosedDurationOpen
+	# puts "************************"
+	# puts analyze.analyzeIssuesAssignedCountPerUser
 
-#     erb :index
-#   end
-# end
+    erb :index
+  end
+end
 
 # start = IssueDownload.new("CityofOttawa/Ottawa-ckan")
-start = IssueDownload.new("StephenOTT/Test1")
-# start = IssueDownload.new("wet-boew/wet-boew-drupal")
+# start = IssueDownload.new("StephenOTT/Test1")
+# # start = IssueDownload.new("wet-boew/wet-boew-drupal")
 
-start.ghAuthenticate
-start.putIntoMongoCollIssues(start.getIssues)
-start.findIssuesWithComments
-start.putIntoMongoCollRepoEvents(start.getRepositoryEvents)
-start.getIssueEventsAllIssue
+# start.ghAuthenticate
+# start.putIntoMongoCollIssues(start.getIssues)
+# start.findIssuesWithComments
+# start.putIntoMongoCollRepoEvents(start.getRepositoryEvents)
+# start.getIssueEventsAllIssue
 # start.putIntoMongoCollOrgMembers(start.getOrgMemberList)
 
-# MyApp.run!
+MyApp.run!
 
 # analyze = AnalyzeGHData.new()
 # puts analyze.analyzeEventsTypes
