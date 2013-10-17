@@ -138,7 +138,7 @@ class IssueDownload
 		    { "$project" => {number: 1}},
 		    { "$group" => {_id: {number: "$number"}}},
 		])
-		puts issueNumbers
+		# puts issueNumbers
 
 		issueNumbers.each do |x|
 			puts x["_id"]["number"]
