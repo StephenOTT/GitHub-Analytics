@@ -254,7 +254,6 @@ class AnalyzeGHData
 			
 			if x["_id"]["closed_month"] != nil
 				newHashClosed[Date.strptime(x["_id"].values_at('closed_month', 'closed_year').join(" "), '%m %Y')] = x["number"]
-
 			end
 		end
 
@@ -335,7 +334,6 @@ class AnalyzeGHData
 		end
 		return newHash
 	end
-
 
 	def analyzeEvents_IssueCommmentEvent
 
