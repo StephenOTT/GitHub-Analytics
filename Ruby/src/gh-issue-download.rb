@@ -345,6 +345,32 @@ class AnalyzeGHData
 		])
 		puts issuesOpenClosedForUniqueUser
 	end
+	def analyzeIssuesPrintableTable
+		
+		 issuesPrintableTable = @coll.aggregate([
+		    # { "$project" => {assignee:{login: 1}, state: 1, milestone:{title: 1}, number: 1, title: 1, created_at: 1, closed_at: 1, _id: 0}},
+		    { "$group" => {_id: {
+		    					issueCurrentState:"$state", 
+		    					issueNumber:"$number", 
+		    					issueAssignedMilestone:"$milestone", 
+		    					issueTitle:"$title", 
+		    					issueCurrentAssignee:"$assignee", 
+		    					created_at:"$created_at", 
+		    					closed_at:"$closed_at", 
+		    					createdBy:"$user.login", 
+		    					commentsCount:"$comments"}}},
+		    { "$sort" => {"_id.issueCurrentState" => -1, "_id.issueNumber" => -1}}
+		])
+
+		printableArray = []
+		issuesPrintableTable.each do |x|
+			# dog = self.issueCommentsDatesBreakdownWeek(x["_id"]["issueNumber"], 2012)
+			# x["_id"]["sparkline"] = "<img src=\"#{dog}\">"
+			printableArray << x["_id"]
+		end
+		# return printableArray
+		return buildSampleTable(printableArray)
+	end
 end
 
 
