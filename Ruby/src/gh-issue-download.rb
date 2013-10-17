@@ -284,7 +284,7 @@ class AnalyzeGHData
 			    { "$group" => {_id: {user:"$user.login", "created_month" => "$created_month", "created_year" => "$created_year", state:"$state"}, number: { "$sum" => 1 }}},
 			    # { "$sort" => {"_id.user" => 1}}
 			])
-			puts issuesOpenClosedForUniqueUser
+			# puts issuesOpenClosedForUniqueUser
 		end
 	end
 
