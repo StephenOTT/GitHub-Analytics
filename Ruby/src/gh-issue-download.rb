@@ -373,6 +373,8 @@ class MyApp < Sinatra::Base
 														]
 	@issuesOpenClosedPerUsedPerMonth = analyze.analyzeIssuesOpenClosedPerUserPerMonth
 
+	@printableData = analyze.analyzeIssuesPrintableTable
+
 	# puts analyze.analyzeIssuesOpenClosedPerUserPerMonth
 	# puts "************************"
 	# puts analyze.analyzeIssuesClosedDurationOpen
