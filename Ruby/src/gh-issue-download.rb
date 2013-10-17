@@ -360,6 +360,7 @@ class AnalyzeGHData
 		    					created_at:"$created_at", 
 		    					closed_at:"$closed_at", 
 		    					createdBy:"$user.login",
+		    					createdByAvatar:"$user.avatar_url",
 		    					commentsCount:"$comments"}}},
 		    { "$sort" => {"_id.issueCurrentState" => -1, "_id.issueNumber" => -1}}
 		])
