@@ -109,11 +109,13 @@ class IssueDownload
  			puts "x value:  #{x}"
  			puts x["number"]
  			issueComments = @ghClient.issue_comments(@repository.to_s, x["number"].to_s)
- 			 			 
-			@coll.update(
-				{ "number" => x["number"]},
-				{ "$push" => {"comments_Text" => self.convertIssueCommentDatesInMongo(issueComments)}}
-				)
+
+ 			issueComments.each do |commentDetails| 			 
+				@coll.update(
+					{ "number" => x["number"]},
+					{ "$push" => {"comments_Text" => self.convertIssueCommentDatesInMongo(commentDetails)}}
+					)
+			end
 			 
 			 # Used as a count for number of issues with comments
 			 i += 1
@@ -187,10 +189,9 @@ class IssueDownload
 
 	def convertIssueCommentDatesInMongo(issueComments)
 
-		issueComments.each do |y|
-			y["created_at"] = DateTime.strptime(y["created_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
-			y["updated_at"] = DateTime.strptime(y["updated_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
-		end
+			issueComments["created_at"] = DateTime.strptime(issueComments["created_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+			issueComments["updated_at"] = DateTime.strptime(issueComments["updated_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+
 		return issueComments
 	end
 
