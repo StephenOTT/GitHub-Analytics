@@ -345,6 +345,8 @@ class AnalyzeGHData
 		])
 		puts issuesOpenClosedForUniqueUser
 	end
+
+
 	def analyzeIssuesPrintableTable
 		
 		 issuesPrintableTable = @coll.aggregate([
