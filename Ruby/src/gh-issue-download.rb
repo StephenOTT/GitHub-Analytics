@@ -366,12 +366,13 @@ class AnalyzeGHData
 
 		printableArray = []
 		issuesPrintableTable.each do |x|
-			# dog = self.issueCommentsDatesBreakdownWeek(x["_id"]["issueNumber"], 2012)
-			# x["_id"]["sparkline"] = "<img src=\"#{dog}\">"
+			#gets comments and sparkline data for supplied issue number and the CURRENT year
+			dog = self.issueCommentsDatesBreakdownWeek(x["_id"]["issueNumber"], Time.now.strftime('%Y').to_i)
+			x["_id"]["sparkline"] = dog
 			printableArray << x["_id"]
 		end
-		# return printableArray
-		return buildSampleTable(printableArray)
+		return printableArray
+		# return buildSampleTable(printableArray)
 	end
 
 	# TODO add better support for sparklines/images in the table.  Currently images cannot be added because of the code.
