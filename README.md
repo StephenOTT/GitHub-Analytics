@@ -1,6 +1,8 @@
 GitHub-Analytics
 ================
 
+**I welcome any and all feedback!!! Please post a issue, question or pull request!!**
+
 Downloads issues their comments from GitHub repositories into a mongodb database.
 
 Analytics are then run on the issues and comments in the mongodb database.
@@ -106,7 +108,11 @@ Primary use at this point is project management based analytics that are not cur
 1. Query for providing a breakdown of each of the different types of Events and the counts for each event type in the collection.
 
 '''
-db.githubRepoEvents.aggregate(  [    { $group : { _id : "$type" , Count : { $sum : 1 } } }  ])
+db.githubRepoEvents.aggregate(
+  [
+    { $group : { _id : "$type" , Count : { $sum : 1 } } }
+  ]
+)
 '''
 
 
