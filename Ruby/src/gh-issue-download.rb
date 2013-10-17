@@ -382,6 +382,59 @@ class AnalyzeGHData
 		  data.each { |row| xm.tr { row.values.each { |value| xm.td(value)}}}
 		}
 	end
+
+	def issueCommentsDatesBreakdownWeek(issueNumber, yearSpan)
+
+		issueCommentsDatesSpark = @coll.aggregate([
+			{ "$match" => {number: issueNumber}},
+		    { "$unwind" => "$comments_Text" },
+			# { "$project" => {created_month: {"$month" => "$comments_Text.created_at"}, created_year: {"$year" => "$comments_Text.created_at"}}},
+			{ "$project" => {created_week: {"$week" => "$comments_Text.created_at"}, created_year: {"$year" => "$comments_Text.created_at"}}},
+			{ "$match" => {created_year: yearSpan}},
+			# TODO write a blog post about dealing match and how $eq does not work correctly
+			# { "$match" => {created_year: {"$gt" => yearSpan-1}}},
+			# { "$match" => {created_year: {"$lt" => yearSpan+1}}},
+			# { "$group" => {_id:{"created_month" => "$created_month", "created_year" => "$created_year"}, number: { "$sum" => 1 }}},
+			{ "$group" => {_id:{"created_week" => "$created_week", "created_year" => "$created_year"}, number: { "$sum" => 1 }}},
+
+		])
+
+		newHash = {}
+		issueCommentsDatesSpark.each do |x|
+				# newHash[Date.strptime(x["_id"].values_at('created_week', 'created_year').join(" "), '%U %Y')] = x["number"]
+				newHash[x["_id"]["created_week"]] = x["number"] 
+		end
+
+		# To be used when dealing with the current year
+		# puts Time.now.strftime('%U')
+
+
+		# figures out missing week numbers and if the week number is missing creates it and assigns value as 0
+		for i in 0..53
+			if newHash.key?(i) == false
+				newHash[i] = 0
+			end
+		end
+
+		# TODO support for sparkline images in table builder is still required
+		dateConvert = DateManipulate.new()
+		sortedHash = dateConvert.simpleHashSort(newHash)
+		return self.produceSparklineChart(sortedHash)
+
+	end
+
+	# TODO add support for custom sizes and colours when calling spark line generator
+	def produceSparklineChart(data)
+			return chartURL = Gchart.sparkline(
+        	:data => data.values,
+        	:size => '80x20'
+        	)
+	end
+
+
+
+
+
 end
 
 
