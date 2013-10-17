@@ -410,6 +410,8 @@ MyApp.run!
 
 
 
+# data = analyze.analyzeIssuesPrintableTable
+# puts data
 
 
 
