@@ -373,6 +373,13 @@ class AnalyzeGHData
 		# return printableArray
 		return buildSampleTable(printableArray)
 	end
+	def buildSampleTable (data)
+		xm = Builder::XmlMarkup.new(:indent => 2)
+		xm.table {
+		  xm.tr { data[0].keys.each { |key| xm.th(key)}}
+		  data.each { |row| xm.tr { row.values.each { |value| xm.td(value)}}}
+		}
+	end
 end
 
 
