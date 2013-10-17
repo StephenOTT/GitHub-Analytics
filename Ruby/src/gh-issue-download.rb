@@ -354,12 +354,12 @@ class AnalyzeGHData
 		    { "$group" => {_id: {
 		    					issueCurrentState:"$state", 
 		    					issueNumber:"$number", 
-		    					issueAssignedMilestone:"$milestone", 
+		    					issueAssignedMilestone:"$milestone.title", 
 		    					issueTitle:"$title", 
-		    					issueCurrentAssignee:"$assignee", 
+		    					issueCurrentAssignee:"$assignee.login", 
 		    					created_at:"$created_at", 
 		    					closed_at:"$closed_at", 
-		    					createdBy:"$user.login", 
+		    					createdBy:"$user.login",
 		    					commentsCount:"$comments"}}},
 		    { "$sort" => {"_id.issueCurrentState" => -1, "_id.issueNumber" => -1}}
 		])
