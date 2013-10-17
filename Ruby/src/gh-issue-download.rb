@@ -369,8 +369,9 @@ class MyApp < Sinatra::Base
  	@issuesOpenCount = issuesOpenCountPrep[0]["number"]
  	@issuesCreatedClosedPerMonthCountGraph = line_chart [
 															{:name => "Open", :data => issuesCreatedMonthCount},
-															{:name => "Closed", :data => issuesClosedMonthCount}
-														]
+															{:name => "Closed", :data => issuesClosedMonthCount},
+
+														],:library => {:hAxis => {:format => 'MMM y'}} #TODO write blog post about dealing with the library function.  Add doc notes to Chartkick about accessing subfunctions.
 	@issuesOpenClosedPerUsedPerMonth = analyze.analyzeIssuesOpenClosedPerUserPerMonth
 
 	# TODO add sparklines
