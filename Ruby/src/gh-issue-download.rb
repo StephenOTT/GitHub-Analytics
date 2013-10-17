@@ -410,7 +410,8 @@ class AnalyzeGHData
 
 
 		# figures out missing week numbers and if the week number is missing creates it and assigns value as 0
-		for i in 0..53
+		for i in 0..Time.now.strftime('%W').to_i    # gets week 0 to current week number of activity
+			# If the week does not already exist in the hash then add a new hash value with the key being the week number and the value is 0 becuase there was not previous value
 			if newHash.key?(i) == false
 				newHash[i] = 0
 			end
