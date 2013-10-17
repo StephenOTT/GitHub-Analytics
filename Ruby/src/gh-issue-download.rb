@@ -106,6 +106,7 @@ class IssueDownload
 		
 		# Cycle through each issue number that was found in the mongodb collection and look up the comments related to that issue and update the issue mongodb document with the comments as a array
 		issuesWithComments.each do |x|
+ 			puts "x value:  #{x}"
  			puts x["number"]
  			issueComments = @ghClient.issue_comments(@repository.to_s, x["number"].to_s)
  			 			 
