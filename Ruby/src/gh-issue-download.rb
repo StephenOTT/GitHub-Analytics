@@ -385,6 +385,10 @@ class MyApp < Sinatra::Base
   end
 end
 
+
+
+
+
 # start = IssueDownload.new("CityofOttawa/Ottawa-ckan")
 # start = IssueDownload.new("StephenOTT/Test1")
 # # start = IssueDownload.new("wet-boew/wet-boew-drupal")
@@ -398,7 +402,19 @@ end
 
 MyApp.run!
 
+
+
+
 # analyze = AnalyzeGHData.new()
+
+
+
+
+
+
+
+
+
 # puts analyze.analyzeEventsTypes
 # puts "************************"
 # puts analyze.analyzeIssuesCreatedClosedCountPerMonth
