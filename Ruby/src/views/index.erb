@@ -10,7 +10,56 @@ This is <%= @foo %>
 <hr>
 <%= @issuesOpenClosedPerUsedPerMonth %>
 <hr>
-<%= @printableData %>
+
+
+<table border="1">
+	<tr>
+		<th>State</th>
+		<th>Issue Number</th>
+		<th>Milestone</th>
+		<th>Issue Title</th>
+		<th>Assignee</th>
+		<th>Created Date</th>
+		<th>Closed Date</th>
+		<th>Created By</th>
+		<th>Comment Count</th>
+		<th>Year to Date Activity</th>
+	</tr>
+<% @printableData.each do |elem| %>
+	<tr>
+		<td>
+			<%= elem["issueCurrentState"] %>
+		</td>
+		<td>
+			<%= elem["issueNumber"] %>
+		</td>
+		<td>
+			<%= elem["issueAssignedMilestone"] %>
+		</td>
+		<td>
+			<%= elem["issueTitle"] %>
+		</td>
+		<td>
+			<%= elem["issueCurrentAssignee"] %>
+		</td>
+		<td>
+			<%= elem["created_at"] %>
+		</td>
+		<td>
+			<%= elem["closed_at"] %>
+		</td>
+		<td>
+			<%= elem["createdBy"] %> <img src="<%= elem["createdByAvatar"] %>" height="30" width="30">
+		</td>
+		<td>
+			<%= elem["commentsCount"] %>
+		</td>
+		<td>
+			<img src="<%= elem["sparkline"] %>">
+		</td>
+	</tr>
+<% end %>
+</table>
 
 
 
