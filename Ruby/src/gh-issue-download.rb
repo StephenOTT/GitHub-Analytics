@@ -373,6 +373,8 @@ class AnalyzeGHData
 		# return printableArray
 		return buildSampleTable(printableArray)
 	end
+
+	# TODO add better support for sparklines/images in the table.  Currently images cannot be added because of the code.
 	def buildSampleTable (data)
 		xm = Builder::XmlMarkup.new(:indent => 2)
 		xm.table {
