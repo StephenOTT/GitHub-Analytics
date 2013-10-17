@@ -26,7 +26,7 @@ class IssueDownload
 		
 		# MongoDB Database Connect
 		@client = MongoClient.new('localhost', 27017)
-		@db = @client['Github2']
+		@db = @client['Github']
 		
 		@coll = @db['githubIssues']
 		@coll.remove
