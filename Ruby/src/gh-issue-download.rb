@@ -10,6 +10,7 @@ require 'erb'
 require 'groupdate'
 require '../../../add_missing_dates_ruby/add_missing_dates_months.rb'
 require 'pp'
+require 'builder'
 
 include Mongo
 
