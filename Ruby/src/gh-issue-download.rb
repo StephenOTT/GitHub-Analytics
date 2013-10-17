@@ -407,6 +407,7 @@ MyApp.run!
 
 
 # analyze = AnalyzeGHData.new()
+# puts analyze.issueCommentsDatesBreakdownWeek(388, 2012)
 
 
 
