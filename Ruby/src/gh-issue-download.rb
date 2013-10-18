@@ -428,7 +428,6 @@ class AnalyzeGHData
 			# { "$match" => {created_year: {"$lt" => yearSpan+1}}},
 			# { "$group" => {_id:{"created_month" => "$created_month", "created_year" => "$created_year"}, number: { "$sum" => 1 }}},
 			{ "$group" => {_id:{"created_week" => "$created_week", "created_year" => "$created_year"}, number: { "$sum" => 1 }}},
-
 		])
 
 		newHash = {}
