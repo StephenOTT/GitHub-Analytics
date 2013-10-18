@@ -406,6 +406,7 @@ class AnalyzeGHData
 	end
 
 	# TODO add better support for sparklines/images in the table.  Currently images cannot be added because of the code.
+	# TODO remove this method as it is not needed anymore.  Double check dependencies.
 	def buildSampleTable (data)
 		xm = Builder::XmlMarkup.new(:indent => 2)
 		xm.table {
