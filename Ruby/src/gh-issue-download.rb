@@ -452,7 +452,6 @@ class AnalyzeGHData
 		dateConvert = DateManipulate.new()
 		sortedHash = dateConvert.simpleHashSort(newHash)
 		return self.produceSparklineChart(sortedHash)
-
 	end
 
 	# TODO add support for custom sizes and colours when calling spark line generator
@@ -462,10 +461,6 @@ class AnalyzeGHData
         	:size => '80x20'
         	)
 	end
-
-
-
-
 
 end
 
