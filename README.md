@@ -92,6 +92,11 @@ Primary use at this point is project management based analytics that are not cur
 Printable Issue queues for PMs with spikelines shows activity:
 ![screen shot 2013-10-17 at 2 04 24 pm](https://f.cloud.github.com/assets/1994838/1354563/d020bd84-3756-11e3-856b-34e29e3339c1.png)
 
+--
+
+Issues Count Assigned to specific users + unassigned count:
+![screen shot 2013-10-18 at 12 14 54 am](https://f.cloud.github.com/assets/1994838/1358033/0ecc7f12-37ae-11e3-9d14-1a6f369d047d.png)
+
 
 
 
