@@ -494,7 +494,17 @@ class MyApp < Sinatra::Base
 	# puts "************************"
 	# puts analyze.analyzeIssuesClosedDurationOpen
 	# puts "************************"
-	# puts analyze.analyzeIssuesAssignedCountPerUser
+
+	# Add inlcudeUnassigned = false to the analyzeIssuesAssignedCountPerUser Method arguments to not show unassigned issues
+	openCount, closedCount = analyze.analyzeIssuesAssignedCountPerUser()
+
+	# @issuesCountAssignedPerUserChart = bar_chart(analyze.analyzeIssuesAssignedCountPerUser)
+
+
+		@issuesCountAssignedPerUserChart = column_chart [
+														{:name => "Open", :data => openCount},
+														{:name => "Closed", :data => closedCount},
+													]
 
     erb :index
   end
