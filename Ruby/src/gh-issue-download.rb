@@ -379,23 +379,21 @@ class AnalyzeGHData
 
 
 	def analyzeIssuesPrintableTable
-		
-		 issuesPrintableTable = @coll.aggregate([
+		issuesPrintableTable = @coll.aggregate([
 		    # { "$project" => {assignee:{login: 1}, state: 1, milestone:{title: 1}, number: 1, title: 1, created_at: 1, closed_at: 1, _id: 0}},
 		    { "$group" => {_id: {
-		    					issueCurrentState:"$state", 
-		    					issueNumber:"$number", 
-		    					issueAssignedMilestone:"$milestone.title", 
-		    					issueTitle:"$title", 
-		    					issueCurrentAssignee:"$assignee.login", 
-		    					created_at:"$created_at", 
-		    					closed_at:"$closed_at", 
-		    					createdBy:"$user.login",
-		    					createdByAvatar:"$user.avatar_url",
-		    					commentsCount:"$comments"}}},
+								issueCurrentState:"$state", 
+								issueNumber:"$number", 
+								issueAssignedMilestone:"$milestone.title", 
+								issueTitle:"$title", 
+								issueCurrentAssignee:"$assignee.login", 
+								created_at:"$created_at", 
+								closed_at:"$closed_at", 
+								createdBy:"$user.login", 
+								createdByAvatar:"$user.avatar_url", 
+								commentsCount:"$comments"}}},
 		    { "$sort" => {"_id.issueCurrentState" => -1, "_id.issueNumber" => -1}}
 		])
-
 		printableArray = []
 		issuesPrintableTable.each do |x|
 			#gets comments and sparkline data for supplied issue number and the CURRENT year
