@@ -319,13 +319,36 @@ class AnalyzeGHData
 		return issuesOpenClosedPerUser
 	end
 
-	def analyzeIssuesAssignedCountPerUser
-		
-		return issuesAssignedCountPerUser = @coll.aggregate([
-		    { "$project" => {assignee:{login: 1}, state: 1}},
-		    { "$group" => {_id: {assignee:"$assignee.login", state:"$state"}, number: { "$sum" => 1 }}},
+	def analyzeIssuesAssignedCountPerUser (inlcudeUnassigned = true)
+		# inlcudeUnassigned = true
+		issuesAssignedCountPerUser = @coll.aggregate([
+		    # { "$project" => {assignee:{login: 1}, state: 1}},
+		    { "$group" => {_id: {assignee:{"$ifNull" => ["$assignee.login","Unassigned"]}, state:"$state"}, number: { "$sum" => 1 }}},
 		    { "$sort" => {"_id.assignee" => 1 }}
 		])
+
+		openCountHash = {}
+		closedCountHash = {}
+		issuesAssignedCountPerUser.each do |x|
+			# x["_id"]["number"] = x["number"]
+			if inlcudeUnassigned == false and x["_id"]["assignee"] != "Unassigned"
+					if x["_id"]["state"] == "open"
+						openCountHash[x["_id"]["assignee"]] = x["number"]
+					elsif x["_id"]["state"] == "closed"
+						closedCountHash[x["_id"]["assignee"]] = x["number"]
+					end
+			elsif inlcudeUnassigned == true 
+					if x["_id"]["state"] == "open"
+						openCountHash[x["_id"]["assignee"]] = x["number"]
+					
+					elsif x["_id"]["state"] == "closed"
+						closedCountHash[x["_id"]["assignee"]] = x["number"]
+					end
+			end 		
+		end
+		return openCountHash, closedCountHash
+
+
 	end
 
 	# Sample method for showing the processing of data from coll and producing a Chart
