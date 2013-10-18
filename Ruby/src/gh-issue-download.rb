@@ -215,6 +215,14 @@ class IssueDownload
 		return repoEvents
 	end
 
+	def getMilestonesListforRepo (repo)
+		# TODO build call to github to get list of milestones in a specific issue queue.
+		# This will be used as part of the web app to select a milestone and return specific details filtered for that specific milestone.
+		# Second option for cases were no Github.com access is avaliable will be to query mongodb to get a list of milestones from mongodb data.  
+		# This will be good for future needs when historical tracking is used to track changes in milestones or when milestone names are 
+		# changed or even deleted.
+	end
+
 end
 
 class AnalyzeGHData
