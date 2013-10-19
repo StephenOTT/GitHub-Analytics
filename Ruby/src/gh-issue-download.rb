@@ -218,7 +218,6 @@ class IssueDownload
 	end
 
 	def convertRepoEventsDates(repoEvents)
-
 		repoEvents.each do |y|
 			y["created_at"] = DateTime.strptime(y["created_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
 		end
