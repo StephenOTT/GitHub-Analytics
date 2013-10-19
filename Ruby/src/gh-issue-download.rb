@@ -543,6 +543,8 @@ end
 # start.getIssueEventsAllIssue
 # start.putIntoMongoCollOrgMembers(start.getOrgMemberList)
 
+
+
 MyApp.run!
 
 
@@ -555,9 +557,6 @@ MyApp.run!
 
 # data = analyze.analyzeIssuesPrintableTable
 # puts data
-
-
-
 
 
 
