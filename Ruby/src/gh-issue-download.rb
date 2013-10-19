@@ -500,6 +500,61 @@ class AnalyzeGHData
 		return createEventHash_DatesAdjust, forkEventHash_DatesAdjust, releaseEventHash_DatesAdjust, issueCommentEventHash_DatesAdjust, watchEventHash_DatesAdjust, issuesEventHash_DatesAdjust, pushEventHash_DatesAdjust, commitCommentEventHash_DatesAdjust, pullRequestEventHash_DatesAdjust
 	end
 
+	def analyzeIssueEventsTypesOverTime
+		# ISSUE EVENTS
+		eventsTypesAnalysis = @collRepoIssueEvents.aggregate([
+			{ "$project" => {created_month: {"$month" => "$created_at"}, created_year: {"$year" => "$created_at"}, event:1}},
+			{ "$group" => { _id: {event:"$event", "created_month" => "$created_month", "created_year" => "$created_year"}, count: {"$sum" => 1}}},
+			{ "$sort" => {"_id.event" => 1}}
+		])
+
+		# return eventsTypesAnalysis
+
+		closedEventHash = {}
+		reopenedEventHash = {}
+		subscribedEventHash = {}
+		mergedEventHash = {}
+		referencedEventHash = {}
+		mentionedEventHash = {}
+		assignedEventHash = {}
+		
+	
+		eventsTypesAnalysis.each do |x|
+			case x["_id"]["event"]
+				when "closed"
+					closedEventHash[DateTime.strptime(x["_id"].values_at('created_month', 'created_year').join(" "), '%m %Y')] = x["count"]
+				when "reopened"
+					reopenedEventHash[DateTime.strptime(x["_id"].values_at('created_month', 'created_year').join(" "), '%m %Y')] = x["count"]
+				when "subscribed"
+					subscribedEventHash[DateTime.strptime(x["_id"].values_at('created_month', 'created_year').join(" "), '%m %Y')] = x["count"]
+				when "merged"
+					mergedEventHash[DateTime.strptime(x["_id"].values_at('created_month', 'created_year').join(" "), '%m %Y')] = x["count"]
+				when "referenced"
+					referencedEventHash[DateTime.strptime(x["_id"].values_at('created_month', 'created_year').join(" "), '%m %Y')] = x["count"]
+				when "mentioned"
+					mentionedEventHash[DateTime.strptime(x["_id"].values_at('created_month', 'created_year').join(" "), '%m %Y')] = x["count"]
+				when "assigned"
+					assignedEventHash[DateTime.strptime(x["_id"].values_at('created_month', 'created_year').join(" "), '%m %Y')] = x["count"]
+				else
+					#Debug code until all the stray event types are found and accounted for in the Github API system
+					puts "DEBUG: Stray Issues Event Type found:: Event Type: #{x["_id"]["event"]}"
+			end
+		end
+
+		dateConvert = DateManipulate.new()
+
+		closedEventHash_DatesAdjust = dateConvert.sortHashPlain(closedEventHash)
+		reopenedEventHash_DatesAdjust = dateConvert.sortHashPlain(reopenedEventHash)
+		subscribedEventHash_DatesAdjust = dateConvert.sortHashPlain(subscribedEventHash)
+		mergedEventHash_DatesAdjust = dateConvert.sortHashPlain(mergedEventHash)
+		referencedEventHash_DatesAdjust = dateConvert.sortHashPlain(referencedEventHash)
+		mentionedEventHash_DatesAdjust = dateConvert.sortHashPlain(mentionedEventHash)
+		assignedEventHash_DatesAdjust = dateConvert.sortHashPlain(assignedEventHash)
+
+		return closedEventHash_DatesAdjust, reopenedEventHash_DatesAdjust, subscribedEventHash_DatesAdjust, mergedEventHash_DatesAdjust, referencedEventHash_DatesAdjust, mentionedEventHash_DatesAdjust, assignedEventHash_DatesAdjust
+	end
+
+
 	def analyzeEvents_IssueCommmentEvent
 
 		issuesOpenClosedForUniqueUser = @collRepoEvents.aggregate([
