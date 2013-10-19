@@ -9,6 +9,9 @@ Analytics are then run on the issues and comments in the mongodb database.
 
 Primary use at this point is project management based analytics that are not currently available on GitHub.com
 
+
+**New:::** Support for downloading multiple repositories into the same database allowing analysis of multiple repositories at the same time: EXAMPLE: 
+
 -
 
 ###Types of Analysis:
