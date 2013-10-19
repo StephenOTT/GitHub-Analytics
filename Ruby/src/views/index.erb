@@ -2,26 +2,58 @@
 This is <%= @foo %>
 <br>
 <br>
+
+<hr>
 <p>Events Types Count</p>
-<%= @eventTypesCount %>
+<%= pie_chart(@eventTypesCount) %>
+
 <hr>
 <p>Issue Events Types Count</p>
-<%= @issueEventTypesCount %>
+<%= pie_chart(@issueEventTypesCount) %>
+
 <hr>
 <p>Issue Event Types Timeline</p>
-<%= @issueEventTypesOverTimeLineChart %>
+<%= line_chart [
+			{:name => "Closed", :data => @issuesClosedEventHash},
+			{:name => "Reopened", :data => @issuesReopenedEventHash},
+			{:name => "Subscribed", :data => @issuesSubscribedEventHash},
+			{:name => "Merged", :data => @issuesMergedEventHash},
+			{:name => "Referenced", :data => @issuesReferencedEventHash},
+			{:name => "Mentioned", :data => @issuesMentionedEventHash},
+			{:name => "Assigned", :data => @issuesAssignedEventHash},
+			],:library => {:hAxis => {:format => 'MMM y'}}%>
+
 <hr>
 <p>Events Occurance Timeline</p>
-<%= @eventTypesOverTimeLineChart %>
+<%= line_chart [
+				{:name => "Create", :data => @createEvent},
+				{:name => "Fork", :data => @forkEvent},
+				{:name => "Release", :data => @releaseEvent},
+				{:name => "Issue Comment", :data => @issueCommentEvent},
+				{:name => "Watch", :data => @watchEvent},
+				{:name => "Issues", :data => @issuesEvent},
+				{:name => "Push", :data => @pushEvent},
+				{:name => "Commit Comment", :data => @commitCommentEvent},
+				{:name => "Pull Request", :data => @pullRequestEvent},
+				],:library => {:hAxis => {:format => 'MMM y'}}
+				%>
+
 <hr>
 <p>Issues Created and Closed Per Month Count</p>
-<%= @issuesCreatedClosedPerMonthCountGraph %>
+<%= line_chart [
+				{:name => "Open", :data => @issuesCreatedMonthCount},
+				{:name => "Closed", :data => @issuesClosedMonthCount},
+				],:library => {:hAxis => {:format => 'MMM y'}}  # TODO write blog post about dealing with the library function.  Add doc notes to Chartkick about accessing subfunctions.
+				%>
 <p><%= @issuesOpenCount %> open issues remain unaccounted in the Closed data series because these issues don't have a closed date value </p>
-<hr>
-<%= @issuesOpenClosedPerUsedPerMonth %>
+
+
 <hr>
 <p>Issues Count Assigned to each user</p>
-<%= @issuesCountAssignedPerUserChart %>
+<%= column_chart [
+				{:name => "Open", :data => @issueAssignedPerUserOpenCount},
+				{:name => "Closed", :data => @issueAssignedPerUserClosedCount},
+				]%>
 
 
 <hr>
@@ -74,7 +106,4 @@ This is <%= @foo %>
 	</tr>
 <% end %>
 </table>
-
-
-
 
