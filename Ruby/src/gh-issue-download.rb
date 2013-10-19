@@ -151,7 +151,14 @@ class IssueDownload
 			issueEvents = @ghClient.issue_events(@repository, x["_id"]["number"])
 
 			if issueEvents.empty? == false
-				self.putIntoMongoCollRepoIssuesEvents(issueEvents)
+				# Adds Repo and Issue number information into the hash of each event so multiple Repos can be stored in the same DB.
+				# This was done becauase Issue Events do not have Issue number and Repo information.
+				issueEvents.each do |y|
+					y["repo"] = @repository
+					y["issue_number"] = x["_id"]["number"]
+				end
+				# self.putIntoMongoCollRepoIssuesEvents(issueEvents)
+				self.putIntoMongoCollRepoIssuesEvents(self.convertIssueEventsDates(issueEvents))
 			end
 			# puts "Got Repository Events, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
 			
