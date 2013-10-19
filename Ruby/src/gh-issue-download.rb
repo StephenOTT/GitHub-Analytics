@@ -392,6 +392,114 @@ class AnalyzeGHData
 		return newHash
 	end
 
+	def analyzeEventsTypesOverTime
+		# REPO EVENTS
+		eventsTypesAnalysis = @collRepoEvents.aggregate([
+			{ "$project" => {created_month: {"$month" => "$created_at"}, created_year: {"$year" => "$created_at"}, type:1}},
+			{"$group" => { _id: {type:"$type", "created_month" => "$created_month", "created_year" => "$created_year"}, count: {"$sum" => 1}}},
+			{ "$sort" => {"_id.type" => 1}}
+		])
+
+		commitCommentEventHash = {}
+		createEventHash = {}
+		deleteEvent = {}
+		downloadEvent = {}
+		followEvent = {}
+		forkEventHash = {}
+		forkApplyEvent = {}
+		gistEvent = {}
+		gollumEvent = {}
+		issueCommentEventHash = {}
+		issuesEventHash = {}
+		memberEvent = {}
+		publicEvent = {}
+		pullRequestEventHash = {}
+		pullRequestReviewCommentEvent = {}
+		pushEventHash = {}
+		releaseEventHash = {}
+		statusEvent = {}
+		teamAddEvent = {}
+		watchEventHash = {}
+		
+		
+		
+
+		# TODO Adjust event type for proper type of analysis for the Repo Events
+		# TODO Convert Hash Key into a variable to decrease change maint time.
+		eventsTypesAnalysis.each do |x|
+			case x["_id"]["type"]
+				when "CommitCommentEvent"
+					commitCommentEventHash[DateTime.strptime(x["_id"].values_at('created_month', 'created_year').join(" "), '%m %Y')] = x["count"]
+
+				when "CreateEvent"
+					createEventHash[DateTime.strptime(x["_id"].values_at('created_month', 'created_year').join(" "), '%m %Y')] = x["count"]
+				
+				when "DeleteEvent"
+
+				when "DownloadEvent"
+
+				when "FollowEvent"
+
+				when "ForkEvent"
+					forkEventHash[DateTime.strptime(x["_id"].values_at('created_month', 'created_year').join(" "), '%m %Y')] = x["count"]
+				
+				when "ForkApplyEvent"
+
+				when "GistEvent"
+
+				when "GollumEvent"
+
+				when "IssueCommentEvent"
+					issueCommentEventHash[DateTime.strptime(x["_id"].values_at('created_month', 'created_year').join(" "), '%m %Y')] = x["count"]
+			
+				when "IssuesEvent"
+					issuesEventHash[DateTime.strptime(x["_id"].values_at('created_month', 'created_year').join(" "), '%m %Y')] = x["count"]
+
+				when "MemberEvent"
+
+				when "PublicEvent"
+				
+				when "PullRequestEvent"
+					pullRequestEventHash[DateTime.strptime(x["_id"].values_at('created_month', 'created_year').join(" "), '%m %Y')] = x["count"]
+
+				when "PullRequestReviewCommentEvent"
+				
+				when "PushEvent"
+					pushEventHash[DateTime.strptime(x["_id"].values_at('created_month', 'created_year').join(" "), '%m %Y')] = x["count"]
+				
+				when "ReleaseEvent"
+					releaseEventHash[DateTime.strptime(x["_id"].values_at('created_month', 'created_year').join(" "), '%m %Y')] = x["count"]
+
+				when "StatusEvent"
+
+				when "TeamAddEvent"
+				
+				when "WatchEvent"
+					watchEventHash[DateTime.strptime(x["_id"].values_at('created_month', 'created_year').join(" "), '%m %Y')] = x["count"]
+
+				
+				
+
+				
+				
+			end
+				
+		end
+
+		dateConvert = DateManipulate.new()
+		createEventHash_DatesAdjust = dateConvert.sortHashPlain(createEventHash)
+		forkEventHash_DatesAdjust = dateConvert.sortHashPlain(forkEventHash)
+		releaseEventHash_DatesAdjust = dateConvert.sortHashPlain(releaseEventHash)
+		issueCommentEventHash_DatesAdjust = dateConvert.sortHashPlain(issueCommentEventHash)
+		watchEventHash_DatesAdjust = dateConvert.sortHashPlain(watchEventHash)
+		issuesEventHash_DatesAdjust = dateConvert.sortHashPlain(issuesEventHash)
+		pushEventHash_DatesAdjust = dateConvert.sortHashPlain(pushEventHash)
+		commitCommentEventHash_DatesAdjust = dateConvert.sortHashPlain(commitCommentEventHash)
+		pullRequestEventHash_DatesAdjust = dateConvert.sortHashPlain(pullRequestEventHash)
+
+		return createEventHash_DatesAdjust, forkEventHash_DatesAdjust, releaseEventHash_DatesAdjust, issueCommentEventHash_DatesAdjust, watchEventHash_DatesAdjust, issuesEventHash_DatesAdjust, pushEventHash_DatesAdjust, commitCommentEventHash_DatesAdjust, pullRequestEventHash_DatesAdjust
+	end
+
 	def analyzeEvents_IssueCommmentEvent
 
 		issuesOpenClosedForUniqueUser = @collRepoEvents.aggregate([
