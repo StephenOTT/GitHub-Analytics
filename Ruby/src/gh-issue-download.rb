@@ -224,6 +224,13 @@ class IssueDownload
 		return repoEvents
 	end
 
+	def convertIssueEventsDates(issueEvents)
+		issueEvents.each do |y|
+			y["created_at"] = DateTime.strptime(y["created_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+		end
+		return issueEvents
+	end
+
 	def getMilestonesListforRepo (repo)
 		# TODO build call to github to get list of milestones in a specific issue queue.
 		# This will be used as part of the web app to select a milestone and return specific details filtered for that specific milestone.
