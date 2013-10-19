@@ -146,13 +146,9 @@ class IssueDownload
 		    { "$project" => {number: 1}},
 		    { "$group" => {_id: {number: "$number"}}},
 		])
-		# puts issueNumbers
 
 		issueNumbers.each do |x|
-			# puts x["_id"]["number"]
 			issueEvents = @ghClient.issue_events(@repository, x["_id"]["number"])
-			# puts issueEvents
-			# puts "***"
 			if issueEvents.empty? == false
 				self.putIntoMongoCollRepoIssuesEvents(issueEvents)
 			end
