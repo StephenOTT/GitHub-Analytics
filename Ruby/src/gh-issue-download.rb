@@ -677,6 +677,20 @@ issuesClosedEventHash, issuesReopenedEventHash, issuesSubscribedEventHash, issue
 
 
 
+	createEvent, forkEvent, releaseEvent, issueCommentEvent, watchEvent, issuesEvent, pushEvent, commitCommentEvent, pullRequestEvent = analyze.analyzeEventsTypesOverTime
+	# createEvent = analyze.analyzeEventsTypesOverTime
+	@eventTypesOverTimeLineChart = line_chart [
+												{:name => "Create", :data => createEvent},
+												{:name => "Fork", :data => forkEvent},
+												{:name => "Release", :data => releaseEvent},
+												{:name => "Issue Comment", :data => issueCommentEvent},
+												{:name => "Watch", :data => watchEvent},
+												{:name => "Issues", :data => issuesEvent},
+												{:name => "Push", :data => pushEvent},
+												{:name => "Commit Comment", :data => commitCommentEvent},
+												{:name => "Pull Request", :data => pullRequestEvent},
+												],:library => {:hAxis => {:format => 'MMM y'}}
+
 
 
 
