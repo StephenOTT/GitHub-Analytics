@@ -253,6 +253,8 @@ class AnalyzeGHData
 
 		@collRepoEvents = @db["githubRepoEvents"]
 
+		@collRepoIssueEvents = @db["githubRepoIssueEvents"]
+
 		@collOrgMembers = @db["githubOrgMembers"]
 	end
 
