@@ -493,14 +493,6 @@ class MyApp < Sinatra::Base
 
     @foo = 'erb23'
     analyze = AnalyzeGHData.new()
-  	# @hourBreakdown = column_chart(analyze.analyzeRestaurantInspectionsCount("hour"))
-  	# @weekBreakdown = column_chart(analyze.analyzeRestaurantInspectionsCount("week"))
-  	# @monthBreakdown = column_chart(analyze.analyzeRestaurantInspectionsCount("month"))
-  	# @dayOfWeekBreakdown = column_chart(analyze.analyzeRestaurantInspectionsCount("dayOfWeek"))
-
-  	# @restaurantCategoryCountBreakdown = pie_chart(analyze.analyzeRestaurantCategoryCount)
-  	# @restaurantCreationDateBreakdown = line_chart(analyze.analyzeRestaurantCreationDateCount)
-  	# @restaurantCreationDateBreakdownText = analyze.analyzeRestaurantCreationDateCount.to_s
 
   	@eventTypesCount = pie_chart(analyze.analyzeEventsTypes)
   	
