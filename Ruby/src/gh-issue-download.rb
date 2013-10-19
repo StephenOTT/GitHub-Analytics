@@ -76,22 +76,22 @@ class IssueDownload
 	# TODO preform DRY refactor for Mongodb insert
 	def putIntoMongoCollIssues(mongoPayload)
 		@coll.insert(mongoPayload)
-		puts "Issues Added, Count added to Mongodb: " + @coll.count.to_s
+		# puts "Issues Added, Count in Mongodb: " + @coll.count.to_s
 	end
 
 	def putIntoMongoCollRepoEvents(mongoPayload)
 		@collRepoEvents.insert(mongoPayload)
-		puts "Repo Events Added, Count added to Mongodb: " + @collRepoEvents.count.to_s
+		# puts "Repo Events Added, Count in Mongodb: " + @collRepoEvents.count.to_s
 	end
 
 	def putIntoMongoCollOrgMembers(mongoPayload)
 		@collOrgMembers.insert(mongoPayload)
-		puts "Org Members Added, Count added to Mongodb: " + @collOrgMembers.count.to_s
+		# puts "Org Members Added, Count in Mongodb: " + @collOrgMembers.count.to_s
 	end
 
 	def putIntoMongoCollRepoIssuesEvents(mongoPayload)
 		@collRepoIssueEvents.insert(mongoPayload)
-		puts "Org Members Added, Count added to Mongodb: " + @collRepoIssueEvents.count.to_s
+		# puts "Repo Issue Events Added, Count in Mongodb: " + @collRepoIssueEvents.count.to_s
 	end
 	
 	# find records in Mongodb that have a comments field value of 1 or higher
