@@ -573,12 +573,3 @@ MyApp.run!
 # puts analyze.analyzeIssuesClosedDurationOpen
 # puts "************************"
 # puts analyze.analyzeIssuesAssignedCountPerUser
-
-# issuesCreatedMonthCount, issuesClosedMonthCount, issuesOpenCountPrep = analyze.analyzeIssuesCreatedClosedCountPerMonth
-# puts issuesCreatedMonthCount
-# puts issuesClosedMonthCount
-# puts issuesOpenCountPrep
-# analyze.analyzeIssuesOpenClosedPerUserPerMonth
-# analyze.analyzeEvents_IssueCommmentEvent
-
-
