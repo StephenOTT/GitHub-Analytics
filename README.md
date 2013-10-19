@@ -155,3 +155,4 @@ db.githubRepoEvents.aggregate(
 8. No event or record is created when a Label is created or deleted in a repo (this is the creation or deletion of a label for the entire repository).
 9. No event or record is created when a repo is un-stared.  A Repo Event is created when a repo is Stared, but not when it is un-stared.
 10. No event or record is created when a repo is Watched, ignored, or Not-Watching
+11. Issue Events do not have a field that indicate the specific issue the event comes from.  Issue Events should have a "repo" object like Repository Events have that indicates the specific repo and issue number that the events come from.  (This issue has been resolved manually during the data download.  See the 'getIssueEventsAllIssue' Method).
