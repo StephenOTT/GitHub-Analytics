@@ -71,6 +71,9 @@ Primary use at this point is project management based analytics that are not cur
 44. Use new BETA feature of MongoDB for Text Analysis/Text Search for providing Time Tracking feature.  Use invisible text in issues (html comments) to provide time tracking capability
 
 45. View issues from multiple repositories with labels and milestones to provide PMs with high level overview of priority issues
+46. Most Referenced Issues
+47. Most Referenced Users
+48. Most Referenced Repos
 
 
 ###Events Analysis:
