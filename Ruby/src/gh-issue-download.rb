@@ -662,6 +662,21 @@ class MyApp < Sinatra::Base
 	@issueEventTypesCount = pie_chart(analyze.analyzeIssueEventsTypes)
   	# @issueEventTypesCountText = analyze.analyzeIssueEventsTypes.to_s
 
+issuesClosedEventHash, issuesReopenedEventHash, issuesSubscribedEventHash, issuesMergedEventHash, issuesReferencedEventHash, issuesMentionedEventHash, issuesAssignedEventHash = analyze.analyzeIssueEventsTypesOverTime
+
+	@issueEventTypesOverTimeLineChart = line_chart [
+												{:name => "Closed", :data => issuesClosedEventHash},
+												{:name => "Reopened", :data => issuesReopenedEventHash},
+												{:name => "Subscribed", :data => issuesSubscribedEventHash},
+												{:name => "Merged", :data => issuesMergedEventHash},
+												{:name => "Referenced", :data => issuesReferencedEventHash},
+												{:name => "Mentioned", :data => issuesMentionedEventHash},
+												{:name => "Assigned", :data => issuesAssignedEventHash},
+												],:library => {:hAxis => {:format => 'MMM y'}}
+
+
+
+
 
 
 
