@@ -108,6 +108,10 @@ Issues Count Assigned to specific users + unassigned count:
 Issue Events Timeline (This is all issue events for all issues grouped together)
 ![screen shot 2013-10-19 at 2 04 15 am](https://f.cloud.github.com/assets/1994838/1365705/7af5e936-3884-11e3-85ae-0d404bc5c496.png)
 
+--
+
+Pie chart of Issue Event Types - All Issue events for all issues
+![screen shot 2013-10-19 at 2 08 05 am](https://f.cloud.github.com/assets/1994838/1365706/0cf044da-3885-11e3-842b-f68cbcc1b5b6.png)
 
 
 
