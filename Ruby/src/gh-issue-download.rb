@@ -125,6 +125,7 @@ class IssueDownload
 		 puts "Github issues with comments: " + i.to_s		
 	end
 
+	# TODO Setup so it will get all repo events since the last time a request was made
 	def getRepositoryEvents
 		respositoryEvents = @ghClient.repository_events(@repository.to_s)
 		puts "Got Repository Events, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
