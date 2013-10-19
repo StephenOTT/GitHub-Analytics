@@ -103,6 +103,10 @@ Printable Issue queues for PMs with spikelines shows activity:
 Issues Count Assigned to specific users + unassigned count:
 ![screen shot 2013-10-18 at 12 14 54 am](https://f.cloud.github.com/assets/1994838/1358033/0ecc7f12-37ae-11e3-9d14-1a6f369d047d.png)
 
+--
+
+Issue Events Timeline (This is all issue events for all issues grouped together)
+![screen shot 2013-10-19 at 2 04 15 am](https://f.cloud.github.com/assets/1994838/1365705/7af5e936-3884-11e3-85ae-0d404bc5c496.png)
 
 
 
