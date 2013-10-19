@@ -496,6 +496,9 @@ class MyApp < Sinatra::Base
 
   	@eventTypesCount = pie_chart(analyze.analyzeEventsTypes)
   	
+
+
+
   	issuesCreatedMonthCount, issuesClosedMonthCount, issuesOpenCountPrep = analyze.analyzeIssuesCreatedClosedCountPerMonth
  	@issuesOpenCount = issuesOpenCountPrep[0]["number"]
  	@issuesCreatedClosedPerMonthCountGraph = line_chart [
@@ -523,6 +526,7 @@ class MyApp < Sinatra::Base
 														{:name => "Open", :data => openCount},
 														{:name => "Closed", :data => closedCount},
 													]
+	
 
     erb :index
   end
