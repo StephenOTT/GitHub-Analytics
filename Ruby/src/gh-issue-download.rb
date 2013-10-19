@@ -139,6 +139,7 @@ class IssueDownload
 		return self.convertRepoEventsDates(respositoryEvents)
 	end
 
+	# TODO Setup so will get issues events since the last time they were downloaded
 	def getIssueEventsAllIssue
 
 		issueNumbers = @coll.aggregate([
