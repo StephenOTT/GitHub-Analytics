@@ -379,6 +379,18 @@ class AnalyzeGHData
 		end
 		return newHash
 	end
+	def analyzeIssueEventsTypes
+		# Query Mongodb and group event Types from RepoEvents collection and produce a count
+		issueEventsTypesAnalysis = @collRepoIssueEvents.aggregate([
+			{"$group" => { _id: "$event", count: {"$sum" => 1}}}
+		])
+
+		newHash={}
+		issueEventsTypesAnalysis.each do |x|
+			newHash[x["_id"]] = x["count"]
+		end
+		return newHash
+	end
 
 	def analyzeEvents_IssueCommmentEvent
 
