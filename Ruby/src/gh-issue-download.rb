@@ -149,15 +149,14 @@ class IssueDownload
 
 		issueNumbers.each do |x|
 			issueEvents = @ghClient.issue_events(@repository, x["_id"]["number"])
+
 			if issueEvents.empty? == false
 				self.putIntoMongoCollRepoIssuesEvents(issueEvents)
 			end
 			# puts "Got Repository Events, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
+			
 		end
-
 	end
-
-
 
 	# TODO This still needs work to function correctly.  Need to add new collection in db and a way to handle variable for the specific org to get data from
 	def getOrgMemberList
