@@ -365,13 +365,10 @@ class AnalyzeGHData
 			end 		
 		end
 		return openCountHash, closedCountHash
-
-
 	end
 
 	# Sample method for showing the processing of data from coll and producing a Chart
 	def analyzeEventsTypes
-		
 		# Query Mongodb and group event Types from RepoEvents collection and produce a count
 		eventsTypesAnalysis = @collRepoEvents.aggregate([
 			{"$group" => { _id: "$type", count: {"$sum" => 1}}}
