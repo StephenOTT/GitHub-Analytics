@@ -691,6 +691,7 @@ issuesClosedEventHash, issuesReopenedEventHash, issuesSubscribedEventHash, issue
 												{:name => "Pull Request", :data => pullRequestEvent},
 												],:library => {:hAxis => {:format => 'MMM y'}}
 
+	# @issuesEventsText = analyze.analyzeIssueEventsTypesOverTime.to_s
 
 
 
