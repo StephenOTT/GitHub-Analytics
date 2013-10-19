@@ -659,6 +659,7 @@ class MyApp < Sinatra::Base
 
   	@eventTypesCount = pie_chart(analyze.analyzeEventsTypes)
   	
+	@issueEventTypesCount = pie_chart(analyze.analyzeIssueEventsTypes)
 
 
 
