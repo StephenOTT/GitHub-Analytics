@@ -69,6 +69,17 @@ class IssueDownload
 			:state => :closed
 			})
 
+		if issueResultsOpen.empty? == false
+			issueResultsOpen.each do |y|
+				y["repo"] = @repository
+				y["download_date"] = Time.now
+			end
+		elsif issueResultsClosed.empty? == false
+			issueResultsClosed.each do |y|
+				y["repo"] = @repository
+				y["download_date"] = Time.now
+			end
+		end
 
 		mergedIssuesOpenClose = issueResultsOpen + issueResultsClosed
 		
