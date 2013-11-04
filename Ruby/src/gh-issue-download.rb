@@ -24,19 +24,14 @@ class IssueDownload
 		
 		# MongoDB Database Connect
 		@client = MongoClient.new('localhost', 27017)
-		@db = @client['Github3']
+		@db = @client['Github_WET']
 		
 		@coll = @db['githubIssues']
-		@coll.remove
+		
 
 		@collRepoEvents = @db["githubRepoEvents"]
-		@collRepoEvents.remove
-
 		@collRepoIssueEvents = @db["githubRepoIssueEvents"]
-		@collRepoIssueEvents.remove
-
 		@collOrgMembers = @db["githubOrgMembers"]
-		@collOrgMembers.remove
 		# Debug code to empty out mongoDB records
 		if clearRecords == true
 			@coll.remove
