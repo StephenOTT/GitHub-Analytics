@@ -1,3 +1,5 @@
+<%= @eventstext %>
+
 <hr>
 This is <%= @foo %>
 <br>
@@ -13,7 +15,7 @@ This is <%= @foo %>
 
 <hr>
 <p>Issue Event Types Timeline</p>
-<%= line_chart [
+<%= line_chart([
 			{:name => "Closed", :data => @issuesClosedEventHash},
 			{:name => "Reopened", :data => @issuesReopenedEventHash},
 			{:name => "Subscribed", :data => @issuesSubscribedEventHash},
@@ -21,11 +23,11 @@ This is <%= @foo %>
 			{:name => "Referenced", :data => @issuesReferencedEventHash},
 			{:name => "Mentioned", :data => @issuesMentionedEventHash},
 			{:name => "Assigned", :data => @issuesAssignedEventHash},
-			],:library => {:hAxis => {:format => 'MMM y'}}%>
+			],:library => {:hAxis => {:format => 'MMM y'}})%>
 
 <hr>
 <p>Events Occurance Timeline</p>
-<%= line_chart [
+<%= line_chart([
 				{:name => "Create", :data => @createEvent},
 				{:name => "Fork", :data => @forkEvent},
 				{:name => "Release", :data => @releaseEvent},
@@ -35,28 +37,33 @@ This is <%= @foo %>
 				{:name => "Push", :data => @pushEvent},
 				{:name => "Commit Comment", :data => @commitCommentEvent},
 				{:name => "Pull Request", :data => @pullRequestEvent},
-				],:library => {:hAxis => {:format => 'MMM y'}}
+				],:library => {:hAxis => {:format => 'MMM y'}})
 				%>
 
 <hr>
 <p>Issues Created and Closed Per Month Count</p>
-<%= line_chart [
+<%= line_chart([
 				{:name => "Open", :data => @issuesCreatedMonthCount},
 				{:name => "Closed", :data => @issuesClosedMonthCount},
-				],:library => {:hAxis => {:format => 'MMM y'}}  # TODO write blog post about dealing with the library function.  Add doc notes to Chartkick about accessing subfunctions.
+				],:library => {:hAxis => {:format => 'MMM y'}})  # TODO write blog post about dealing with the library function.  Add doc notes to Chartkick about accessing subfunctions.
 				%>
 <p><%= @issuesOpenCount %> open issues remain unaccounted in the Closed data series because these issues don't have a closed date value </p>
 
 
 <hr>
 <p>Issues Count Assigned to each user</p>
-<%= column_chart [
+<%= column_chart([
 				{:name => "Open", :data => @issueAssignedPerUserOpenCount},
 				{:name => "Closed", :data => @issueAssignedPerUserClosedCount},
-				]%>
+				]) %>
 
 
-<hr>
+
+
+
+
+
+
 <p>Printable Issues List</p>
 <table border="1">
 	<tr>
@@ -71,6 +78,7 @@ This is <%= @foo %>
 		<th>Comment Count</th>
 		<th>Year to Date Comment Activity</th>
 	</tr>
+	
 <% @printableData.each do |elem| %>
 	<tr>
 		<td>
@@ -106,4 +114,3 @@ This is <%= @foo %>
 	</tr>
 <% end %>
 </table>
-
