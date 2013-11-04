@@ -108,6 +108,11 @@ class IssueDownload
 		@collRepoIssueEvents.insert(mongoPayload)
 		# puts "Repo Issue Events Added, Count in Mongodb: " + @collRepoIssueEvents.count.to_s
 	end
+
+	def putIntoMongoCollRepoLabelsList(mongoPayload)
+		@collRepoLabelsList.insert(mongoPayload)
+		# puts "Repo Labels List Added, Count in Mongodb: " + @collRepoIssueEvents.count.to_s
+	end
 	
 	# find records in Mongodb that have a comments field value of 1 or higher
 	# returns only the number field
