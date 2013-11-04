@@ -287,6 +287,17 @@ class IssueDownload
 	end
 
 	# Gets list of all Repos
+	def getRepoLabelsList
+		repoLabelsList = @ghClient.labels(@repository)
+		puts "Got Repo Labels list, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
+
+		if repoLabelsList.empty? == false
+			repoLabelsList.each do |y|
+				y["repo"] = @repository
+				y["download_date"] = Time.now
+			end
+			self.putIntoMongoCollRepoLabelsList(repoLabelsList)
+		end
 	end
 
 end
