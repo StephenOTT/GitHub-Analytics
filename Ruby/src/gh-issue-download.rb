@@ -182,6 +182,7 @@ class IssueDownload
 				issueEvents.each do |y|
 					y["repo"] = @repository
 					y["issue_number"] = x["_id"]["number"]
+					y["download_date"] = Time.now
 				end
 				# self.putIntoMongoCollRepoIssuesEvents(issueEvents)
 				self.putIntoMongoCollRepoIssuesEvents(self.convertIssueEventsDates(issueEvents))
