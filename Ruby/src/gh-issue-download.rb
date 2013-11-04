@@ -15,7 +15,7 @@ include Mongo
 
 class IssueDownload
 
-	def initialize (repository)
+	def initialize (repository, clearRecords = false)
 		
 		@repository = repository
 	
@@ -37,6 +37,15 @@ class IssueDownload
 
 		@collOrgMembers = @db["githubOrgMembers"]
 		@collOrgMembers.remove
+		# Debug code to empty out mongoDB records
+		if clearRecords == true
+			@coll.remove
+			@collRepoEvents.remove
+			@collRepoIssueEvents.remove
+			@collOrgMembers.remove
+			@collRepoLabelsList.remove
+			@collRepoLabelsList.remove
+		end
 	end
 	
 	# TODO add authentication as a option for go live as Github Rate Limit is 60 hits per hour when unauthenticated by 5000 per hour when authenticated.
