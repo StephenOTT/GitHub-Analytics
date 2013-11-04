@@ -260,6 +260,7 @@ class AnalyzeGHData
 				
 		end
 
+		# TODO convert into a Hash
 		dateConvert = DateManipulate.new()
 		createEventHash_DatesAdjust = dateConvert.sortHashPlain(createEventHash)
 		forkEventHash_DatesAdjust = dateConvert.sortHashPlain(forkEventHash)
