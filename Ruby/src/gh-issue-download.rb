@@ -169,9 +169,9 @@ class IssueDownload
 	def getIssueEventsAllIssue
 
 		issueNumbers = @coll.aggregate([
-		    { "$project" => {number: 1}},
-		    { "$group" => {_id: {number: "$number"}}},
-		])
+										{ "$project" => {number: 1}},
+										{ "$group" => {_id: {number: "$number"}}},
+										])
 
 		issueNumbers.each do |x|
 			issueEvents = @ghClient.issue_events(@repository, x["_id"]["number"])
