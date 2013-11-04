@@ -137,9 +137,9 @@ class IssueDownload
 
  			issueComments.each do |commentDetails| 			 
 				@coll.update(
-					{ "number" => x["number"]},
-					{ "$push" => {"comments_Text" => self.convertIssueCommentDatesInMongo(commentDetails)}}
-					)
+							{ "number" => x["number"]},
+							{ "$push" => {"comments_Text" => self.convertIssueCommentDatesInMongo(commentDetails)}}
+							)
 			end
 			 
 			 # Used as a count for number of issues with comments
