@@ -125,6 +125,7 @@ Pie chart of Issue Event Types - All Issue events for all issues
 - [ ] refactor analyze methods names and structure
 - [ ] refactor methods into multifile MVC part of sinatra conversion
 - [ ] Build Dashboard that is equiv of the Github Survivor app (https://github.com/99designs/githubsurvivor)
+- [ ] PRIORITY: Develop Temp glue code for proper timezone query and output.  Because of Mongos lack of timeline support at the query level for the Aggregation framework.
 
 
 
@@ -156,3 +157,7 @@ db.githubRepoEvents.aggregate(
 9. No event or record is created when a repo is un-stared.  A Repo Event is created when a repo is Stared, but not when it is un-stared.
 10. No event or record is created when a repo is Watched, ignored, or Not-Watching
 11. Issue Events do not have a field that indicate the specific issue the event comes from.  Issue Events should have a "repo" object like Repository Events have that indicates the specific repo and issue number that the events come from.  (This issue has been resolved manually during the data download.  See the 'getIssueEventsAllIssue' Method).
+
+## Github Design Issues:
+
+1. When you delete a Label from the master list it deletes all labels assigned to issues for that deleted label.  This is a problem for maintaining a "current" label list.  This means that if you ever get a legacy label you must keep it in the list forever or the old labels will lose their assigned labels.
