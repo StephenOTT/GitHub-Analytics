@@ -258,12 +258,35 @@ class IssueDownload
 		return issueEvents
 	end
 
-	def getMilestonesListforRepo (repo)
+	def getMilestonesListforRepo
 		# TODO build call to github to get list of milestones in a specific issue queue.
 		# This will be used as part of the web app to select a milestone and return specific details filtered for that specific milestone.
 		# Second option for cases were no Github.com access is avaliable will be to query mongodb to get a list of milestones from mongodb data.  
 		# This will be good for future needs when historical tracking is used to track changes in milestones or when milestone names are 
 		# changed or even deleted.
+
+		repoOpenMilestoneList = @ghClient.list_milestones(@repository, :state => :open)
+		repoClosedMilestoneList = @ghClient.list_milestones(@repository, :state => :closed)
+		puts "Got Open and Closed Milestones list, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
+
+		if repoOpenMilestoneList.empty? == false
+			repoOpenMilestoneList.each do |x|
+				x["repo"] = @repository
+				x["download_date"] = Time.now
+			end
+		elsif repoClosedMilestoneList.empty? == false
+			repoClosedMilestoneList.each do |y|
+				y["repo"] = @repository
+				y["download_date"] = Time.now
+			end
+		end
+
+		mergedOpenClosedMilestonesList = repoOpenMilestoneList + repoClosedMilestoneList
+
+		self.putIntoMongoCollRepoMilestonesList(mergedOpenClosedMilestonesList)
+	end
+
+	# Gets list of all Repos
 	end
 
 end
