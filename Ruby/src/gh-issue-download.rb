@@ -32,6 +32,9 @@ class IssueDownload
 		@collRepoEvents = @db["githubRepoEvents"]
 		@collRepoIssueEvents = @db["githubRepoIssueEvents"]
 		@collOrgMembers = @db["githubOrgMembers"]
+		@collRepoLabelsList = @db["githubRepoLabelsList"]
+		@collRepoMilestonesList = @db["githubRepoMilestonesList"]
+		
 		# Debug code to empty out mongoDB records
 		if clearRecords == true
 			@coll.remove
