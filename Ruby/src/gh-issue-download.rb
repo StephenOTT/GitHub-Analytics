@@ -304,13 +304,16 @@ end
 
 
 
-start = IssueDownload.new("CityofOttawa/Ottawa-ckan")
+# start = IssueDownload.new("CityofOttawa/Ottawa-ckan")
+start = IssueDownload.new("wet-boew/wet-boew")
 # start = IssueDownload.new("StephenOTT/Test1")
 # start = IssueDownload.new("wet-boew/wet-boew-drupal")
 
 start.ghAuthenticate
-start.putIntoMongoCollIssues(start.getIssues)
-start.findIssuesWithComments
+# start.putIntoMongoCollIssues(start.getIssues)
+# start.findIssuesWithComments
 # start.putIntoMongoCollRepoEvents(start.getRepositoryEvents)
 # start.getIssueEventsAllIssue
 # start.putIntoMongoCollOrgMembers(start.getOrgMemberList)
+# start.getRepoLabelsList
+start.getMilestonesListforRepo
