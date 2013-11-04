@@ -157,6 +157,7 @@ class IssueDownload
 		if respositoryEvents.empty? == false
 			respositoryEvents.each do |y|
 				y["repo"] = @repository
+				y["download_date"] = Time.now
 			end
 			
 			# self.putIntoMongoCollRepoIssuesEvents(issueEvents)
