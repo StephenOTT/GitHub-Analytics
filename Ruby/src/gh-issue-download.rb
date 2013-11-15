@@ -208,7 +208,7 @@ class IssueDownload
 		end
 
 		# Debug Code
-		puts "Got Repository Issue Events, GitHub rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
+		# puts "Got Repository Issue Events, GitHub rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
 	end
 
 	# TODO This still needs work to function correctly.  Need to add new collection in db and a way to handle variable for the specific org to get data from
