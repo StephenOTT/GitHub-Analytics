@@ -85,7 +85,8 @@ class IssueDownload
 				x["repo"] = @repository
 				x["download_date"] = Time.now
 			end
-		elsif issueResultsClosed.empty? == false
+		end
+		if issueResultsClosed.empty? == false
 			issueResultsClosed.each do |y|
 				y["repo"] = @repository
 				y["download_date"] = Time.now
