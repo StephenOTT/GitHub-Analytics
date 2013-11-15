@@ -355,7 +355,10 @@ class IssueDownload
 		# changed or even deleted.
 
 		repoOpenMilestoneList = @ghClient.list_milestones(@repository, :state => :open)
+		# puts repoOpenMilestoneList
 		repoClosedMilestoneList = @ghClient.list_milestones(@repository, :state => :closed)
+		
+		# Debug Code
 		puts "Got Open and Closed Milestones list, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
 
 		if repoOpenMilestoneList.empty? == false
