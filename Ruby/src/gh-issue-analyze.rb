@@ -250,12 +250,6 @@ class AnalyzeGHData
 				
 				when "WatchEvent"
 					watchEventHash[DateTime.strptime(x["_id"].values_at('created_month', 'created_year').join(" "), '%m %Y')] = x["count"]
-
-				
-				
-
-				
-				
 			end
 				
 		end
