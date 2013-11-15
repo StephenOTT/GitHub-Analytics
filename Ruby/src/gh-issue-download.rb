@@ -128,10 +128,6 @@ class IssueDownload
 	end
 	
 
-
-
-
-
 	# find records in Mongodb that have a comments field value of 1 or higher
 	# returns only the number field
 	# TODO  ***rebuild in option to not have to call MongoDB and add option to pull issues to get comments from directly from getIssues method
