@@ -338,6 +338,21 @@ class IssueDownload
 		return issueEvents
 	end
 
+	def convertTeamReposDates(teamRepos)
+		teamRepos.each do |y|
+			if y["created_at"] != nil
+				y["created_at"] = DateTime.strptime(y["created_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+			end
+			if y["updated_at"]!= nil
+				y["updated_at"] = DateTime.strptime(y["updated_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+			end
+			if y["pushed_at"] != nil
+				y["pushed_at"] = DateTime.strptime(y["pushed_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+			end
+		end
+		return teamRepos
+	end
+
 	def getMilestonesListforRepo
 		# TODO build call to github to get list of milestones in a specific issue queue.
 		# This will be used as part of the web app to select a milestone and return specific details filtered for that specific milestone.
