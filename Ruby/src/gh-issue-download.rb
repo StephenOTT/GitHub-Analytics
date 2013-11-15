@@ -418,12 +418,11 @@ start = IssueDownload.new("wet-boew/codefest", true)
 # start = IssueDownload.new("wet-boew/wet-boew-drupal")
 
 start.ghAuthenticate
-# start.putIntoMongoCollIssues(start.getIssues)
-# start.findIssuesWithComments
-# start.putIntoMongoCollRepoEvents(start.getRepositoryEvents)
-# start.getIssueEventsAllIssue
-# start.putIntoMongoCollOrgMembers(start.getOrgMemberList)
-start.getOrgTeamsList
-
-# start.getRepoLabelsList
-# start.getMilestonesListforRepo
+start.putIntoMongoCollIssues(start.getIssues)
+start.findIssuesWithComments
+start.putIntoMongoCollRepoEvents(start.getRepositoryEvents)
+start.getIssueEventsAllIssue
+start.getOrgMemberList
+start.getOrgTeamsInfoAllList
+start.getRepoLabelsList
+start.getMilestonesListforRepo
