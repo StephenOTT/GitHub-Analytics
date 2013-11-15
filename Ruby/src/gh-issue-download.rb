@@ -84,7 +84,9 @@ class IssueDownload
 
 		mergedIssuesOpenClose = issueResultsOpen + issueResultsClosed
 		
-		puts "Got issues, Github raite limit remaining: " + @ghClient.ratelimit_remaining.to_s
+		# Debug Code
+		# puts "Got issues, Github raite limit remaining: " + @ghClient.ratelimit_remaining.to_s
+		
 		return self.convertIssueDatesInMongo(mergedIssuesOpenClose)
 	end
 	
