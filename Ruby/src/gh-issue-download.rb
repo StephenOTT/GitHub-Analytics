@@ -81,9 +81,9 @@ class IssueDownload
 			})
 
 		if issueResultsOpen.empty? == false
-			issueResultsOpen.each do |y|
-				y["repo"] = @repository
-				y["download_date"] = Time.now
+			issueResultsOpen.each do |x|
+				x["repo"] = @repository
+				x["download_date"] = Time.now
 			end
 		elsif issueResultsClosed.empty? == false
 			issueResultsClosed.each do |y|
