@@ -69,12 +69,14 @@ class IssueDownload
 
 		if issueResultsOpen.empty? == false
 			issueResultsOpen.each do |x|
+				x["organization"] = @organization
 				x["repo"] = @repository
 				x["download_date"] = Time.now
 			end
 		end
 		if issueResultsClosed.empty? == false
 			issueResultsClosed.each do |y|
+				y["organization"] = @organization
 				y["repo"] = @repository
 				y["download_date"] = Time.now
 			end
@@ -187,6 +189,7 @@ class IssueDownload
 		
 		if respositoryEvents.empty? == false
 			respositoryEvents.each do |y|
+				y["organization"] = @organization
 				y["repo"] = @repository
 				y["download_date"] = Time.now
 			end
@@ -210,6 +213,7 @@ class IssueDownload
 				# Adds Repo and Issue number information into the hash of each event so multiple Repos can be stored in the same DB.
 				# This was done becauase Issue Events do not have Issue number and Repo information.
 				issueEvents.each do |y|
+					y["organization"] = @organization
 					y["repo"] = @repository
 					y["issue_number"] = x["_id"]["number"]
 					y["download_date"] = Time.now
@@ -231,6 +235,7 @@ class IssueDownload
 		
 		if orgMemberList.empty? == false
 			orgMemberList.each do |y|
+				y["organization"] = @organization
 				y["repo"] = @repository
 				y["download_date"] = Time.now
 			end
@@ -247,6 +252,7 @@ class IssueDownload
 			orgTeamsList.each do |y|
 				# puts y
 				# puts y["id"]
+				y["organization"] = @organization
 				y["repo"] = @repository
 				y["download_date"] = Time.now
 
@@ -266,6 +272,7 @@ class IssueDownload
 		puts orgTeamInfo
 		if orgTeamInfo.empty? == false
 			# orgTeamInfo.each do |x|
+				orgTeamInfo["organization"] = @organization
 				orgTeamInfo["repo"] = @repository
 				orgTeamInfo["download_date"] = Time.now
 			# end
@@ -279,6 +286,7 @@ class IssueDownload
 
 		if orgTeamMembers.empty? == false
 			orgTeamMembers.each do |y|
+				y["organization"] = @organization
 				y["repo"] = @repository
 				y["download_date"] = Time.now
 			end
@@ -292,6 +300,7 @@ class IssueDownload
 
 		if orgTeamRepos.empty? == false
 			orgTeamRepos.each do |y|
+				y["organization"] = @organization
 				y["repo"] = @repository
 				y["download_date"] = Time.now
 			end
@@ -350,12 +359,14 @@ class IssueDownload
 
 		if repoOpenMilestoneList.empty? == false
 			repoOpenMilestoneList.each do |x|
+				x["organization"] = @organization
 				x["repo"] = @repository
 				x["download_date"] = Time.now
 			end
 		end
 		if repoClosedMilestoneList.empty? == false
 			repoClosedMilestoneList.each do |y|
+				y["organization"] = @organization
 				y["repo"] = @repository
 				y["download_date"] = Time.now
 			end
@@ -380,6 +391,7 @@ class IssueDownload
 
 		if repoLabelsList.empty? == false
 			repoLabelsList.each do |y|
+				y["organization"] = @organization
 				y["repo"] = @repository
 				y["download_date"] = Time.now
 			end
