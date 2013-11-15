@@ -126,21 +126,6 @@ class IssueDownload
 		@collOrgTeamsInfoAllList.insert(mongoPayload)
 		# puts "Org Tema Repos List Added, Count in Mongodb: " + @collRepoIssueEvents.count.to_s
 	end
-
-	def putIntoMongoCollOrgTeamMembersList(mongoPayload)
-		@collOrgTeamMembersList.insert(mongoPayload)
-		# puts "Org Team Members List Added, Count in Mongodb: " + @collRepoIssueEvents.count.to_s
-	end
-
-	def putIntoMongoCollOrgTeamInfoList(mongoPayload)
-		@collOrgTeamInfoList.insert(mongoPayload)
-		# puts "Org Team Info List Added, Count in Mongodb: " + @collRepoIssueEvents.count.to_s
-	end
-
-	def putIntoMongoCollOrgTeamsList(mongoPayload)
-		@collOrgTeamsList.insert(mongoPayload)
-		# puts "Org Teams List Added, Count in Mongodb: " + @collRepoIssueEvents.count.to_s
-	end
 	
 
 
