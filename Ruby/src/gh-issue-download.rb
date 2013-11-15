@@ -122,8 +122,8 @@ class IssueDownload
 		# puts "Repo Labels List Added, Count in Mongodb: " + @collRepoIssueEvents.count.to_s
 	end
 
-	def putIntoMongoCollOrgTeamReposList(mongoPayload)
-		@collOrgTeamReposList.insert(mongoPayload)
+	def putIntoMongoCollOrgTeamsInfoAllList(mongoPayload)
+		@collOrgTeamsInfoAllList.insert(mongoPayload)
 		# puts "Org Tema Repos List Added, Count in Mongodb: " + @collRepoIssueEvents.count.to_s
 	end
 
