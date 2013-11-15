@@ -298,7 +298,8 @@ class IssueDownload
 				y["download_date"] = Time.now
 				
 			end
-			return orgTeamRepos
+			# return orgTeamRepos
+			self.convertTeamReposDates(orgTeamRepos)
 		end		
 	end
 
