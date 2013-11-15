@@ -229,7 +229,7 @@ class IssueDownload
 		end
 	end
 	
-	def getOrgTeamsList
+	def getOrgTeamsInfoAllList
 		orgTeamsList = @ghClient.organization_teams(@organization.to_s)
 		puts " Got Organization Teams list, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
 		
