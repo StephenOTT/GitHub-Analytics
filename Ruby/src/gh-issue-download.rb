@@ -130,7 +130,32 @@ class IssueDownload
 		@collRepoMilestonesList.insert(mongoPayload)
 		# puts "Repo Labels List Added, Count in Mongodb: " + @collRepoIssueEvents.count.to_s
 	end
+
+	def putIntoMongoCollOrgTeamReposList(mongoPayload)
+		@collOrgTeamReposList.insert(mongoPayload)
+		# puts "Org Tema Repos List Added, Count in Mongodb: " + @collRepoIssueEvents.count.to_s
+	end
+
+	def putIntoMongoCollOrgTeamMembersList(mongoPayload)
+		@collOrgTeamMembersList.insert(mongoPayload)
+		# puts "Org Team Members List Added, Count in Mongodb: " + @collRepoIssueEvents.count.to_s
+	end
+
+	def putIntoMongoCollOrgTeamInfoList(mongoPayload)
+		@collOrgTeamInfoList.insert(mongoPayload)
+		# puts "Org Team Info List Added, Count in Mongodb: " + @collRepoIssueEvents.count.to_s
+	end
+
+	def putIntoMongoCollOrgTeamsList(mongoPayload)
+		@collOrgTeamsList.insert(mongoPayload)
+		# puts "Org Teams List Added, Count in Mongodb: " + @collRepoIssueEvents.count.to_s
+	end
 	
+
+
+
+
+
 	# find records in Mongodb that have a comments field value of 1 or higher
 	# returns only the number field
 	# TODO  ***rebuild in option to not have to call MongoDB and add option to pull issues to get comments from directly from getIssues method
