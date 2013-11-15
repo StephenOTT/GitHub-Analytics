@@ -214,7 +214,9 @@ class IssueDownload
 	# TODO This still needs work to function correctly.  Need to add new collection in db and a way to handle variable for the specific org to get data from
 	def getOrgMemberList
 		orgMemberList = @ghClient.organization_members(@organization.to_s)
-		puts "Got Organization member list, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
+		
+		# Debug Code
+		# puts "Got Organization member list, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
 		
 		if orgMemberList.empty? == false
 			orgMemberList.each do |y|
