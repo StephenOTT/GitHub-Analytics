@@ -51,7 +51,6 @@ class IssueDownload
 		# puts "Enter GitHub Username:"
 		username = ""
 
-		# TODO Add Highline gem support for Password no-Echo
 		# puts "Enter GitHub Password:"
 		password = ""
 		@ghClient = Octokit::Client.new(:login => username.to_s, :password => password.to_s, :auto_traversal => true)		
