@@ -2,13 +2,6 @@ require 'octokit'
 require 'mongo'
 require 'gchart'
 require 'date'
-# require 'time_difference'
-# require 'chartkick'
-# require 'erb'
-# require 'groupdate'
-# require '../../../add_missing_dates_ruby/add_missing_dates_months.rb'
-# require 'pp'
-# require 'builder'
 
 include Mongo
 
