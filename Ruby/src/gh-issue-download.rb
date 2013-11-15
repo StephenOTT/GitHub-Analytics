@@ -365,7 +365,7 @@ class IssueDownload
 		repoClosedMilestoneList = @ghClient.list_milestones(@repository, :state => :closed)
 		
 		# Debug Code
-		puts "Got Open and Closed Milestones list, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
+		# puts "Got Open and Closed Milestones list, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
 
 		if repoOpenMilestoneList.empty? == false
 			repoOpenMilestoneList.each do |x|
