@@ -415,5 +415,7 @@ start.ghAuthenticate
 # start.putIntoMongoCollRepoEvents(start.getRepositoryEvents)
 # start.getIssueEventsAllIssue
 # start.putIntoMongoCollOrgMembers(start.getOrgMemberList)
+start.getOrgTeamsList
+
 # start.getRepoLabelsList
-start.getMilestonesListforRepo
+# start.getMilestonesListforRepo
