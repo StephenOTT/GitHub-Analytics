@@ -24,7 +24,7 @@ class IssueDownload
 		puts "#{@organization}"
 		# MongoDB Database Connect
 		@client = MongoClient.new('localhost', 27017)
-		@db = @client['Github_WET']
+		@db = @client['Github']
 		
 		@coll = @db['githubIssues']
 		
