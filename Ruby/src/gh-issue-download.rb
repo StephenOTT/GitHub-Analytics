@@ -20,8 +20,8 @@ class IssueDownload
 		@repository = repository
 	
 		# TODO work on better way to handle organization and repositories as vairables.
-		@organization = "wet-boew"
-		
+		@organization = repository.slice(0..(repository.index('/')-1 ))
+		puts "#{@organization}"
 		# MongoDB Database Connect
 		@client = MongoClient.new('localhost', 27017)
 		@db = @client['Github_WET']
