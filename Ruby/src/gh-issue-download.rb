@@ -287,7 +287,9 @@ class IssueDownload
 
 	def getOrgTeamRepos(teamId)
 		orgTeamRepos = @ghClient.team_repositories(teamId)
-		puts "Got list of repos for team: #{teamId}, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
+		
+		# Debug Code
+		# puts "Got list of repos for team: #{teamId}, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
 
 		if orgTeamRepos.empty? == false
 			orgTeamRepos.each do |y|
