@@ -296,6 +296,7 @@ class IssueDownload
 				y["organization"] = @organization
 				y["repo"] = @repository
 				y["download_date"] = Time.now
+				
 			end
 			return orgTeamRepos
 		end		
