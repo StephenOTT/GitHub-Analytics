@@ -408,7 +408,6 @@ class IssueDownload
 			self.putIntoMongoCollRepoLabelsList(repoLabelsList)
 		end
 	end
-
 end
 
 
