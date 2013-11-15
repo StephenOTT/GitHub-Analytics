@@ -366,7 +366,8 @@ class IssueDownload
 				x["repo"] = @repository
 				x["download_date"] = Time.now
 			end
-		elsif repoClosedMilestoneList.empty? == false
+		end
+		if repoClosedMilestoneList.empty? == false
 			repoClosedMilestoneList.each do |y|
 				y["repo"] = @repository
 				y["download_date"] = Time.now
