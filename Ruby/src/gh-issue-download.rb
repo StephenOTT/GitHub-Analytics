@@ -397,7 +397,7 @@ class IssueDownload
 		repoLabelsList = @ghClient.labels(@repository)
 		
 		# Debug Code
-		puts "Got Repo Labels list, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
+		# puts "Got Repo Labels list, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
 
 		if repoLabelsList.empty? == false
 			repoLabelsList.each do |y|
