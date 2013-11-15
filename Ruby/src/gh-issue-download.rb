@@ -50,6 +50,10 @@ class IssueDownload
 			@collOrgMembers.remove
 			@collRepoLabelsList.remove
 			@collRepoLabelsList.remove
+			@collOrgTeamReposList.remove
+			@collOrgTeamMembersList.remove
+			@collOrgTeamInfoList.remove
+			@collOrgTeamsList.remove
 		end
 	end
 	
