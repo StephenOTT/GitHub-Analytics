@@ -254,8 +254,23 @@ class IssueDownload
 	
 	def getOrgTeamsList
 		orgTeamsList = @ghClient.organization_teams(@organization.to_s)
-		puts "Got Organization Teams list, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
-		return orgTeamsList
+		puts " Got Organization Teams list, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
+		
+		if orgTeamsList.empty? == false
+			orgTeamsList.each do |y|
+				# puts y
+				# puts y["id"]
+				y["repo"] = @repository
+				y["download_date"] = Time.now
+
+				y["team_info"] = self.getOrgTeamInfo(y["id"])
+				y["team_members"] = self.getOrgTeamMembers(y["id"])
+				y["team_repos"] = self.getOrgTeamRepos(y["id"])
+
+			end
+			self.putIntoMongoCollOrgTeamsList(orgTeamsList)
+			return orgTeamsList
+		end
 	end
 
 	def getOrgTeamInfo(teamId)
