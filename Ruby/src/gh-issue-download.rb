@@ -248,7 +248,7 @@ class IssueDownload
 				y["team_repos"] = self.getOrgTeamRepos(y["id"])
 
 			end
-			self.putIntoMongoCollOrgTeamsList(orgTeamsList)
+			self.putIntoMongoCollOrgTeamsInfoAllList(orgTeamsList)
 			return orgTeamsList
 		end
 	end
