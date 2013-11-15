@@ -157,6 +157,7 @@ db.githubRepoEvents.aggregate(
 9. No event or record is created when a repo is un-stared.  A Repo Event is created when a repo is Stared, but not when it is un-stared.
 10. No event or record is created when a repo is Watched, ignored, or Not-Watching
 11. Issue Events do not have a field that indicate the specific issue the event comes from.  Issue Events should have a "repo" object like Repository Events have that indicates the specific repo and issue number that the events come from.  (This issue has been resolved manually during the data download.  See the 'getIssueEventsAllIssue' Method).
+12. Getting list of Repos for a Team contains a array called "permissions" that is just a T/F value list for the current authenticated user.  Proper returned values/expected values would be to return users for each of the T/F values showing which users have the specific permissions.
 
 ## Github Design Issues:
 
