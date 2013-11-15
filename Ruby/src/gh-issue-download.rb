@@ -186,6 +186,7 @@ class IssueDownload
 			 i += 1
 		end 
 		 
+		 # Debug Code
 		 puts "Updated all Issues with Comments Github raite limit remaining: " + @ghClient.ratelimit_remaining.to_s
 		 puts "Github issues with comments: " + i.to_s		
 	end
