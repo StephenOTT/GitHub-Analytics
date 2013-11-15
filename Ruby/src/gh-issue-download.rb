@@ -224,7 +224,7 @@ class IssueDownload
 				y["repo"] = @repository
 				y["download_date"] = Time.now
 			end
-			self.putIntoMongoCollOrgTeamsList(orgMemberList)
+			self.putIntoMongoCollOrgMembers(orgMemberList)
 			return orgMemberList
 		end
 	end
