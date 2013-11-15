@@ -168,7 +168,7 @@ class IssueDownload
 		respositoryEvents = @ghClient.repository_events(@repository.to_s)
 		
 		# Debug Code
-		puts "Got Repository Events, GitHub rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
+		# puts "Got Repository Events, GitHub rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
 		
 		if respositoryEvents.empty? == false
 			respositoryEvents.each do |y|
