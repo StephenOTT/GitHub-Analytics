@@ -203,10 +203,9 @@ class IssueDownload
 				y["repo"] = @repository
 				y["download_date"] = Time.now
 			end
-			
-			# self.putIntoMongoCollRepoIssuesEvents(issueEvents)
+		
+			return self.convertRepoEventsDates(respositoryEvents)
 		end
-		return self.convertRepoEventsDates(respositoryEvents)
 	end
 
 	# TODO Setup so will get issues events since the last time they were downloaded
