@@ -404,8 +404,8 @@ end
 
 
 
-# start = IssueDownload.new("CityofOttawa/Ottawa-ckan")
-start = IssueDownload.new("wet-boew/wet-boew")
+start = IssueDownload.new("wet-boew/codefest", true)
+# start = IssueDownload.new("wet-boew/wet-boew-drupal", true)
 # start = IssueDownload.new("StephenOTT/Test1")
 # start = IssueDownload.new("wet-boew/wet-boew-drupal")
 
