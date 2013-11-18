@@ -14,6 +14,13 @@ Primary use at this point is project management based analytics that are not cur
 
 -
 
+## Presentations:
+
+Github Analytics: Ruby Ottawa Meetup:  https://www.dropbox.com/s/xrr37sefj0xpr93/Ruby%20Tuesday%20-%20Github%20Analytics.pdf
+
+
+-
+
 ###Types of Analysis:
 
 1. Issues Closed (Count) per user.
