@@ -192,6 +192,7 @@ class IssueDownload
 		issueNumbers = @coll.aggregate([
 										{ "$project" => {number: 1}},
 										{ "$group" => {_id: {number: "$number"}}},
+										{ "$sort" => {"_id.number" => 1}}
 										])
 
 		issueNumbers.each do |x|
