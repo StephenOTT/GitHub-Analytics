@@ -88,6 +88,12 @@ class IssueDownload
 		
 		return self.convertIssueDatesInMongo(mergedIssuesOpenClose)
 	end
+
+
+	def getIssuesCount(issueState)
+		# Placeholder for future def that provides counts open and closed issues
+		# Open Count can be easily provided by the API, but closed count will have to be manually calculated	
+	end
 	
 
 	# TODO preform DRY refactor for Mongodb insert
