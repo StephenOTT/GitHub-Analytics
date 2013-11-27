@@ -40,7 +40,6 @@ class IssueDownload
 			@collRepoIssueEvents.remove
 			@collOrgMembers.remove
 			@collRepoLabelsList.remove
-			@collRepoLabelsList.remove
 			@collOrgTeamsInfoAllList.remove
 		end
 	end
