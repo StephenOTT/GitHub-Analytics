@@ -194,7 +194,7 @@ class IssueDownload
 										{ "$group" => {_id: {number: "$number"}}},
 										{ "$sort" => {"_id.number" => 1}}
 										])
-
+		# TODO split this code into two different methods that 
 		issueNumbers.each do |x|
 			issueEvents = @ghClient.issue_events(@repository, x["_id"]["number"])
 
