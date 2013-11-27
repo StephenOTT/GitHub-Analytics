@@ -47,12 +47,12 @@ class IssueDownload
 	
 	# TODO add authentication as a option for go live as Github Rate Limit is 60 hits per hour when unauthenticated by 5000 per hour when authenticated.
 	# TODO PRIORITY username and password variables are not using "gets" correctly when used in terminal.  When in terminal after typing in credentials github api returns a bad credentials alert.  But when you type the credentials in directly in the code there is no issues.
-	def ghAuthenticate ()
+	def ghAuthenticate (username, password)
 		# puts "Enter GitHub Username:"
-		username = ""
+		# username = ""
 
 		# puts "Enter GitHub Password:"
-		password = ""
+		# password = ""
 		@ghClient = Octokit::Client.new(:login => username.to_s, :password => password.to_s, :auto_traversal => true)		
 	end
 		
@@ -417,7 +417,7 @@ start = IssueDownload.new("wet-boew/codefest", true)
 # start = IssueDownload.new("StephenOTT/Test1")
 # start = IssueDownload.new("wet-boew/wet-boew-drupal")
 
-start.ghAuthenticate
+start.ghAuthenticate("USERNAME", "PASSWORD")
 start.putIntoMongoCollIssues(start.getIssues)
 start.findIssuesWithComments
 start.putIntoMongoCollRepoEvents(start.getRepositoryEvents)
