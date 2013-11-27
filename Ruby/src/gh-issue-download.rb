@@ -210,7 +210,6 @@ class IssueDownload
 				# self.putIntoMongoCollRepoIssuesEvents(issueEvents)
 				self.putIntoMongoCollRepoIssuesEvents(self.convertIssueEventsDates(issueEvents))
 			end
-			
 		end
 
 		# Debug Code
@@ -432,3 +431,5 @@ start.getOrgMemberList
 start.getOrgTeamsInfoAllList
 start.getRepoLabelsList
 start.getMilestonesListforRepo
+
+
