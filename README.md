@@ -134,6 +134,7 @@ Pie chart of Issue Event Types - All Issue events for all issues
 - [ ] Build Dashboard that is equiv of the Github Survivor app (https://github.com/99designs/githubsurvivor)
 - [ ] PRIORITY: Develop Temp glue code for proper timezone query and output.  Because of Mongos lack of timeline support at the query level for the Aggregation framework.
 - [ ] Refactor code to follow worker/job model to support sidekiq for calling jobs.  Current issue is mainly based in the calling of issues, issue comments, and issue events.  Each of these three can easily tax out the GitHub API hourly rate limit for the specific user.  This mainly occurs for large projects such as WET-BOEW/WET-BOEW.
+- [ ] Refactor code for more ruby like Naming conventions and integration of methods and classes. 
 
 
 
