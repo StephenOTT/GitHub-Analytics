@@ -71,6 +71,8 @@ class IssueDownload
 				x["organization"] = @organization
 				x["repo"] = @repository
 				x["download_date"] = Time.now
+				b = self.convertIssueDatesInMongo(x)
+				self.putIntoMongoCollIssues(b)
 			end
 		end
 		if issueResultsClosed.empty? == false
@@ -78,15 +80,17 @@ class IssueDownload
 				y["organization"] = @organization
 				y["repo"] = @repository
 				y["download_date"] = Time.now
+				t = self.convertIssueDatesInMongo(y)
+				self.putIntoMongoCollIssues(t)
 			end
 		end
 
-		mergedIssuesOpenClose = issueResultsOpen + issueResultsClosed
+		# mergedIssuesOpenClose = issueResultsOpen + issueResultsClosed
 		
 		# Debug Code
 		# puts "Got issues, Github raite limit remaining: " + @ghClient.ratelimit_remaining.to_s
 		
-		return self.convertIssueDatesInMongo(mergedIssuesOpenClose)
+		# return self.convertIssueDatesInMongo(mergedIssuesOpenClose)
 	end
 
 
@@ -319,13 +323,13 @@ class IssueDownload
 
 	def convertIssueDatesInMongo(issues)
 
-		issues.each do |y|
-			y["created_at"] = DateTime.strptime(y["created_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
-			y["updated_at"] = DateTime.strptime(y["updated_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
-			if y["closed_at"] != nil
-				y["closed_at"] = DateTime.strptime(y["closed_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+		# issues.each do |y|
+			issues["created_at"] = DateTime.strptime(issues["created_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+			issues["updated_at"] = DateTime.strptime(issues["updated_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+			if issues["closed_at"] != nil
+				issues["closed_at"] = DateTime.strptime(issues["closed_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
 			end
-		end
+		# end
 		return issues
 	end
 
@@ -423,13 +427,14 @@ start = IssueDownload.new("wet-boew/codefest", true)
 # start = IssueDownload.new("wet-boew/wet-boew-drupal")
 
 start.ghAuthenticate("USERNAME", "PASSWORD")
-start.putIntoMongoCollIssues(start.getIssues)
-start.findIssuesWithComments
-start.putIntoMongoCollRepoEvents(start.getRepositoryEvents)
-start.getIssueEventsAllIssue
-start.getOrgMemberList
-start.getOrgTeamsInfoAllList
-start.getRepoLabelsList
-start.getMilestonesListforRepo
+start.getIssues
+# start.putIntoMongoCollIssues(start.getIssues)
+# start.findIssuesWithComments
+# start.putIntoMongoCollRepoEvents(start.getRepositoryEvents)
+# start.getIssueEventsAllIssue
+# start.getOrgMemberList
+# start.getOrgTeamsInfoAllList
+# start.getRepoLabelsList
+# start.getMilestonesListforRepo
 
 
