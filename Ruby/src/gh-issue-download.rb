@@ -191,6 +191,7 @@ class IssueDownload
 	end
 
 	# TODO Setup so will get issues events since the last time they were downloaded
+	# TODO Consider adding Issue Events directly into the Issue Object in Mongo
 	def getIssueEventsAllIssue
 
 		issueNumbers = @coll.aggregate([
