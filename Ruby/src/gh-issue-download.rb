@@ -170,13 +170,14 @@ class IssueDownload
 		respositoryEvents = @ghClient.repository_events(@repository.to_s)
 		respositoryEventsRaw = JSON.parse(@ghClient.last_response.body)
 		# Debug Code
-		# puts "Got Repository Events, GitHub rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
-		
-		if respositoryEvents.empty? == false
-			respositoryEvents.each do |y|
+		# puts "Got Repository Events, GitHub rate limit remaining: " + @ghClient.rate_limit.remaining.to_s
+		if respositoryEventsRaw.empty? == false
+			respositoryEventsRaw.each do |y|
 				y["organization"] = @organization
 				y["repo"] = @repository
-				y["download_date"] = Time.now
+				y["downloaded_at"] = Time.now
+				yDatesFixed = self.convertRepoEventsDates(y)
+				self.putIntoMongoCollRepoEvents(yDatesFixed)
 			end
 		
 			return self.convertRepoEventsDates(respositoryEvents)
