@@ -104,6 +104,8 @@ class IssueDownload
 		end
 		
 		# Debug Code
+		# puts "Got issues, Github raite limit remaining: " + @ghClient.rate_limit.remaining.to_s
+	end	
 
 	# TODO preform DRY refactor for Mongodb insert
 	def putIntoMongoCollIssues(mongoPayload)
