@@ -237,7 +237,7 @@ class IssueDownload
 
 		
 		# Debug Code
-		# puts " Got Organization Teams list, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
+		# puts " Got Organization Teams list, Github rate limit remaining: " + @ghClient.rate_limit.remaining.to_s
 		
 		if orgTeamsList.empty? == false
 			orgTeamsList.each do |y|
