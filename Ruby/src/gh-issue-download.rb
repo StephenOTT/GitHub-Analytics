@@ -19,7 +19,7 @@ class IssueDownload
 		
 		# MongoDB Database Connect
 		@client = MongoClient.new('localhost', 27017)
-		@db = @client['Github']
+		@db = @client[dbName]
 		
 		@coll = @db['githubIssues']
 		
