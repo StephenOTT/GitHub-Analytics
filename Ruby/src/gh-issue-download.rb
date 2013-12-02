@@ -381,14 +381,14 @@ class IssueDownload
 			repoOpenMilestoneList.each do |x|
 				x["organization"] = @organization
 				x["repo"] = @repository
-				x["download_date"] = Time.now
+				x["downloaded_at"] = Time.now
 			end
 		end
 		if repoClosedMilestoneList.empty? == false
 			repoClosedMilestoneList.each do |y|
 				y["organization"] = @organization
 				y["repo"] = @repository
-				y["download_date"] = Time.now
+				y["downloaded_at"] = Time.now
 			end
 		end
 
@@ -413,7 +413,7 @@ class IssueDownload
 			repoLabelsList.each do |y|
 				y["organization"] = @organization
 				y["repo"] = @repository
-				y["download_date"] = Time.now
+				y["downloaded_at"] = Time.now
 			end
 			self.putIntoMongoCollRepoLabelsList(repoLabelsList)
 		end
