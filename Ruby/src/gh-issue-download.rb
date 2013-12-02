@@ -260,7 +260,7 @@ class IssueDownload
 		orgTeamsInfoRaw = JSON.parse(@ghClient.last_response.body)
 
 		#Debug Code
-		# puts "Got Team info for Team: #{teamId}, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
+		# puts "Got Team info for Team: #{teamId}, Github rate limit remaining: " + @ghClient.rate_limit.remaining.to_s
 		
 		if orgTeamInfo.empty? == false
 			# orgTeamInfo.each do |x|
