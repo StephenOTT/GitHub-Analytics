@@ -373,7 +373,6 @@ class IssueDownload
 		repoClosedMilestoneList = @ghClient.list_milestones(@repository, :state => :closed)
 		repoClosedMilestoneListRaw = JSON.parse(@ghClient.last_response.body)
 
-		
 		# Debug Code
 		# puts "Got Open and Closed Milestones list, Github rate limit remaining: " + @ghClient.rate_limit.remaining.to_s
 
