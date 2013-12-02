@@ -384,8 +384,8 @@ class IssueDownload
 				x["downloaded_at"] = Time.now
 			end
 		end
-		if repoClosedMilestoneList.empty? == false
-			repoClosedMilestoneList.each do |y|
+		if repoClosedMilestoneListRaw.empty? == false
+			repoClosedMilestoneListRaw.each do |y|
 				y["organization"] = @organization
 				y["repo"] = @repository
 				y["downloaded_at"] = Time.now
