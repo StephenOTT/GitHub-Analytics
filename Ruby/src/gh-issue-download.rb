@@ -156,6 +156,10 @@ class IssueDownload
 		issueComments = @ghClient.issue_comments(@repository.to_s, issueNumber.to_s)
 		issueCommentsRaw = JSON.parse(@ghClient.last_response.body)
 		issueCommentsRaw.each do |x|
+				x["organizaion"] = @organization
+				x["repo"] = @repository
+				x["downloaded_at"] = Time.now
+				x["issue_number"] = issueNumber
 			self.convertIssueCommentDatesInMongo(x)
 		end
 		return issueCommentsRaw
