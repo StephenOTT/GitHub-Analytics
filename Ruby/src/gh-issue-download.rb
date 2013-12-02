@@ -440,13 +440,10 @@ start = IssueDownload.new("wet-boew/codefest", true)
 
 start.ghAuthenticate("USERNAME", "PASSWORD")
 start.getIssues
-# start.putIntoMongoCollIssues(start.getIssues)
-# start.findIssuesWithComments
-# start.putIntoMongoCollRepoEvents(start.getRepositoryEvents)
-# start.getIssueEventsAllIssue
-# start.getOrgMemberList
-# start.getOrgTeamsInfoAllList
-# start.getRepoLabelsList
-# start.getMilestonesListforRepo
+start.getRepositoryEvents
+start.getOrgMemberList
+start.getOrgTeamsInfoAllList
+start.getRepoLabelsList
+start.getMilestonesListforRepo
 
 
