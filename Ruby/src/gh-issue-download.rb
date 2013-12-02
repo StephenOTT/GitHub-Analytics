@@ -277,7 +277,7 @@ class IssueDownload
 		orgTeamMembersRaw = JSON.parse(@ghClient.last_response.body)
 
 		# Debug Code
-		# puts "Got members list of team: #{teamId}, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
+		# puts "Got members list of team: #{teamId}, Github rate limit remaining: " + @ghClient.rate_limit.remaining.to_s
 
 		if orgTeamMembers.empty? == false
 			orgTeamMembers.each do |y|
