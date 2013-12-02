@@ -422,7 +422,7 @@ class IssueDownload
 	end
 end
 
-start = IssueDownload.new("wet-boew/codefest", true)
+start = IssueDownload.new("wet-boew/codefest", :mongoClearRecords => true)
 # start = IssueDownload.new("wet-boew/wet-boew-drupal", true)
 # start = IssueDownload.new("StephenOTT/Test1", true)
 # start = IssueDownload.new("wet-boew/wet-boew-drupal")
