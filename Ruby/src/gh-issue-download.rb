@@ -27,22 +27,20 @@ class IssueDownload
 		@organization = @repository.slice(0..(repository.index('/')-1 ))
 		
 		# MongoDB Database Connect
-		@client = MongoClient.new('localhost', 27017)
-		@db = @client[dbName]
+		@client = MongoClient.new(optionsDefaults[:mongoURL], optionsDefaults[:mongoPort])
+		@db = @client[optionsDefaults[:mongoDBName]]
 		
-		@coll = @db['githubIssues']
-
-		@collRepoEvents = @db["githubRepoEvents"]
-		@collRepoIssueEvents = @db["githubRepoIssueEvents"]
-		@collOrgMembers = @db["githubOrgMembers"]
-		@collRepoLabelsList = @db["githubRepoLabelsList"]
-		@collRepoMilestonesList = @db["githubRepoMilestonesList"]
+		@collIssues = @db[optionsDefaults[:mongoIssuesColl]]
+		@collRepoEvents = @db[optionsDefaults[:mongoRepoEventsColl]]
+		@collRepoIssueEvents = @db[optionsDefaults[:mongoIssueEventsColl]]
+		@collOrgMembers = @db[optionsDefaults[:mongoOrgMembersColl]]
+		@collOrgTeamsInfoAllList = @db[optionsDefaults[:mongoOrgTeamsInfoColl]]
+		@collRepoLabelsList = @db[optionsDefaults[:mongoRepoLabelsColl]]
+		@collRepoMilestonesList = @db[optionsDefaults[:mongoRepoMilestonesColl]]
 		
-		@collOrgTeamsInfoAllList = @db["githubOrgTeamsInfoAll"]
-
 		# Debug code to empty out mongoDB records
-		if clearRecords == true
-			@coll.remove
+		if optionsDefaults[:mongoClearRecords] == true
+			@collIssues.remove
 			@collRepoEvents.remove
 			@collRepoIssueEvents.remove
 			@collOrgMembers.remove
@@ -118,7 +116,7 @@ class IssueDownload
 
 	# TODO preform DRY refactor for Mongodb insert
 	def putIntoMongoCollIssues(mongoPayload)
-		@coll.insert(mongoPayload)
+		@collIssues.insert(mongoPayload)
 		# puts "Issues Added, Count in Mongodb: " + @coll.count.to_s
 	end
 
