@@ -335,6 +335,16 @@ class IssueDownload
 		return issueEvents
 	end
 
+	def convertMilestoneListDates(milestoneList)
+		milestoneList["created_at"] = DateTime.strptime(milestoneList["created_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+		milestoneList["updated_at"] = DateTime.strptime(milestoneList["updated_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+		if milestoneList["due_on"]!= nil
+			milestoneList["due_on"] = DateTime.strptime(milestoneList["updated_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+		end
+
+		return milestoneList
+	end
+
 	def convertTeamReposDates(teamRepos)
 		teamRepos.each do |y|
 			if y["created_at"] != nil
