@@ -71,8 +71,9 @@ class IssueDownload
 		# Parses String body from last response/Closed Issues List into Proper Array in JSON format
 		issueResultsClosedRaw = JSON.parse(@ghClient.last_response.body)
 
-		if issueResultsOpen.empty? == false
-			issueResultsOpen.each do |x|
+		# Open Issues
+		if issueResultsOpenRaw.empty? == false
+			issueResultsOpenRaw.each do |x|
 				x["organization"] = @organization
 				x["repo"] = @repository
 				x["download_date"] = Time.now
