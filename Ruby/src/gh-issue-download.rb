@@ -291,7 +291,7 @@ class IssueDownload
 
 	def getOrgTeamRepos(teamId)
 		orgTeamRepos = @ghClient.team_repositories(teamId)
-		
+		orgTeamReposRaw = JSON.parse(@ghClient.last_response.body)
 		# Debug Code
 		# puts "Got list of repos for team: #{teamId}, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
 
