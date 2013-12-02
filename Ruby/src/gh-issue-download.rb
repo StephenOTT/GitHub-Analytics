@@ -168,6 +168,7 @@ class IssueDownload
 	# TODO Setup so it will get all repo events since the last time a request was made
 	def getRepositoryEvents
 		respositoryEvents = @ghClient.repository_events(@repository.to_s)
+		respositoryEventsRaw = JSON.parse(@ghClient.last_response.body)
 		# Debug Code
 		# puts "Got Repository Events, GitHub rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
 		
