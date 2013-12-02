@@ -51,7 +51,8 @@ class IssueDownload
 
 		# puts "Enter GitHub Password:"
 		# password = ""
-		@ghClient = Octokit::Client.new(:login => username.to_s, :password => password.to_s, :auto_traversal => true)		
+		@ghClient = Octokit::Client.new(:login => username.to_s, :password => password.to_s)
+		@ghClient.auto_paginate = true
 	end
 		
 	def getIssues
