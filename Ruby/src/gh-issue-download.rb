@@ -7,7 +7,21 @@ include Mongo
 
 class IssueDownload
 
-	def initialize (repository, clearRecords = false, dbName = "GitHub-Analytics")
+	def initialize (repository, optionDefaultsOverrides = {})
+		optionDefaults = {
+		:mongoURL => "localhost", 
+		:mongoPort => 27017,
+		:mongoDBName => "GitHub-Analytics",
+		:mongoIssuesColl => "Issues",
+		:mongoRepoEventsColl => "Repo-Events",
+		:mongoIssueEventsColl => "Issue-Events",
+		:mongoOrgMembersColl => "Org-Members",
+		:mongoOrgTeamsInfoColl => "Org-Teams-Info",
+		:mongoRepoLabelsColl => "Repo-Labels",
+		:mongoRepoMilestonesColl => "Repo-Milestones",
+		:mongoClearRecords => false
+		}
+		optionsDefaults.merge!(optionDefaultsOverrides)
 		
 		@repository = repository.to_s
 	
