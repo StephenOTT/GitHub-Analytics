@@ -95,21 +95,8 @@ class IssueDownload
 				self.putIntoMongoCollIssues(t)
 			end
 		end
-
-		# mergedIssuesOpenClose = issueResultsOpen + issueResultsClosed
 		
 		# Debug Code
-		# puts "Got issues, Github raite limit remaining: " + @ghClient.ratelimit_remaining.to_s
-		
-		# return self.convertIssueDatesInMongo(mergedIssuesOpenClose)
-	end
-
-
-	def getIssuesCount(issueState)
-		# Placeholder for future def that provides counts open and closed issues
-		# Open Count can be easily provided by the API, but closed count will have to be manually calculated	
-	end
-	
 
 	# TODO preform DRY refactor for Mongodb insert
 	def putIntoMongoCollIssues(mongoPayload)
