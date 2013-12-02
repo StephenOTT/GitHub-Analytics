@@ -293,7 +293,7 @@ class IssueDownload
 		orgTeamRepos = @ghClient.team_repositories(teamId)
 		orgTeamReposRaw = JSON.parse(@ghClient.last_response.body)
 		# Debug Code
-		# puts "Got list of repos for team: #{teamId}, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
+		# puts "Got list of repos for team: #{teamId}, Github rate limit remaining: " + @ghClient.rate_limit.remaining.to_s
 
 		if orgTeamRepos.empty? == false
 			orgTeamRepos.each do |y|
