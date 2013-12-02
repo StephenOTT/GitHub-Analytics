@@ -316,15 +316,12 @@ class IssueDownload
 		return issueComments
 	end
 
-	def convertIssueDatesInMongo(issues)
-
-		# issues.each do |y|
-			issues["created_at"] = DateTime.strptime(issues["created_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
-			issues["updated_at"] = DateTime.strptime(issues["updated_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
-			if issues["closed_at"] != nil
-				issues["closed_at"] = DateTime.strptime(issues["closed_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
-			end
-		# end
+	def convertIssueDatesForMongo(issues)
+		issues["created_at"] = DateTime.strptime(issues["created_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+		issues["updated_at"] = DateTime.strptime(issues["updated_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+		if issues["closed_at"] != nil
+			issues["closed_at"] = DateTime.strptime(issues["closed_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+		end
 		return issues
 	end
 
