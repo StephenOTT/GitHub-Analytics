@@ -262,11 +262,9 @@ class IssueDownload
 		# puts "Got Team info for Team: #{teamId}, Github rate limit remaining: " + @ghClient.rate_limit.remaining.to_s
 		
 		if orgTeamsInfoRaw.empty? == false
-			# orgTeamInfo.each do |x|
 				orgTeamsInfoRaw["organization"] = @organization
 				orgTeamsInfoRaw["repo"] = @repository
 				orgTeamsInfoRaw["downloaded_at"] = Time.now
-			# end
 		end
 		return orgTeamsInfoRaw
 	end
