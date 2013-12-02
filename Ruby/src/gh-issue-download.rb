@@ -24,12 +24,6 @@ class IssueDownload
 		optionsDefaults.merge!(optionDefaultsOverrides)
 		
 		@repository = repository.to_s
-	
-		# TODO work on better way to handle organization and repositories as vairables.
-		@organization = repository.slice(0..(repository.index('/')-1 ))
-		
-		# Debug Code
-		# puts "#{@organization}"
 		
 		# MongoDB Database Connect
 		@client = MongoClient.new('localhost', 27017)
