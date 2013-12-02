@@ -376,11 +376,13 @@ class IssueDownload
 		# Debug Code
 		# puts "Got Open and Closed Milestones list, Github rate limit remaining: " + @ghClient.rate_limit.remaining.to_s
 
-		if repoOpenMilestoneList.empty? == false
-			repoOpenMilestoneList.each do |x|
+		if repoOpenMilestoneListRaw.empty? == false
+			repoOpenMilestoneListRaw.each do |x|
 				x["organization"] = @organization
 				x["repo"] = @repository
 				x["downloaded_at"] = Time.now
+				xDatesFixed = self.convertMilestoneDates(x)
+				self.putIntoMongoCollRepoMilestonesList(xDatesFixed)
 			end
 		end
 		if repoClosedMilestoneListRaw.empty? == false
