@@ -390,6 +390,8 @@ class IssueDownload
 				y["organization"] = @organization
 				y["repo"] = @repository
 				y["downloaded_at"] = Time.now
+				yDatesFixed = self.convertMilestoneDates(y)
+				self.putIntoMongoCollRepoMilestonesList(yDatesFixed)
 			end
 		end
 
