@@ -2,6 +2,7 @@ GitHub-Analytics
 ================
 
 WARINING: Dec 1, 2013: Code is undergoing a significant refactor at the moment for easier integration with background job processing and Web Application usage.  Also code is being adjusted for latest Github Octokit.rb 2.x usage  Code may be unstable at the moment.
+Dec 1, 2013: Make sure to add the following commit/code to Sewyer gem for proper JSON response. This is needed because of the way that GitHub Octokit.rb 2.x returns its responses as `Sewyer::Reponses`  --https://github.com/lostisland/sawyer/pull/15
 
 **I welcome any and all feedback!!! Please post a issue, question or pull request!!**
 
