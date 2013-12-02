@@ -9,7 +9,7 @@ class IssueDownload
 
 	def initialize (repository, clearRecords = false, dbName = "GitHub-Analytics")
 		
-		@repository = repository
+		@repository = repository.to_s
 	
 		# TODO work on better way to handle organization and repositories as vairables.
 		@organization = repository.slice(0..(repository.index('/')-1 ))
