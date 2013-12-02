@@ -148,7 +148,6 @@ class IssueDownload
 	# returns only the number field
 	# TODO  ***rebuild in option to not have to call MongoDB and add option to pull issues to get comments from directly from getIssues method
 	def getIssueComments(issueNumber)
-
 		# issuesWithComments = @coll.find({"comments" => {"$gt" => 0}}, 
 		# 								{:fields => {"_id" => 0, "number" => 1}}
 		# 								).to_a
@@ -198,7 +197,6 @@ class IssueDownload
 		issueEvents = @ghClient.issue_events(@repository, issueNumber)
 		issueEventsRaw = JSON.parse(@ghClient.last_response.body)
 
-
 		if issueEventsRaw.empty? == false
 			# Adds Repo and Issue number information into the hash of each event so multiple Repos can be stored in the same DB.
 			# This was done becauase Issue Events do not have Issue number and Repo information.
@@ -239,7 +237,6 @@ class IssueDownload
 		orgTeamsList = @ghClient.organization_teams(@organization.to_s)
 		orgTeamsListRaw = JSON.parse(@ghClient.last_response.body)
 
-		
 		# Debug Code
 		# puts " Got Organization Teams list, Github rate limit remaining: " + @ghClient.rate_limit.remaining.to_s
 		
@@ -248,11 +245,9 @@ class IssueDownload
 				y["organization"] = @organization
 				y["repo"] = @repository
 				y["downloaded_at"] = Time.now
-
 				y["team_info"] = self.getOrgTeamInfo(y["id"])
 				y["team_members"] = self.getOrgTeamMembers(y["id"])
 				y["team_repos"] = self.getOrgTeamRepos(y["id"])
-
 			end
 			orgTeamsListRaw = self.putIntoMongoCollOrgTeamsInfoAllList(orgTeamsListRaw)
 			return orgTeamsListRaw
@@ -316,7 +311,6 @@ class IssueDownload
 	def convertIssueCommentDatesInMongo(issueComments)
 		issueComments["created_at"] = Time.strptime(issueComments["created_at"], '%Y-%m-%dT%H:%M:%S%z').utc
 		issueComments["updated_at"] = Time.strptime(issueComments["updated_at"], '%Y-%m-%dT%H:%M:%S%z').utc
-
 		return issueComments
 	end
 
@@ -345,7 +339,6 @@ class IssueDownload
 		if milestone["due_on"]!= nil
 			milestone["due_on"] = Time.strptime(milestone["updated_at"], '%Y-%m-%dT%H:%M:%S%z').utc
 		end
-
 		return milestone
 	end
 
@@ -425,8 +418,6 @@ class IssueDownload
 	end
 end
 
-
-
 start = IssueDownload.new("wet-boew/codefest", true)
 # start = IssueDownload.new("wet-boew/wet-boew-drupal", true)
 # start = IssueDownload.new("StephenOTT/Test1", true)
@@ -439,5 +430,3 @@ start.getOrgMemberList
 start.getOrgTeamsInfoAllList
 start.getRepoLabelsList
 start.getMilestonesListforRepo
-
-
