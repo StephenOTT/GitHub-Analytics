@@ -368,8 +368,11 @@ class IssueDownload
 		# changed or even deleted.
 
 		repoOpenMilestoneList = @ghClient.list_milestones(@repository, :state => :open)
-		# puts repoOpenMilestoneList
+		repoOpenMilestoneListRaw = JSON.parse(@ghClient.last_response.body)
+
 		repoClosedMilestoneList = @ghClient.list_milestones(@repository, :state => :closed)
+		repoClosedMilestoneListRaw = JSON.parse(@ghClient.last_response.body)
+
 		
 		# Debug Code
 		# puts "Got Open and Closed Milestones list, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
