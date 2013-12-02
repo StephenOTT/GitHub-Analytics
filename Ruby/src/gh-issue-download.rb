@@ -239,21 +239,19 @@ class IssueDownload
 		# Debug Code
 		# puts " Got Organization Teams list, Github rate limit remaining: " + @ghClient.rate_limit.remaining.to_s
 		
-		if orgTeamsList.empty? == false
-			orgTeamsList.each do |y|
-				# puts y
-				# puts y["id"]
+		if orgTeamsListRaw.empty? == false
+			orgTeamsListRaw.each do |y|
 				y["organization"] = @organization
 				y["repo"] = @repository
-				y["download_date"] = Time.now
+				y["downloaded_at"] = Time.now
 
 				y["team_info"] = self.getOrgTeamInfo(y["id"])
 				y["team_members"] = self.getOrgTeamMembers(y["id"])
 				y["team_repos"] = self.getOrgTeamRepos(y["id"])
 
 			end
-			self.putIntoMongoCollOrgTeamsInfoAllList(orgTeamsList)
-			return orgTeamsList
+			orgTeamsListRaw = self.putIntoMongoCollOrgTeamsInfoAllList(orgTeamsListRaw)
+			return orgTeamsListRaw
 		end
 	end
 
