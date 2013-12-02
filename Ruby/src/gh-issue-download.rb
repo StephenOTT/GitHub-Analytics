@@ -76,9 +76,14 @@ class IssueDownload
 			issueResultsOpenRaw.each do |x|
 				x["organization"] = @organization
 				x["repo"] = @repository
-				x["download_date"] = Time.now
-				b = self.convertIssueDatesInMongo(x)
-				self.putIntoMongoCollIssues(b)
+				x["downloaded_at"] = Time.now
+				if x["comments"] > 0
+					openIssueComments = self.getIssueComments(x["number"])
+					x["issue_comments"] = openIssueComments
+				end 
+				xDatesFixed = self.convertIssueDatesForMongo(x)
+				self.putIntoMongoCollIssues(xDatesFixed)
+				self.getIssueEvents(x["number"])
 			end
 		end
 		if issueResultsClosed.empty? == false
