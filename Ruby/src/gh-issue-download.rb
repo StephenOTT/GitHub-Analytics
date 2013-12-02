@@ -147,36 +147,22 @@ class IssueDownload
 	# find records in Mongodb that have a comments field value of 1 or higher
 	# returns only the number field
 	# TODO  ***rebuild in option to not have to call MongoDB and add option to pull issues to get comments from directly from getIssues method
-	def findIssuesWithComments
-		i = 0
-		# find filter is based on: http://stackoverflow.com/a/10443659
-		issuesWithComments = @coll.find({"comments" => {"$gt" => 0}}, 
-										{:fields => {"_id" => 0, "number" => 1}}
-										).to_a
-		
-		# Cycle through each issue number that was found in the mongodb collection and look up the comments related to that issue and update the issue mongodb document with the comments as a array
-		issuesWithComments.each do |x|
- 			
- 			# Debug Code
- 			# puts "x value:  #{x}"
- 			# puts x["number"]
+	def getIssueComments(issueNumber)
 
- 			issueComments = @ghClient.issue_comments(@repository.to_s, x["number"].to_s)
-
- 			issueComments.each do |commentDetails| 			 
-				@coll.update(
-							{ "number" => x["number"]},
-							{ "$push" => {"comments_Text" => self.convertIssueCommentDatesInMongo(commentDetails)}}
-							)
-			end
-			 
-			 # Used as a count for number of issues with comments
-			 i += 1
-		end 
-		 
-		 # Debug Code
-		 # puts "Updated all Issues with Comments Github raite limit remaining: " + @ghClient.ratelimit_remaining.to_s
-		 # puts "Github issues with comments: " + i.to_s		
+		# issuesWithComments = @coll.find({"comments" => {"$gt" => 0}}, 
+		# 								{:fields => {"_id" => 0, "number" => 1}}
+		# 								).to_a
+		 			
+		issueComments = @ghClient.issue_comments(@repository.to_s, issueNumber.to_s)
+		issueCommentsRaw = JSON.parse(@ghClient.last_response.body)
+		issueCommentsRaw.each do |x|
+			self.convertIssueCommentDatesInMongo(x)
+		end
+		return issueCommentsRaw
+		# @coll.update(
+		# 			{ "number" => x["number"]},
+		# 			{ "$push" => {"comments_Text" => self.convertIssueCommentDatesInMongo(commentDetails)}}
+		# 			)	
 	end
 
 	# TODO Setup so it will get all repo events since the last time a request was made
