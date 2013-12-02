@@ -64,6 +64,7 @@ class IssueDownload
 		# Parses String body from last response/Open Issues List into Proper Array in JSON format
 		issueResultsOpenRaw = JSON.parse(@ghClient.last_response.body)
 
+		# Gets Closed Issues List - Returns Sawyer::Resource
 		issueResultsClosed = @ghClient.list_issues(@repository.to_s, {
 			:state => :closed
 			})
