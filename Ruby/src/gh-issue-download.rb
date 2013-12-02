@@ -342,7 +342,7 @@ class IssueDownload
 			milestone["due_on"] = Time.strptime(milestone["updated_at"], '%Y-%m-%dT%H:%M:%S%z').utc
 		end
 
-		return milestoneList
+		return milestone
 	end
 
 	def convertTeamReposDates(teamRepos)
