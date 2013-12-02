@@ -24,6 +24,7 @@ class IssueDownload
 		optionsDefaults.merge!(optionDefaultsOverrides)
 		
 		@repository = repository.to_s
+		@organization = @repository.slice(0..(repository.index('/')-1 ))
 		
 		# MongoDB Database Connect
 		@client = MongoClient.new('localhost', 27017)
