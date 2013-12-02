@@ -295,16 +295,17 @@ class IssueDownload
 		# Debug Code
 		# puts "Got list of repos for team: #{teamId}, Github rate limit remaining: " + @ghClient.rate_limit.remaining.to_s
 
-		if orgTeamRepos.empty? == false
-			orgTeamRepos.each do |y|
+		if orgTeamReposRaw.empty? == false
+			orgTeamReposRaw.each do |y|
 				y["organization"] = @organization
 				y["repo"] = @repository
-				y["download_date"] = Time.now
+				y["downloaded_at"] = Time.now
 				
 			end
-			# return orgTeamRepos
-			self.convertTeamReposDates(orgTeamRepos)
-		end		
+			orgTeamReposRaw = self.convertTeamReposDates(orgTeamReposRaw)
+			return orgTeamReposRaw
+		end
+		
 	end
 
 
