@@ -392,8 +392,8 @@ class IssueDownload
 			end
 		end
 
-		if (repoOpenMilestoneList.empty? == false and repoClosedMilestoneList.empty? == false) or (repoOpenMilestoneList.empty? == true and repoClosedMilestoneList.empty? == false) or (repoOpenMilestoneList.empty? == false and repoClosedMilestoneList.empty? == true)
-			mergedOpenClosedMilestonesList = repoOpenMilestoneList + repoClosedMilestoneList
+		if (repoOpenMilestoneListRaw.empty? == false and repoClosedMilestoneListRaw.empty? == false) or (repoOpenMilestoneListRaw.empty? == true and repoClosedMilestoneListRaw.empty? == false) or (repoOpenMilestoneListRaw.empty? == false and repoClosedMilestoneListRaw.empty? == true)
+			mergedOpenClosedMilestonesList = repoOpenMilestoneListRaw + repoClosedMilestoneListRaw
 			self.putIntoMongoCollRepoMilestonesList(mergedOpenClosedMilestonesList)
 		
 		elsif repoOpenMilestoneList.empty? == true and repoClosedMilestoneList.empty? == true
