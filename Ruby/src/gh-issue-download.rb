@@ -55,8 +55,7 @@ class IssueDownload
 		@ghClient.auto_paginate = true
 	end
 		
-	def getIssues
-				
+	def getIssues	
 		# TODO get list_issues working with options hash: Specifically need Open and Closed issued to be captured
 		issueResultsOpen = @ghClient.list_issues(@repository.to_s, {
 			:state => :open
