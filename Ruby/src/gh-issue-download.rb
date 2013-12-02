@@ -257,7 +257,6 @@ class IssueDownload
 
 	def getOrgTeamInfo(teamId)
 		orgTeamInfo = @ghClient.team(teamId)
-		
 		#Debug Code
 		# puts "Got Team info for Team: #{teamId}, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
 		
