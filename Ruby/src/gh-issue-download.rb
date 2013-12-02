@@ -86,13 +86,20 @@ class IssueDownload
 				self.getIssueEvents(x["number"])
 			end
 		end
-		if issueResultsClosed.empty? == false
-			issueResultsClosed.each do |y|
+
+		# Closed Issues
+		if issueResultsClosedRaw.empty? == false
+			issueResultsClosedRaw.each do |y|
 				y["organization"] = @organization
 				y["repo"] = @repository
-				y["download_date"] = Time.now
-				t = self.convertIssueDatesInMongo(y)
-				self.putIntoMongoCollIssues(t)
+				y["downloaded_at"] = Time.now
+				if y["comments"] > 0
+					closedIssueComments = self.getIssueComments(y["number"])
+					y["issues_comments"] = closedIssueComments
+				end
+				yDatesFixed = self.convertIssueDatesForMongo(y)
+				self.putIntoMongoCollIssues(yDatesFixed)
+				self.getIssueEvents(y["number"])
 			end
 		end
 		
