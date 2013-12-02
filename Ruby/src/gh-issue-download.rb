@@ -395,11 +395,8 @@ class IssueDownload
 			end
 		end
 
-		if (repoOpenMilestoneListRaw.empty? == false and repoClosedMilestoneListRaw.empty? == false) or (repoOpenMilestoneListRaw.empty? == true and repoClosedMilestoneListRaw.empty? == false) or (repoOpenMilestoneListRaw.empty? == false and repoClosedMilestoneListRaw.empty? == true)
-			mergedOpenClosedMilestonesList = repoOpenMilestoneListRaw + repoClosedMilestoneListRaw
-			self.putIntoMongoCollRepoMilestonesList(mergedOpenClosedMilestonesList)
-		
-		elsif repoOpenMilestoneListRaw.empty? == true and repoClosedMilestoneListRaw.empty? == true
+		# Debug Code but will eventually become output for web app
+		if repoOpenMilestoneListRaw.empty? == true and repoClosedMilestoneListRaw.empty? == true
 			puts "No Open or Closed Milestones"
 		end
 	end
