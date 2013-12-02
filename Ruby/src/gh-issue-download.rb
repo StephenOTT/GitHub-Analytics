@@ -233,6 +233,8 @@ class IssueDownload
 	
 	def getOrgTeamsInfoAllList
 		orgTeamsList = @ghClient.organization_teams(@organization.to_s)
+		orgTeamsListRaw = JSON.parse(@ghClient.last_response.body)
+
 		
 		# Debug Code
 		# puts " Got Organization Teams list, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
