@@ -61,10 +61,14 @@ class IssueDownload
 		issueResultsOpen = @ghClient.list_issues(@repository, {
 			:state => :open
 			})
+		# Parses String body from last response/Open Issues List into Proper Array in JSON format
+		issueResultsOpenRaw = JSON.parse(@ghClient.last_response.body)
 
 		issueResultsClosed = @ghClient.list_issues(@repository.to_s, {
 			:state => :closed
 			})
+		# Parses String body from last response/Closed Issues List into Proper Array in JSON format
+		issueResultsClosedRaw = JSON.parse(@ghClient.last_response.body)
 
 		if issueResultsOpen.empty? == false
 			issueResultsOpen.each do |x|
