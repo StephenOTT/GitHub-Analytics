@@ -5,7 +5,6 @@ require 'date'
 
 include Mongo
 
-
 class IssueDownload
 
 	def initialize (repository, clearRecords = false)
