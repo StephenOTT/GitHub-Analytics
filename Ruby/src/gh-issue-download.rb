@@ -348,13 +348,13 @@ class IssueDownload
 	def convertTeamReposDates(teamRepos)
 		teamRepos.each do |x|
 			if x["created_at"] != nil
-				x["created_at"] = DateTime.strptime(x["created_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+				x["created_at"] = Time.strptime(x["created_at"], '%Y-%m-%dT%H:%M:%S%z').utc
 			end
 			if x["updated_at"]!= nil
-				x["updated_at"] = DateTime.strptime(x["updated_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+				x["updated_at"] = Time.strptime(x["updated_at"], '%Y-%m-%dT%H:%M:%S%z').utc
 			end
 			if x["pushed_at"] != nil
-				x["pushed_at"] = DateTime.strptime(x["pushed_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+				x["pushed_at"] = Time.strptime(x["pushed_at"], '%Y-%m-%dT%H:%M:%S%z').utc
 			end
 		end
 		return teamRepos
