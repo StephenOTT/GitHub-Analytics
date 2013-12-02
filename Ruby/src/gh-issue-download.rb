@@ -404,7 +404,8 @@ class IssueDownload
 	# Gets list of all Repos
 	def getRepoLabelsList
 		repoLabelsList = @ghClient.labels(@repository)
-		
+		repoLabelsListRaw = JSON.parse(@ghClient.last_response.body)
+
 		# Debug Code
 		# puts "Got Repo Labels list, Github rate limit remaining: " + @ghClient.rate_limit.remaining.to_s
 
