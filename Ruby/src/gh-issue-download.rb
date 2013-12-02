@@ -220,14 +220,14 @@ class IssueDownload
 		# Debug Code
 		# puts "Got Organization member list, Github rate limit remaining: " + @ghClient.rate_limit.remaining.to_s
 		
-		if orgMemberList.empty? == false
-			orgMemberList.each do |y|
+		if orgMemberListRaw.empty? == false
+			orgMemberListRaw.each do |y|
 				y["organization"] = @organization
 				y["repo"] = @repository
-				y["download_date"] = Time.now
+				y["downloaded_at"] = Time.now
 			end
-			self.putIntoMongoCollOrgMembers(orgMemberList)
-			return orgMemberList
+			orgMemberListRaw = self.putIntoMongoCollOrgMembers(orgMemberListRaw)
+			return orgMemberListRaw
 		end
 	end
 	
