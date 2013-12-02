@@ -310,36 +310,36 @@ class IssueDownload
 
 
 	def convertIssueCommentDatesInMongo(issueComments)
-		issueComments["created_at"] = DateTime.strptime(issueComments["created_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
-		issueComments["updated_at"] = DateTime.strptime(issueComments["updated_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+		issueComments["created_at"] = Time.strptime(issueComments["created_at"], '%Y-%m-%dT%H:%M:%S%z').utc
+		issueComments["updated_at"] = Time.strptime(issueComments["updated_at"], '%Y-%m-%dT%H:%M:%S%z').utc
 
 		return issueComments
 	end
 
 	def convertIssueDatesForMongo(issues)
-		issues["created_at"] = DateTime.strptime(issues["created_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
-		issues["updated_at"] = DateTime.strptime(issues["updated_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+		issues["created_at"] = Time.strptime(issues["created_at"], '%Y-%m-%dT%H:%M:%S%z').utc
+		issues["updated_at"] = Time.strptime(issues["updated_at"], '%Y-%m-%dT%H:%M:%S%z').utc
 		if issues["closed_at"] != nil
-			issues["closed_at"] = DateTime.strptime(issues["closed_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+			issues["closed_at"] = Time.strptime(issues["closed_at"], '%Y-%m-%dT%H:%M:%S%z').utc
 		end
 		return issues
 	end
 
 	def convertRepoEventsDates(repoEvents)
-		repoEvents["created_at"] = DateTime.strptime(repoEvents["created_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+		repoEvents["created_at"] = Time.strptime(repoEvents["created_at"], '%Y-%m-%dT%H:%M:%S%z').utc
 		return repoEvents
 	end
 
 	def convertIssueEventsDates(issueEvents)
-		issueEvents["created_at"] = DateTime.strptime(issueEvents["created_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+		issueEvents["created_at"] = Time.strptime(issueEvents["created_at"], '%Y-%m-%dT%H:%M:%S%z').utc
 		return issueEvents
 	end
 
-	def convertMilestoneListDates(milestoneList)
-		milestoneList["created_at"] = DateTime.strptime(milestoneList["created_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
-		milestoneList["updated_at"] = DateTime.strptime(milestoneList["updated_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
-		if milestoneList["due_on"]!= nil
-			milestoneList["due_on"] = DateTime.strptime(milestoneList["updated_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+	def convertMilestoneDates(milestone)
+		milestone["created_at"] = Time.strptime(milestone["created_at"], '%Y-%m-%dT%H:%M:%S%z').utc
+		milestone["updated_at"] = Time.strptime(milestone["updated_at"], '%Y-%m-%dT%H:%M:%S%z').utc
+		if milestone["due_on"]!= nil
+			milestone["due_on"] = Time.strptime(milestone["updated_at"], '%Y-%m-%dT%H:%M:%S%z').utc
 		end
 
 		return milestoneList
