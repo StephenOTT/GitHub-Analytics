@@ -22,7 +22,6 @@ class IssueDownload
 		@db = @client[dbName]
 		
 		@coll = @db['githubIssues']
-		
 
 		@collRepoEvents = @db["githubRepoEvents"]
 		@collRepoIssueEvents = @db["githubRepoIssueEvents"]
