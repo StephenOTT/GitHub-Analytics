@@ -179,8 +179,6 @@ class IssueDownload
 				yDatesFixed = self.convertRepoEventsDates(y)
 				self.putIntoMongoCollRepoEvents(yDatesFixed)
 			end
-		
-			return self.convertRepoEventsDates(respositoryEvents)
 		end
 	end
 
