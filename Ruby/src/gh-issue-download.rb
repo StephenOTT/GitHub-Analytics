@@ -7,7 +7,7 @@ include Mongo
 
 class IssueDownload
 
-	def initialize (repository, clearRecords = false)
+	def initialize (repository, clearRecords = false, dbName = "GitHub-Analytics")
 		
 		@repository = repository
 	
