@@ -409,14 +409,15 @@ class IssueDownload
 		# Debug Code
 		# puts "Got Repo Labels list, Github rate limit remaining: " + @ghClient.rate_limit.remaining.to_s
 
-		if repoLabelsList.empty? == false
-			repoLabelsList.each do |y|
+		if repoLabelsListRaw.empty? == false
+			repoLabelsListRaw.each do |y|
 				y["organization"] = @organization
 				y["repo"] = @repository
 				y["downloaded_at"] = Time.now
 			end
-			self.putIntoMongoCollRepoLabelsList(repoLabelsList)
+			repoLabelsListRaw = self.putIntoMongoCollRepoLabelsList(repoLabelsListRaw)
 		end
+		return repoLabelsListRaw
 	end
 end
 
