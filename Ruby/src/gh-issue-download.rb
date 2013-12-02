@@ -274,7 +274,8 @@ class IssueDownload
 
 	def getOrgTeamMembers(teamId)
 		orgTeamMembers = @ghClient.team_members(teamId)
-		
+		orgTeamMembersRaw = JSON.parse(@ghClient.last_response.body)
+
 		# Debug Code
 		# puts "Got members list of team: #{teamId}, Github rate limit remaining: " + @ghClient.ratelimit_remaining.to_s
 
