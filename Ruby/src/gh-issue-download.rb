@@ -310,9 +310,8 @@ class IssueDownload
 
 
 	def convertIssueCommentDatesInMongo(issueComments)
-
-			issueComments["created_at"] = DateTime.strptime(issueComments["created_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
-			issueComments["updated_at"] = DateTime.strptime(issueComments["updated_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+		issueComments["created_at"] = DateTime.strptime(issueComments["created_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+		issueComments["updated_at"] = DateTime.strptime(issueComments["updated_at"], '%Y-%m-%dT%H:%M:%S%z').to_time.utc
 
 		return issueComments
 	end
