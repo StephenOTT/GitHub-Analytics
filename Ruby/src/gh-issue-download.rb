@@ -184,28 +184,27 @@ class IssueDownload
 
 	# TODO Setup so will get issues events since the last time they were downloaded
 	# TODO Consider adding Issue Events directly into the Issue Object in Mongo
-	def getIssueEventsAllIssue
+	def getIssueEvents (issueNumber)
 
-		issueNumbers = @coll.aggregate([
-										{ "$project" => {number: 1}},
-										{ "$group" => {_id: {number: "$number"}}},
-										{ "$sort" => {"_id.number" => 1}}
-										])
-		# TODO split this code into two different methods that 
-		issueNumbers.each do |x|
-			issueEvents = @ghClient.issue_events(@repository, x["_id"]["number"])
+		# issueNumbers = @coll.aggregate([
+		# 								{ "$project" => {number: 1}},
+		# 								{ "$group" => {_id: {number: "$number"}}},
+		# 								{ "$sort" => {"_id.number" => 1}}
+		# 								])
+		issueEvents = @ghClient.issue_events(@repository, issueNumber)
+		issueEventsRaw = JSON.parse(@ghClient.last_response.body)
 
-			if issueEvents.empty? == false
-				# Adds Repo and Issue number information into the hash of each event so multiple Repos can be stored in the same DB.
-				# This was done becauase Issue Events do not have Issue number and Repo information.
-				issueEvents.each do |y|
-					y["organization"] = @organization
-					y["repo"] = @repository
-					y["issue_number"] = x["_id"]["number"]
-					y["download_date"] = Time.now
-				end
-				# self.putIntoMongoCollRepoIssuesEvents(issueEvents)
-				self.putIntoMongoCollRepoIssuesEvents(self.convertIssueEventsDates(issueEvents))
+
+		if issueEventsRaw.empty? == false
+			# Adds Repo and Issue number information into the hash of each event so multiple Repos can be stored in the same DB.
+			# This was done becauase Issue Events do not have Issue number and Repo information.
+			issueEventsRaw.each do |y|
+				y["organization"] = @organization
+				y["repo"] = @repository
+				y["issue_number"] = issueNumber
+				y["downloaded_at"] = Time.now
+				yCorrectedDates = self.convertIssueEventsDates(y)
+				self.putIntoMongoCollRepoIssuesEvents(yCorrectedDates)
 			end
 		end
 
