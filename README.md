@@ -16,6 +16,12 @@ Primary use at this point is project management based analytics that are not cur
 
 -
 
+
+![github-analytics-captain america](https://f.cloud.github.com/assets/1994838/1668072/d8f0a7e2-5c60-11e3-8ee4-ccb87bc07d58.png)
+
+
+-
+
 ## Presentations:
 
 Github Analytics: Ruby Ottawa Meetup (http://bit.ly/1cVFe9s)
