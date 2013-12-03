@@ -1,16 +1,12 @@
-# require 'octokit'
-# require 'json'
+
 require 'mongo'
 require 'gchart'
 require 'date'
 require 'time_difference'
 # require 'sinatra'
 # require 'chartkick'
-# require 'erb'
 require 'groupdate'
 require '../../../add_missing_dates_ruby/add_missing_dates_months.rb'
-# require 'pp'
-# require 'builder'
 
 include Mongo
 
@@ -22,7 +18,7 @@ class AnalyzeGHData
 		@client = MongoClient.new('localhost', 27017)
 		@db = @client['Github']
 		
-		@coll = @db['githubIssues']
+		@collIssues = @db['githubIssues']
 
 		@collRepoEvents = @db["githubRepoEvents"]
 
@@ -33,14 +29,14 @@ class AnalyzeGHData
 
 	def analyzeIssuesCreatedClosedCountPerMonth 
 		
-		issuesCreatedPerMonth = @coll.aggregate([
+		issuesCreatedPerMonth = @collIssues.aggregate([
 			{ "$match" => {closed_at: {"$ne" => nil}}},
 		    { "$project" => {created_month: {"$month" => "$created_at"}, created_year: {"$year" => "$created_at"}, closed_month: {"$month" => "$closed_at"}, closed_year: {"$year" => "$closed_at"}, state: 1}},
 		    { "$group" => {_id: {"created_month" => "$created_month", "created_year" => "$created_year", state: "$state", "closed_month" => "$closed_month", "closed_year" => "$closed_year"}, number: { "$sum" => 1 }}},
 		    #{ "$sort" => {"_id.created_month" => 1}}
 		])
 
-		issuesOpenCount = @coll.aggregate([
+		issuesOpenCount = @collIssues.aggregate([
 			{ "$match" => {state: {"$ne" => "closed"}}},
 		    { "$project" => {state: 1}},
 		    { "$group" => {_id: {state: "$state"}, number: { "$sum" => 1 }}},
@@ -63,7 +59,7 @@ class AnalyzeGHData
 
 	# TODO Need to rebuild this as the Events data should be used rather than Issues data
 	def analyzeIssuesOpenClosedPerUserPerMonth
-		issuesOpenClosedPerUser = @coll.aggregate([
+		issuesOpenClosedPerUser = @collIssues.aggregate([
 		    { "$project" => {created_month: {"$month" => "$created_at"}, created_year: {"$year" => "$created_at"}, state: 1, user:{login:1}}},
 		    { "$group" => {_id: {user:"$user.login", "created_month" => "$created_month", "created_year" => "$created_year", state:"$state"}, number: { "$sum" => 1 }}},
 		    { "$sort" => {"_id.user" => 1}}
@@ -77,7 +73,7 @@ class AnalyzeGHData
 		usersBase.uniq!
 		
 		usersBase.each do |ub|
-			issuesOpenClosedForUniqueUser = @coll.aggregate([
+			issuesOpenClosedForUniqueUser = @collIssues.aggregate([
 			    { "$project" => {created_month: {"$month" => "$created_at"}, created_year: {"$year" => "$created_at"}, state: 1, user:{login:1}}},
 			    { "$match" => {user:{login:ub }}},
 			    { "$group" => {_id: {user:"$user.login", "created_month" => "$created_month", "created_year" => "$created_year", state:"$state"}, number: { "$sum" => 1 }}},
@@ -89,7 +85,7 @@ class AnalyzeGHData
 
 	def analyzeIssuesClosedDurationOpen
 		
-		issuesOpenClosedPerUser = @coll.aggregate([
+		issuesOpenClosedPerUser = @collIssues.aggregate([
 		    { "$match" => {state: "closed" }},
 		    { "$project" => {state: 1, created_at: 1, closed_at: 1, user:{login:1}}},
 		    { "$group" => {_id: {created_at:"$created_at",closed_at:"$closed_at", state:"$state", user:"$user.login"}}},
@@ -112,7 +108,7 @@ class AnalyzeGHData
 
 	def analyzeIssuesAssignedCountPerUser (inlcudeUnassigned = true)
 		# inlcudeUnassigned = true
-		issuesAssignedCountPerUser = @coll.aggregate([
+		issuesAssignedCountPerUser = @collIssues.aggregate([
 		    # { "$project" => {assignee:{login: 1}, state: 1}},
 		    { "$group" => {_id: {assignee:{"$ifNull" => ["$assignee.login","Unassigned"]}, state:"$state"}, number: { "$sum" => 1 }}},
 		    { "$sort" => {"_id.assignee" => 1 }}
@@ -335,7 +331,7 @@ class AnalyzeGHData
 	end
 
 	def analyzeIssuesPrintableTable
-		issuesPrintableTable = @coll.aggregate([
+		issuesPrintableTable = @collIssues.aggregate([
 		    # { "$project" => {assignee:{login: 1}, state: 1, milestone:{title: 1}, number: 1, title: 1, created_at: 1, closed_at: 1, _id: 0}},
 		    { "$group" => {_id: {
 								issueCurrentState:"$state", 
@@ -373,7 +369,7 @@ class AnalyzeGHData
 
 	def issueCommentsDatesBreakdownWeek(issueNumber, yearSpan)
 
-		issueCommentsDatesSpark = @coll.aggregate([
+		issueCommentsDatesSpark = @collIssues.aggregate([
 			{ "$match" => {number: issueNumber}},
 		    { "$unwind" => "$comments_Text" },
 			# { "$project" => {created_month: {"$month" => "$comments_Text.created_at"}, created_year: {"$year" => "$comments_Text.created_at"}}},
