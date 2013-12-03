@@ -86,10 +86,12 @@ class IssueDownload
 				if x["comments"] > 0
 					openIssueComments = self.getIssueComments(x["number"])
 					x["issue_comments"] = openIssueComments
+					puts "Processed Comments for Open issue number: #{x["number"]}"
 				end 
 				xDatesFixed = self.convertIssueDatesForMongo(x)
 				self.putIntoMongoCollIssues(xDatesFixed)
 				self.getIssueEvents(x["number"])
+				puts "Processed Open issue number: #{x["number"]}"
 			end
 		end
 
@@ -102,10 +104,12 @@ class IssueDownload
 				if y["comments"] > 0
 					closedIssueComments = self.getIssueComments(y["number"])
 					y["issues_comments"] = closedIssueComments
+					puts "Processed Comments for Closed issue number: #{y["number"]}"
 				end
 				yDatesFixed = self.convertIssueDatesForMongo(y)
 				self.putIntoMongoCollIssues(yDatesFixed)
 				self.getIssueEvents(y["number"])
+				puts "Processed Closed issue number: #{y["number"]}"
 			end
 		end
 		
