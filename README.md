@@ -21,6 +21,9 @@ Primary use at this point is project management based analytics that are not cur
 Github Analytics: Ruby Ottawa Meetup (http://bit.ly/1cVFe9s)
 
 
+Process Overview:
+![github-analytics process overview](https://f.cloud.github.com/assets/1994838/1665606/7df413aa-5c39-11e3-8f13-e483c7966c64.png)
+
 -
 
 ###Types of Analysis:
