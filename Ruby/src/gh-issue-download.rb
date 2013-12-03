@@ -7,8 +7,8 @@ include Mongo
 
 class IssueDownload
 
-	def initialize (repository, optionDefaultsOverrides = {})
-		optionDefaults = {
+	def initialize (repository, optionsDefaultsOverrides = {})
+		optionsDefaults = {
 		:mongoURL => "localhost", 
 		:mongoPort => 27017,
 		:mongoDBName => "GitHub-Analytics",
@@ -21,7 +21,7 @@ class IssueDownload
 		:mongoRepoMilestonesColl => "Repo-Milestones",
 		:mongoClearRecords => false
 		}
-		optionsDefaults.merge!(optionDefaultsOverrides)
+		optionsDefaults.merge!(optionsDefaultsOverrides)
 		
 		@repository = repository.to_s
 		@organization = @repository.slice(0..(repository.index('/')-1 ))
