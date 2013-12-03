@@ -140,18 +140,9 @@ Pie chart of Issue Event Types - All Issue events for all issues
 
 
 
-## Future Analysis Mongodb queries:
+## Data structure Overview :
 ---
-
-1. Query for providing a breakdown of each of the different types of Events and the counts for each event type in the collection.
-
-'''
-db.githubRepoEvents.aggregate(
-  [
-    { $group : { _id : "$type" , Count : { $sum : 1 } } }
-  ]
-)
-'''
+https://github.com/StephenOTT/GitHub-Analytics/issues/1#issuecomment-29685800
 
 
 
