@@ -55,7 +55,6 @@ class IssueDownload
 	def ghAuthenticate (username, password)
 		# puts "Enter GitHub Username:"
 		# username = ""
-
 		# puts "Enter GitHub Password:"
 		# password = ""
 		@ghClient = Octokit::Client.new(:login => username.to_s, :password => password.to_s)
