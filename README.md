@@ -173,3 +173,12 @@ https://github.com/StephenOTT/GitHub-Analytics/issues/1#issuecomment-29685800
 ## Github Design Issues:
 
 1. When you delete a Label from the master list it deletes all labels assigned to issues for that deleted label.  This is a problem for maintaining a "current" label list.  This means that if you ever get a legacy label you must keep it in the list forever or the old labels will lose their assigned labels.
+
+
+## Other Possible uses for GitHub-Analytics Code
+
+1. With some simple modifications for uploading to github rather than just downloading from GitHub, a full GitHub "Backup your Repo" solution can be provided.  Backup.co is currently providing a private beta for this.  This would be a easy solution to provide
+
+2. Time Tracking.  Using GFM and text searching on the DB side we can gather time tracking information.
+
+3. Network Analysis of GitHub Issues to show network graph of issue mentions and use mentions.  This can show dependencies within the project/issue tracker and show who is the most popular user to be mentioned for types of issues.  This would produce very interesting graphics for large projects.
