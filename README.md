@@ -182,3 +182,5 @@ https://github.com/StephenOTT/GitHub-Analytics/issues/1#issuecomment-29685800
 2. Time Tracking.  Using GFM and text searching on the DB side we can gather time tracking information.
 
 3. Network Analysis of GitHub Issues to show network graph of issue mentions and use mentions.  This can show dependencies within the project/issue tracker and show who is the most popular user to be mentioned for types of issues.  This would produce very interesting graphics for large projects.
+
+4. Provide CSV, Excel, JSON, etc upload capability to GitHub Issue Tracker.  This would build off of number 1 above but would also provide the added benefit for groups to generate issues based on something like a Excel file. 
