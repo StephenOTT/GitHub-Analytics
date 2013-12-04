@@ -12,20 +12,37 @@ include Mongo
 
 class AnalyzeGHData
 
-	def initialize
-		
+	def initialize (optionsDefaultsOverrides = {})
+
+		optionsDefaults = {
+		:mongoURL => "localhost", 
+		:mongoPort => 27017,
+		:mongoDBName => "GitHub-Analytics",
+		:mongoIssuesColl => "Issues",
+		:mongoRepoEventsColl => "Repo-Events",
+		:mongoIssueEventsColl => "Issue-Events",
+		:mongoOrgMembersColl => "Org-Members",
+		:mongoOrgTeamsInfoColl => "Org-Teams-Info",
+		:mongoRepoLabelsColl => "Repo-Labels",
+		:mongoRepoMilestonesColl => "Repo-Milestones",
+		:mongoClearRecords => false
+		}
+		optionsDefaults.merge!(optionsDefaultsOverrides)
+
 		# MongoDB Database Connect
-		@client = MongoClient.new('localhost', 27017)
-		@db = @client['Github']
+		@client = MongoClient.new(optionsDefaults[:mongoURL], optionsDefaults[:mongoPort])
+		@db = @client[optionsDefaults[:mongoDBName]]
 		
-		@collIssues = @db['githubIssues']
+		@collIssues = @db[optionsDefaults[:mongoIssuesColl]]
+		@collRepoEvents = @db[optionsDefaults[:mongoRepoEventsColl]]
+		@collIssueEvents = @db[optionsDefaults[:mongoIssueEventsColl]]
+		@collOrgMembers = @db[optionsDefaults[:mongoOrgMembersColl]]
+		@collOrgTeamsInfo = @db[optionsDefaults[:mongoOrgTeamsInfoColl]]
+		@collRepoLabels = @db[optionsDefaults[:mongoRepoLabelsColl]]
+		@collRepoMilestones = @db[optionsDefaults[:mongoRepoMilestonesColl]]
 
-		@collRepoEvents = @db["githubRepoEvents"]
-
-		@collRepoIssueEvents = @db["githubRepoIssueEvents"]
-
-		@collOrgMembers = @db["githubOrgMembers"]
 	end
+
 
 	def analyzeIssuesCreatedClosedCountPerMonth 
 		
@@ -151,7 +168,7 @@ class AnalyzeGHData
 
 	def analyzeIssueEventsTypes
 		# Query Mongodb and group event Types from RepoEvents collection and produce a count
-		issueEventsTypesAnalysis = @collRepoIssueEvents.aggregate([
+		issueEventsTypesAnalysis = @collIssueEvents.aggregate([
 			{"$group" => { _id: "$event", count: {"$sum" => 1}}}
 		])
 
@@ -267,7 +284,7 @@ class AnalyzeGHData
 
 	def analyzeIssueEventsTypesOverTime
 		# ISSUE EVENTS
-		eventsTypesAnalysis = @collRepoIssueEvents.aggregate([
+		eventsTypesAnalysis = @collIssueEvents.aggregate([
 			{ "$project" => {created_month: {"$month" => "$created_at"}, created_year: {"$year" => "$created_at"}, event:1}},
 			{ "$group" => { _id: {event:"$event", "created_month" => "$created_month", "created_year" => "$created_year"}, count: {"$sum" => 1}}},
 			{ "$sort" => {"_id.event" => 1}}
