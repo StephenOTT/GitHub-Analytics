@@ -57,8 +57,8 @@ class IssueDownload
 		# username = ""
 		# puts "Enter GitHub Password:"
 		# password = ""
-		@ghClient = Octokit::Client.new(:login => username.to_s, :password => password.to_s)
-		@ghClient.auto_paginate = true
+		# Octokit.auto_paginate = true
+		@ghClient = Octokit::Client.new(:login => username.to_s, :password => password.to_s, :per_page =>100)
 	end
 		
 	def getIssues	
@@ -67,15 +67,34 @@ class IssueDownload
 		issueResultsOpen = @ghClient.list_issues(@repository, {
 			:state => :open
 			})
-		# Parses String body from last response/Open Issues List into Proper Array in JSON format
+		ghLastReponseOpen = @ghClient.last_response
+
+		# Parses String body from last response/Closed Issues List into Proper Array in JSON format
 		issueResultsOpenRaw = JSON.parse(@ghClient.last_response.body)
+
+		while ghLastReponseOpen.rels.include?(:next) do
+			ghLastReponseOpen = ghLastReponseOpen.rels[:next].get
+			issueResultsOpenRaw.concat(JSON.parse(ghLastReponseOpen.body))
+		end
+
+
+
 
 		# Gets Closed Issues List - Returns Sawyer::Resource
 		issueResultsClosed = @ghClient.list_issues(@repository.to_s, {
 			:state => :closed
 			})
-		# Parses String body from last response/Closed Issues List into Proper Array in JSON format
+
+		ghLastReponseClosed = @ghClient.last_response
+
+		# # Parses String body from last response/Closed Issues List into Proper Array in JSON format
 		issueResultsClosedRaw = JSON.parse(@ghClient.last_response.body)
+
+		while ghLastReponseClosed.rels.include?(:next) do
+			ghLastReponseClosed = ghLastReponseClosed.rels[:next].get
+			issueResultsClosedRaw.concat(JSON.parse(ghLastReponseClosed.body))
+		end
+
 
 		# Open Issues
 		if issueResultsOpenRaw.empty? == false
@@ -86,12 +105,15 @@ class IssueDownload
 				if x["comments"] > 0
 					openIssueComments = self.getIssueComments(x["number"])
 					x["issue_comments"] = openIssueComments
-					puts "Processed Comments for Open issue number: #{x["number"]}"
+					# puts "Processed Comments for Open issue number: #{x["number"]}"
 				end 
 				xDatesFixed = self.convertIssueDatesForMongo(x)
 				self.putIntoMongoCollIssues(xDatesFixed)
 				self.getIssueEvents(x["number"])
-				puts "Processed Open issue number: #{x["number"]}"
+				# puts "Processed Open issue number: #{x["number"]}"
+
+				# if @ghClient.rate_limit.remaining < 100
+				# end
 			end
 		end
 
@@ -104,12 +126,15 @@ class IssueDownload
 				if y["comments"] > 0
 					closedIssueComments = self.getIssueComments(y["number"])
 					y["issues_comments"] = closedIssueComments
-					puts "Processed Comments for Closed issue number: #{y["number"]}"
+					# puts "Processed Comments for Closed issue number: #{y["number"]}"
 				end
 				yDatesFixed = self.convertIssueDatesForMongo(y)
 				self.putIntoMongoCollIssues(yDatesFixed)
 				self.getIssueEvents(y["number"])
-				puts "Processed Closed issue number: #{y["number"]}"
+				# puts "Processed Closed issue number: #{y["number"]}"
+
+				# if @ghClient.rate_limit.remaining < 100
+				# end
 			end
 		end
 		
@@ -164,6 +189,14 @@ class IssueDownload
 		 			
 		issueComments = @ghClient.issue_comments(@repository.to_s, issueNumber.to_s)
 		issueCommentsRaw = JSON.parse(@ghClient.last_response.body)
+		
+		ghLastReponse = @ghClient.last_response
+
+		while ghLastReponse.rels.include?(:next) do
+			ghLastReponse = ghLastReponse.rels[:next].get
+			issueCommentsRaw.concat(JSON.parse(ghLastReponse.body))
+		end
+
 		issueCommentsRaw.each do |x|
 				x["organizaion"] = @organization
 				x["repo"] = @repository
@@ -182,8 +215,17 @@ class IssueDownload
 	def getRepositoryEvents
 		respositoryEvents = @ghClient.repository_events(@repository.to_s)
 		respositoryEventsRaw = JSON.parse(@ghClient.last_response.body)
+
+		ghLastReponse = @ghClient.last_response
+
+		while ghLastReponse.rels.include?(:next) do
+			ghLastReponse = ghLastReponse.rels[:next].get
+			respositoryEventsRaw.concat(JSON.parse(ghLastReponse.body))
+		end
+
 		# Debug Code
 		# puts "Got Repository Events, GitHub rate limit remaining: " + @ghClient.rate_limit.remaining.to_s
+
 		if respositoryEventsRaw.empty? == false
 			respositoryEventsRaw.each do |y|
 				y["organization"] = @organization
@@ -206,6 +248,13 @@ class IssueDownload
 		# 								])
 		issueEvents = @ghClient.issue_events(@repository, issueNumber)
 		issueEventsRaw = JSON.parse(@ghClient.last_response.body)
+
+		ghLastReponse = @ghClient.last_response
+
+		while ghLastReponse.rels.include?(:next) do
+			ghLastReponse = ghLastReponse.rels[:next].get
+			issueEventsRaw.concat(JSON.parse(ghLastReponse.body))
+		end
 
 		if issueEventsRaw.empty? == false
 			# Adds Repo and Issue number information into the hash of each event so multiple Repos can be stored in the same DB.
@@ -374,8 +423,23 @@ class IssueDownload
 		repoOpenMilestoneList = @ghClient.list_milestones(@repository, :state => :open)
 		repoOpenMilestoneListRaw = JSON.parse(@ghClient.last_response.body)
 
+		ghLastReponseOpen = @ghClient.last_response
+
+		while ghLastReponseOpen.rels.include?(:next) do
+			ghLastReponseOpen = ghLastReponseOpen.rels[:next].get
+			repoOpenMilestoneListRaw.concat(JSON.parse(ghLastReponseOpen.body))
+		end
+
+
 		repoClosedMilestoneList = @ghClient.list_milestones(@repository, :state => :closed)
 		repoClosedMilestoneListRaw = JSON.parse(@ghClient.last_response.body)
+
+		ghLastReponseClosed = @ghClient.last_response
+
+		while ghLastReponseClosed.rels.include?(:next) do
+			ghLastReponseClosed = ghLastReponseClosed.rels[:next].get
+			repoClosedMilestoneListRaw.concat(JSON.parse(ghLastReponseClosed.body))
+		end
 
 		# Debug Code
 		# puts "Got Open and Closed Milestones list, Github rate limit remaining: " + @ghClient.rate_limit.remaining.to_s
@@ -413,6 +477,13 @@ class IssueDownload
 		# Debug Code
 		# puts "Got Repo Labels list, Github rate limit remaining: " + @ghClient.rate_limit.remaining.to_s
 
+		ghLastReponse = @ghClient.last_response
+
+		while ghLastReponse.rels.include?(:next) do
+			ghLastReponse = ghLastReponse.rels[:next].get
+			repoLabelsListRaw.concat(JSON.parse(ghLastReponse.body))
+		end
+
 		if repoLabelsListRaw.empty? == false
 			repoLabelsListRaw.each do |y|
 				y["organization"] = @organization
@@ -425,15 +496,16 @@ class IssueDownload
 	end
 end
 
-start = IssueDownload.new("wet-boew/codefest", :mongoClearRecords => true)
-# start = IssueDownload.new("wet-boew/wet-boew-drupal", true)
+start = IssueDownload.new("wet-boew/wet-boew-wpss", :mongoClearRecords => true)
+# start = IssueDownload.new("stephenOTT/test1", :mongoClearRecords => true)
+# start = IssueDownload.new("wet-boew/wet-boew-drupal", :mongoClearRecords => true)
 # start = IssueDownload.new("StephenOTT/Test1", true)
 # start = IssueDownload.new("wet-boew/wet-boew-drupal")
 
 start.ghAuthenticate("USERNAME", "PASSWORD")
 start.getIssues
 start.getRepositoryEvents
-start.getOrgMemberList
-start.getOrgTeamsInfoAllList
+# start.getOrgMemberList
+# start.getOrgTeamsInfoAllList
 start.getRepoLabelsList
 start.getMilestonesListforRepo
