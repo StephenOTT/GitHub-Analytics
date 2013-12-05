@@ -177,10 +177,15 @@ https://github.com/StephenOTT/GitHub-Analytics/issues/1#issuecomment-29685800
 
 ## Other Possible uses for GitHub-Analytics Code
 
-1. With some simple modifications for uploading to github rather than just downloading from GitHub, a full GitHub "Backup your Repo" solution can be provided.  Backup.co is currently providing a private beta for this.  This would be a easy solution to provide
+1. With some simple modifications for uploading to GitHub rather than just downloading from GitHub, a full GitHub "Backup your Repo" solution can be provided.  Backup.co is currently providing a private beta for this.  This would be a easy solution to provide
 
 2. Time Tracking.  Using GFM and text searching on the DB side we can gather time tracking information.
 
 3. Network Analysis of GitHub Issues to show network graph of issue mentions and use mentions.  This can show dependencies within the project/issue tracker and show who is the most popular user to be mentioned for types of issues.  This would produce very interesting graphics for large projects.
 
-4. Provide CSV, Excel, JSON, etc upload capability to GitHub Issue Tracker.  This would build off of number 1 above but would also provide the added benefit for groups to generate issues based on something like a Excel file. 
+4. Provide CSV, Excel, JSON, etc upload capability to GitHub Issue Tracker.  This would build off of number 1 above but would also provide the added benefit for groups to generate issues based on something like an Excel file. (Other projects have accomplished this already)
+
+5. "Project Templates" - A series of issues, milestones, and labels that are created and applied in a repo for when a new project is started.  These would be customizable based on the company's/organization's specific project methodology and process.
+
+6. Repo Comparisons - Allows you to select 2 or more Repos and be provided with comparative stats (issues, users, stars, languages, labels, activity, Git Stats, Keywords, Revision Activity, similar users, similar code, Gems/Libraries/etc used, similar dependencies
+
