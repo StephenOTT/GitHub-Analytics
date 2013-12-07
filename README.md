@@ -14,14 +14,6 @@ Primary use at this point is project management based analytics that are not cur
 
 **New:::** Support for downloading multiple repositories into the same database allowing analysis of multiple repositories at the same time: EXAMPLE: 
 
--
-
-
-![github-analytics-captain america](https://f.cloud.github.com/assets/1994838/1668072/d8f0a7e2-5c60-11e3-8ee4-ccb87bc07d58.png)
-
-
--
-
 ## Presentations:
 
 Github Analytics: Ruby Ottawa Meetup (http://bit.ly/1cVFe9s)
@@ -188,4 +180,6 @@ https://github.com/StephenOTT/GitHub-Analytics/issues/1#issuecomment-29685800
 5. "Project Templates" - A series of issues, milestones, and labels that are created and applied in a repo for when a new project is started.  These would be customizable based on the company's/organization's specific project methodology and process.
 
 6. Repo Comparisons - Allows you to select 2 or more Repos and be provided with comparative stats (issues, users, stars, languages, labels, activity, Git Stats, Keywords, Revision Activity, similar users, similar code, Gems/Libraries/etc used, similar dependencies
+
+7. Have a ability to grab all of the users stats about their system when creating an issue in GitHub.  Stats like: Device, browser, resolution, browser version, OS, etc.
 
