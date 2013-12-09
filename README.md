@@ -20,9 +20,23 @@ Github Analytics: Ruby Ottawa Meetup (http://bit.ly/1cVFe9s)
 
 
 Process Overview:
-![github-analytics process overview](https://f.cloud.github.com/assets/1994838/1665606/7df413aa-5c39-11e3-8f13-e483c7966c64.png)
+![github-analytics process overview](https://f.cloud.github.com/assets/1994838/1708517/a88ca764-610f-11e3-8d0a-48500edb0d83.png)
+
 
 -
+
+### Actionable Reporting and Analysis
+
+1. Issues Assigned to each user with size/complexity of issue identified: See Sprint.ly for great example: https://github.com/StephenOTT/GitHub-Analytics/issues/1#issuecomment-30169941
+
+1.1. Group issues assigned to each user across multiple repositories
+
+2. Time Reporting
+
+3. using the emoji ```:alarm_clock:``` plus a DateTime format such as Feb 2, 2013 3pm or any sort of combination a email notification would be created to notify the user as a reminder.  Could be used about tasks, due dates, milestones, label changes, etc.
+
+4. Using the ```:clock1:``` or any version of the clock emoji to provide time tracking.  Example would be `:clock1: 2h`.  This would signify 2h of work spend on the issue done by the following user.  Adding additional features like: `:clock: 2h Sept 22, 2014` or other variations would provide time details time tracking down to dates, time of day etc.
+
 
 ###Types of Analysis:
 
