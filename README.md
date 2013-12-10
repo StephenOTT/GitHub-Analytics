@@ -31,11 +31,27 @@ Process Overview:
 
  1.1. Group issues assigned to each user across multiple repositories
 
-2. Time Reporting
+2. Time Reporting.
 
 3. using the emoji ```:alarm_clock:``` plus a DateTime format such as Feb 2, 2013 3pm or any sort of combination a email notification would be created to notify the user as a reminder.  Could be used about tasks, due dates, milestones, label changes, etc.
 
 4. Using the ```:clock1:``` or any version of the clock emoji to provide time tracking.  Example would be `:clock1: 2h`.  This would signify 2h of work spend on the issue done by the following user.  Adding additional features like: `:clock: 2h Sept 22, 2014` or other variations would provide time details time tracking down to dates, time of day etc.
+
+5. Labels Assignment across multiple Repositories.
+
+6. History of Label Assignment per issue.
+
+ 6.1 Using the history of label assignment per issue, you can use labels such as "25% Complete", "50% Complete", "75% Complete", etc to show a history of a specific issues timeline from start to completion in terms of perceived % completed.  This helps with post-launch reviews, and with analysis of problematic issues.
+
+7. History of Issues within a Milestone
+
+ 7.1 History of percentage complete of a Milestone
+ 
+8. Break down of GFM Task Lists per users and aggregate per repo and across multiple repos
+
+8. History of Issue Assignment per issue.
+
+
 
 
 ###Types of Analysis:
