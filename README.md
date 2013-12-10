@@ -29,7 +29,7 @@ Process Overview:
 
 1. Issues Assigned to each user with size/complexity of issue identified: See Sprint.ly for great example: https://github.com/StephenOTT/GitHub-Analytics/issues/1#issuecomment-30169941
 
-1.1. Group issues assigned to each user across multiple repositories
+ 1.1. Group issues assigned to each user across multiple repositories
 
 2. Time Reporting
 
