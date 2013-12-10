@@ -37,19 +37,21 @@ Process Overview:
 
 4. Using the ```:clock1:``` or any version of the clock emoji to provide time tracking.  Example would be `:clock1: 2h`.  This would signify 2h of work spend on the issue done by the following user.  Adding additional features like: `:clock: 2h Sept 22, 2014` or other variations would provide time details time tracking down to dates, time of day etc.
 
+ 4.1. Using the Clock Emoji we can extend the details that can posted.  Example you could include categorization information, comments, descriptions, followups, etc.
+
 5. Labels Assignment across multiple Repositories.
 
 6. History of Label Assignment per issue.
 
- 6.1 Using the history of label assignment per issue, you can use labels such as "25% Complete", "50% Complete", "75% Complete", etc to show a history of a specific issues timeline from start to completion in terms of perceived % completed.  This helps with post-launch reviews, and with analysis of problematic issues.
+ 6.1. Using the history of label assignment per issue, you can use labels such as "25% Complete", "50% Complete", "75% Complete", etc to show a history of a specific issues timeline from start to completion in terms of perceived % completed.  This helps with post-launch reviews, and with analysis of problematic issues.
 
 7. History of Issues within a Milestone
 
- 7.1 History of percentage complete of a Milestone
+ 7.1. History of percentage complete of a Milestone
  
 8. Break down of GFM Task Lists per users and aggregate per repo and across multiple repos
 
-8. History of Issue Assignment per issue.
+9. History of Issue Assignment per issue.
 
 
 
