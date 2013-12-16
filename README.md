@@ -1,7 +1,7 @@
 GitHub-Analytics
 ================
 
-Dec 10, 2013: Check out https://github.com/StephenOTT/GitHub-Time-Tracking-Hooker for initial designs for Time Tracking with GitHub Issue Tracker
+Dec 10, 2013: Check out https://github.com/StephenOTT/GitHub-Time-Tracking for Time Tracking with GitHub Issue Tracker, Milestones, and Code Commits
 
 Dec 1, 2013: Make sure to add the following commit/code to Sewyer gem for proper JSON response. This is needed because of the way that GitHub Octokit.rb 2.x returns its responses as `Sewyer::Reponses`  --https://github.com/lostisland/sawyer/pull/15
 
