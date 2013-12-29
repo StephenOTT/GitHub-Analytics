@@ -118,6 +118,8 @@ Process Overview:
 46. Most Referenced Issues
 47. Most Referenced Users
 48. Most Referenced Repos
+49. Compare Followers of 2 or more users.  See which followers they have in common.
+50. Compare Stared Repos of 2 or more users: The Repos the users have Stared.  See which Repos they users have in common.
 
 
 ###Events Analysis:
