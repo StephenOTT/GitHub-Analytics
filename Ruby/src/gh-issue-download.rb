@@ -2,6 +2,7 @@ require 'octokit'
 require 'mongo'
 require 'gchart'
 require 'date'
+require 'JSON'
 
 include Mongo
 
