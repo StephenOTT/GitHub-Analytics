@@ -505,8 +505,8 @@ start = IssueDownload.new("wet-boew/wet-boew-wpss", :mongoClearRecords => true)
 
 start.ghAuthenticate("USERNAME", "PASSWORD")
 start.getIssues
-start.getRepositoryEvents
+# start.getRepositoryEvents
 # start.getOrgMemberList
 # start.getOrgTeamsInfoAllList
-start.getRepoLabelsList
-start.getMilestonesListforRepo
+# start.getRepoLabelsList
+# start.getMilestonesListforRepo
