@@ -44,7 +44,7 @@ class AnalyzeGHData
 	end
 
 
-	def analyzeIssuesCreatedClosedCountPerMonth 
+	def analyzeIssuesCreatedClosedCountPerMonth
 		
 		issuesCreatedPerMonth = @collIssues.aggregate([
 			{ "$match" => {closed_at: {"$ne" => nil}}},
