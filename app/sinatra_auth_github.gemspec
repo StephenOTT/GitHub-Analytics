@@ -20,10 +20,12 @@ Gem::Specification.new do |s|
   s.add_dependency "chronic_duration"
   s.add_dependency "mongo"
   s.add_dependency "bson_ext"
+  s.add_dependency 'sinatra-flash', '~> 0.3.0'
+  s.add_dependency 'chartkick'
 
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec",     "~>2.4.0"
-  s.add_development_dependency "shotgun"
+  # s.add_development_dependency "shotgun"
   s.add_development_dependency "randexp",   "~>0.1.5"
   s.add_development_dependency "rack-test", "~>0.5.3"
 
