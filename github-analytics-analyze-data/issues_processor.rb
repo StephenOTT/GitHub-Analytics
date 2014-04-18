@@ -9,7 +9,20 @@ module Issues_Processor
       issuesOpenedPerUser = Issues_Aggregation.get_issues_opened_per_user(repo, githubAuthInfo)
 
       return issuesOpenedPerUser
+    end
 
+    def self.analyze_issues_opened_per_month(repo, githubAuthInfo)
+      Issues_Aggregation.controller
+      issuesOpenedPerMonth = Issues_Aggregation.get_issues_created_per_month(repo, githubAuthInfo)
+
+      return issuesOpenedPerMonth
+    end
+
+    def self.analyze_issues_closed_per_month(repo, githubAuthInfo)
+      Issues_Aggregation.controller
+      issuesClosedPerMonth = Issues_Aggregation.get_issues_closed_per_month(repo, githubAuthInfo)
+
+      return issuesClosedPerMonth
     end
 
 
