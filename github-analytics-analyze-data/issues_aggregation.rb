@@ -36,15 +36,15 @@ module Issues_Aggregation
 	def self.get_issues_created_per_month(repo, githubAuthInfo)
 		totalIssuesOpen = Mongo_Connection.aggregate_test([
 			{ "$match" => { downloaded_by_username: githubAuthInfo[:username], downloaded_by_userID: githubAuthInfo[:userID] }},
-			{ "$match" => {state: { 
-										"$ne" => "closed"
-										}}},
+			# { "$match" => {state: { 
+			# 							"$ne" => "closed"
+			# 							}}},
 			{"$project" => {number: 1, 
 							_id: 1, 
 							repo: 1,
 							state: 1,
 							created_at: 1,
-							closed_at: 1,
+							# closed_at: 1,
 							created_month: {"$month" => "$created_at"}, 
 							created_year: {"$year" => "$created_at"}, 
 							# closed_month: {"$month" => "$closed_at"}, 
@@ -55,7 +55,7 @@ module Issues_Aggregation
 
 			{ "$group" => { _id: {
 							repo: "$repo",
-							state: "$state",
+							# state: "$state",
 							# user: "$user.login",},
 							created_year: "$created_year",
 							created_month: "$created_month"},
@@ -72,18 +72,22 @@ module Issues_Aggregation
 			output << x["_id"]
 		end
 
-			outputFirst = output.first
-			outputLast = output.last
-
-        	until outputFirst["converted_date"] == outputLast["converted_date"] do
-        			outputFirst["converted_date"] = outputFirst["converted_date"].next_month
-
-        			if outputFirst["converted_date"] == outputLast["converted_date"]
-        				break
-        			end
-        			
-        			output << {"repo" => outputFirst["repo"], "state" => outputFirst["state"], "converted_date" => outputFirst["converted_date"], "count" => 0 }
-        	end
+		# TODO build this out into its own method to ensure DRY.
+		if output.empty? == false
+			# Get Missing Months/Years from Date Range
+			a = []
+			output.each do |x|
+				a << x["converted_date"]
+			end
+			b = (output.first["converted_date"] - 3.months..output.last["converted_date"] + 3.months).to_a
+			zeroValueDates = (b.map{ |date| date.strftime("%b %Y") } - a.map{ |date| date.strftime("%b %Y") }).uniq
+			
+			zeroValueDates.each do |zvd|
+				zvd = DateTime.parse(zvd)
+				output << {"repo"=> repo , "state"=>"open", "created_year"=>zvd.strftime("%Y").to_i, "created_month"=>zvd.strftime("%m").to_i, "count"=>0, "converted_date"=>zvd}
+			end
+			# END of Get Missing Months/Years From Date Range
+		end
 
 		return output
 	end
@@ -98,8 +102,8 @@ module Issues_Aggregation
 			{"$project" => {number: 1, 
 							_id: 1, 
 							repo: 1,
-							state: 1,
-							created_at: 1,
+							# state: 1,
+							# created_at: 1,
 							closed_at: 1,
 							closed_month: {"$month" => "$closed_at"}, 
 							closed_year: {"$year" => "$closed_at"}, 
@@ -111,7 +115,7 @@ module Issues_Aggregation
 
 			{ "$group" => { _id: {
 							repo: "$repo",
-							state: "$state",
+							# state: "$state",
 							# user: "$user.login",},
 							closed_year: "$closed_year",
 							closed_month: "$closed_month"},
@@ -130,14 +134,14 @@ module Issues_Aggregation
 			output << x["_id"]
 		end
 
-		
+		# TODO build this out into its own method
 		if output.empty? == false
 			# Get Missing Months/Years from Date Range
 			a = []
 			output.each do |x|
 				a << x["converted_date"]
 			end
-			b = (output.first["converted_date"]..output.last["converted_date"]).to_a
+			b = (output.first["converted_date"] - 3.months..output.last["converted_date"] + 3.months).to_a
 			zeroValueDates = (b.map{ |date| date.strftime("%b %Y") } - a.map{ |date| date.strftime("%b %Y") }).uniq
 			
 			zeroValueDates.each do |zvd|
@@ -491,10 +495,10 @@ end
 
 
 # Debug code
-Issues_Aggregation.controller
+# Issues_Aggregation.controller
 # puts Issues_Aggregation.get_issues_opened_per_user("StephenOTT/Test1", {:username => "StephenOTT", :userID => 1994838})
-# puts Issues_Aggregation.get_issues_created_per_month("StephenOTT/Test1", {:username => "StephenOTT", :userID => 1994838})
-puts Issues_Aggregation.get_issues_closed_per_month("StephenOTT/Test1", {:username => "StephenOTT", :userID => 1994838})
+# puts Issues_Aggregation.get_issues_created_per_month("StephenOTT/OPSEU", {:username => "StephenOTT", :userID => 1994838})
+# puts Issues_Aggregation.get_issues_closed_per_month("StephenOTT/OPSEU", {:username => "StephenOTT", :userID => 1994838})
 
 
 

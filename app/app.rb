@@ -45,6 +45,19 @@ module Example
     end
 
 
+    get '/repos' do
+      if authenticated? == true
+        @reposList = Sinatra_Helpers.get_all_repos_for_logged_user(get_auth_info)
+        erb :repos_listing
+      else
+        flash[:danger] = "You must be logged in"
+        erb :unauthenticated
+      end     
+    end
+
+
+
+
 
     get '/download' do
       if authenticated? == true
@@ -100,46 +113,23 @@ module Example
 
         @issuesOpenedPerMonth = Sinatra_Helpers.analyze_issues_opened_per_month(params['user'], params['repo'], get_auth_info )
         @issuesClosedPerMonth = Sinatra_Helpers.analyze_issues_closed_per_month(params['user'], params['repo'], get_auth_info )
-        @issuesOpenedClosedPerMonthChartReady ={}
-
-        oldestOpenDate = @issuesOpenedPerMonth.first["converted_date"]
-        newsestOpenDate = @issuesOpenedPerMonth.last["converted_date"]
-        currentOpenDateItterator = oldestOpenDate
-        while currentOpenDateItterator != newsestOpenDate do
-           @issuesOpenedPerMonth << {"count" => 0, "converted_date" => currentOpenDateItterator.next_month}
-        end
-
-        oldestClosedDate = @issuesClosedPerMonth.first["converted_date"]
-        newsestClosedDate = @issuesClosedPerMonth.last["converted_date"]
-        currentClosedDateItterator = oldestClosedDate
-        while currentClosedDateItterator != newsestClosedDate do
-           @issuesClosedPerMonth << {"count" => 0, "converted_date" => currentClosedDateItterator.next_month}
-        end
-
-
+        @issuesOpenedPerMonthChartReady ={}
+        @issuesClosedPerMonthChartReady ={}
 
 
         @issuesOpenedPerMonth.each do |i|
-          @issuesOpenedPerMonthChartReady[i["date"]] = i["count"]
+          @issuesOpenedPerMonthChartReady[i["converted_date"]] = i["count"]
         end
 
         @issuesClosedPerMonth.each do |i|
-          @issuesClosedPerMonthChartReady[i["date"]] = i["count"]
+          @issuesClosedPerMonthChartReady[i["converted_date"]] = i["count"]
         end
-
-        # flash[:success] = "GitHub Data downloaded successfully"
-        # redirect '/download'
       
         erb :analyze_issues_opened_closed_per_month
       else
         redirect '/'
       end
     end
-
-# <%= line_chart [
-#   {name: "Series A", data: series_a},
-#   {name: "Series B", data: series_b}
-# ] %>
 
 
 

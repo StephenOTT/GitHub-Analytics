@@ -1,1 +1,91 @@
-<%= @issuesOpenedPerMonth %>
+<script src="//www.google.com/jsapi"></script>
+<script src="/vendor/chartkick.js"></script>
+
+<h1>Issues Opened/Closed Per Month</h1>
+
+<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-6 column">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						Opened Issues Per Month
+					</h3>
+				</div>
+				<div class="panel-body">
+
+					 <table class="table">
+					  <tbody>
+					    <tr>
+					      <th>Date</th> 
+					      <th>Count</th>
+					    </tr>
+					    <% @issuesOpenedPerMonth.each do |i| %>
+					        <tr>
+					          <td><%= i["converted_date"].strftime("%B %Y") %></td>
+					          <td><%= i["count"] %></td>
+					        </tr>
+					    <% end %>
+					  </tbody>
+					</table>
+
+				</div>
+<!-- 				<div class="panel-footer">
+					Panel footer
+				</div> -->
+			</div>
+		</div>
+		<div class="col-md-6 column">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						Closed Issues Per Month
+					</h3>
+				</div>
+				<div class="panel-body">
+					 
+					 <table class="table">
+					  <tbody>
+					    <tr>
+					      <th>Date</th> 
+					      <th>Count</th>
+					    </tr>
+					    <% @issuesClosedPerMonth.each do |i| %>
+					        <tr>
+					          <td><%= i["converted_date"].strftime("%B %Y") %></td>
+					          <td><%= i["count"] %></td>
+					        </tr>
+					    <% end %>
+					  </tbody>
+					</table>
+
+				</div>
+<!-- 				<div class="panel-footer">
+					Panel footer
+				</div> -->
+			</div>
+		</div>
+	</div>
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						Line Chart of Issues Open/Closed Per Month
+					</h3>
+				</div>
+				<div class="panel-body">
+					<%= line_chart ([
+						{name: "Opened", data: @issuesOpenedPerMonthChartReady} ,
+						{name: "Closed", data: @issuesClosedPerMonthChartReady}
+						]),:library => {:hAxis => {:format => 'MMM y'}}
+					%>
+				</div>
+
+<!-- 				<div class="panel-footer">
+					Panel footer
+				</div> -->
+			</div>			
+		</div>
+	</div>
+</div>

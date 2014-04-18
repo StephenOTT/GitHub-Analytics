@@ -3,7 +3,7 @@ require_relative './mongo'
 module System_Wide_Aggregation
 
 	def self.controller
-		Mongo_Connection.mongo_Connect("localhost", 27017, "GitHub-TimeTracking", "TimeTrackingCommits")
+		Mongo_Connection.mongo_Connect("localhost", 27017, "GitHub-Analytics", "Issues-Data")
 	end
 
 	def self.get_all_repos_assigned_to_logged_user(githubAuthInfo)
@@ -12,16 +12,16 @@ module System_Wide_Aggregation
 			{"$project" => {_id: 1, 
 							repo: 1}},			
 			{ "$group" => { _id: {
-							repo_name: "$repo"
+							repo: "$repo"
 							}}}
 							])
 
 
 		output = []
 		reposAssignedToLoggedUser.each do |x|
-			toParseString = x["_id"]["repo_name"]
+			toParseString = x["_id"]["repo"]
 			x["_id"]["username"] = toParseString.partition("/").first
-			x["_id"]["repo_name"] = toParseString.partition("/").last
+			x["_id"]["repo"] = toParseString.partition("/").last
 			x["_id"]["repo_name_full"] = toParseString
 			output << x["_id"]
 		end

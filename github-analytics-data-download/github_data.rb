@@ -23,7 +23,7 @@ module GitHub_Data
 	def self.gh_sinatra_auth(ghUser)
 
 		@ghClient = ghUser
-		Octokit.auto_paginate = true
+		# Octokit.auto_paginate = true
 		return @ghClient
 
 	end
@@ -32,7 +32,7 @@ module GitHub_Data
 		@ghClient = Octokit::Client.new(
 										:login => username.to_s, 
 										:password => password.to_s, 
-										:auto_paginate => true
+										# :auto_paginate => true
 										)
 	end
 
@@ -40,12 +40,27 @@ module GitHub_Data
 		issueResultsOpen = @ghClient.list_issues(repo, {
 			:state => :open
 			})
+
+		ghLastReponseOpen = @ghClient.last_response
 		responseOpen = JSON.parse(@ghClient.last_response.response_body)
 		
+		while ghLastReponseOpen.rels.include?(:next) do
+			ghLastReponseOpen = ghLastReponseOpen.rels[:next].get
+			responseOpen.concat(JSON.parse(ghLastReponseOpen.response_body))
+		end
+
+
 		issueResultsClosed = @ghClient.list_issues(repo, {
 			:state => :closed
 			})
+
+		ghLastReponseClosed = @ghClient.last_response
 		responseClosed = JSON.parse(@ghClient.last_response.response_body)
+
+		while ghLastReponseClosed.rels.include?(:next) do
+			ghLastReponseClosed = ghLastReponseClosed.rels[:next].get
+			responseClosed.concat(JSON.parse(ghLastReponseClosed.response_body))
+		end
 
 
 		return mergedIssues = responseOpen + responseClosed
@@ -64,7 +79,18 @@ module GitHub_Data
 
 	def self.get_Issue_Comments(repo, issueNumber)
 		issueComments = @ghClient.issue_comments(repo, issueNumber)
+		
+		ghLastReponseComments = @ghClient.last_response
+
 		responseComments = JSON.parse(@ghClient.last_response.response_body)
+	
+		while ghLastReponseComments.rels.include?(:next) do
+			ghLastReponseComments = ghLastReponseComments.rels[:next].get
+			responseComments.concat(JSON.parse(ghLastReponseComments.response_body))
+		end
+		
+		return responseComments
+
 	end
 
 	# def self.get_code_commits(repo)
