@@ -1,6 +1,6 @@
 require 'sinatra/base'
+require 'sinatra/flash'
 require 'warden/github'
-# require_relative '../../../../controller'
 
 module Sinatra
   module Auth
