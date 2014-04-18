@@ -30,7 +30,7 @@
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li><a href="/download">Download Data</a></li>
-            <li><a href="/analyze">Analyze</a></li>
+            <li><a href="/analyze/issues/StephenOTT/Test1">Analyze</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
               <li class="dropdown">
@@ -47,32 +47,17 @@
           </ul>
         </div><!--/.nav-collapse -->
       </div>
-      <!--Messaging Code Start -->
-      <%if @dangerMessage then %>
-          <div class="alert alert-danger alert-dismissable">
+
+
+
+      <% flash_types.select{ |kind| flash.has_key?(kind) }.each do |kind| %>
+          <div class="alert alert-<%= kind %> alert-dismissable">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            <%=@dangerMessage%>
+            <%= flash[kind] %>
           </div>
       <% end %>
-      <%if @warningMessage then %>
-          <div class="alert alert-warning alert-dismissable">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            <%=@warningMessage%>
-          </div>
-      <% end %>
-      <%if @infoMessage then %>
-          <div class="alert alert-info alert-dismissable">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            <%=@infoMessage%>
-          </div>
-      <% end %>
-      <%if @successMessage then %>
-          <div class="alert alert-success alert-dismissable">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            <%=@successMessage%>
-          </div>
-      <% end %>  
-      <!--Messaging Code End -->
+
+      
       <div>
             <%= yield %>
       </div>
