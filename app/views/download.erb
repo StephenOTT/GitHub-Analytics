@@ -1,0 +1,31 @@
+<script>
+function process()
+{
+var url="/download/" + document.getElementById("username").value + "/" + document.getElementById("repository").value;
+location.href=url;
+return false;
+}
+</script>
+
+
+<p>Provide your GitHub username/organization and Repository to download GitHub Issues data.</p>
+
+<p>Example: StephenOTT/Test1</p>
+<form class="form-inline" role="form" onSubmit="return process();">
+  <div class="form-group">
+    <label class="sr-only" for="username">Username/Organization</label>
+    <input type="text" class="form-control" id="username" placeholder="Username">
+  </div>
+  <div class="form-group">
+    <label class="sr-only" for="repository">Repository</label>
+    <input type="text" class="form-control" id="repository" placeholder="Repository">
+  </div>
+  <button type="submit" class="btn btn-primary">Run</button>
+  <br>
+  <div class="checkbox">
+    <label>
+      <input type="checkbox"> <strike>Clear Mongo Collection (Debug)</strike>
+    </label>
+  </div>
+</form>
+<a href="/download/StephenOTT/Test1">Download</a>

@@ -1,0 +1,71 @@
+<script src="//www.google.com/jsapi"></script>
+<script src="/vendor/chartkick.js"></script>
+
+<h1>Issues Opened Per User</h1>
+
+<div class="container">
+  <div class="row clearfix">
+    <div class="col-md-12 column">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h2 class="panel-title">
+            Repository
+          </h2>
+        </div>
+        <div class="panel-body">
+          <p><%= @issuesOpenedPerUser.first["repo"] %></p>
+        </div>
+<!--         <div class="panel-footer">
+          Panel footer
+        </div> -->
+      </div>
+    </div>
+  </div>
+  <div class="row clearfix">
+    <div class="col-md-6 column">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h2 class="panel-title">
+            Issues Open Per User
+          </h2>
+        </div>
+        <div class="panel-body">
+    
+    <table class="table">
+      <tbody>
+        <tr>
+          <th>Username</th> 
+          <th>Opened Issues Count</th>
+        </tr>
+        <% @issuesOpenedPerUser.each do |i| %>
+            <tr>
+              <td><%= i["user"] %></td>
+              <td><%= i["issues_opened_count"] %></td>
+            </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+        </div>
+<!--         <div class="panel-footer">
+          Panel footer
+        </div> -->
+      </div>
+    </div>
+    <div class="col-md-6 column">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h2 class="panel-title">
+            Pie Chart
+          </h2>
+        </div>
+        <div class="panel-body">
+          <%= pie_chart(@issuesOpenedPerUserChartReady) %>
+        </div>
+<!--         <div class="panel-footer">
+          Panel footer
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>
