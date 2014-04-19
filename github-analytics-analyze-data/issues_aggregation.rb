@@ -89,6 +89,8 @@ module Issues_Aggregation
 			# END of Get Missing Months/Years From Date Range
 		end
 
+		# Sorts the Output hash so the dates are in order
+		output = output.sort_by { |hsh| hsh["converted_date"] }
 		return output
 	end
 
@@ -151,6 +153,8 @@ module Issues_Aggregation
 			# END of Get Missing Months/Years From Date Range
 		end
 
+		# Sorts the Output hash so the dates are in order
+		output = output.sort_by { |hsh| hsh["converted_date"] }
 		return output
 	end
 
