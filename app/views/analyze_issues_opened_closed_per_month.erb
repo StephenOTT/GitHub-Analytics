@@ -75,10 +75,10 @@
 					</h3>
 				</div>
 				<div class="panel-body">
-					<%= line_chart ([
+					<%= column_chart ([
 						{name: "Opened", data: @issuesOpenedPerMonthChartReady} ,
 						{name: "Closed", data: @issuesClosedPerMonthChartReady}
-						]),:library => {:hAxis => {:format => 'MMM y'}}
+						]),:library => {:hAxis => {:format => 'MMM y'}, :isStacked => true}
 					%>
 				</div>
 
