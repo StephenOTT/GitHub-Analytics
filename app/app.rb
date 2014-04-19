@@ -104,11 +104,11 @@ module Example
         @issuesClosedPerMonthChartReady ={}
 
         @issuesOpenedPerMonth.each do |i|
-          @issuesOpenedPerMonthChartReady[i["converted_date"]] = i["count"]
+          @issuesOpenedPerMonthChartReady[i["converted_date"].strftime("%b %Y")] = i["count"]
         end
 
         @issuesClosedPerMonth.each do |i|
-          @issuesClosedPerMonthChartReady[i["converted_date"]] = i["count"]
+          @issuesClosedPerMonthChartReady[i["converted_date"].strftime("%b %Y")] = i["count"]
         end
       
         erb :analyze_issues_opened_closed_per_month
