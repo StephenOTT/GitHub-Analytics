@@ -14,7 +14,6 @@ module Example
     }
 
     register Sinatra::Auth::Github
-    
 
     helpers do
 
@@ -26,7 +25,6 @@ module Example
         [:danger, :warning, :info, :success]
       end
     end
-
 
     get '/' do
       # authenticate!
@@ -44,7 +42,6 @@ module Example
 
     end
 
-
     get '/repos' do
       if authenticated? == true
         @reposList = Sinatra_Helpers.get_all_repos_for_logged_user(get_auth_info)
@@ -54,10 +51,6 @@ module Example
         erb :unauthenticated
       end     
     end
-
-
-
-
 
     get '/download' do
       if authenticated? == true
@@ -69,7 +62,6 @@ module Example
         
       end 
     end
-
 
     get '/download/:user/:repo' do
       # authenticate!
@@ -85,7 +77,6 @@ module Example
       end
     end
 
-
     get '/analyze/issues/:user/:repo' do
       # authenticate!
       if authenticated? == true
@@ -93,11 +84,9 @@ module Example
         @issuesOpenedPerUser = Sinatra_Helpers.analyze_issues_opened_per_user(params['user'], params['repo'], get_auth_info )
         @issuesOpenedPerUserChartReady ={}
 
-
         @issuesOpenedPerUser.each do |i|
           @issuesOpenedPerUserChartReady[i["user"]] = i["issues_opened_count"]
         end
-
         # flash[:success] = "GitHub Data downloaded successfully"
         # redirect '/download'
       
@@ -115,7 +104,6 @@ module Example
         @issuesClosedPerMonth = Sinatra_Helpers.analyze_issues_closed_per_month(params['user'], params['repo'], get_auth_info )
         @issuesOpenedPerMonthChartReady ={}
         @issuesClosedPerMonthChartReady ={}
-
 
         @issuesOpenedPerMonth.each do |i|
           @issuesOpenedPerMonthChartReady[i["converted_date"]] = i["count"]
