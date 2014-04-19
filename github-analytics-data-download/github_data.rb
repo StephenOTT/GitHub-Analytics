@@ -66,7 +66,6 @@ module GitHub_Data
 			responseClosed.concat(JSON.parse(ghLastReponseClosed.response_body))
 		end
 
-
 		return mergedIssues = responseOpen + responseClosed
 	end
 
@@ -96,7 +95,6 @@ module GitHub_Data
 		end
 		
 		return responseComments
-
 	end
 
 	# def self.get_code_commits(repo)
