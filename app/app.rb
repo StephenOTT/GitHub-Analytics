@@ -87,8 +87,6 @@ module Example
         @issuesOpenedPerUser.each do |i|
           @issuesOpenedPerUserChartReady[i["user"]] = i["issues_opened_count"]
         end
-        # flash[:success] = "GitHub Data downloaded successfully"
-        # redirect '/download'
       
         erb :analyze_issues_opened_per_user
       else
