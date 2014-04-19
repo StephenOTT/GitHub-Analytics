@@ -79,7 +79,7 @@ module Issues_Aggregation
 			output.each do |x|
 				a << x["converted_date"]
 			end
-			b = (output.first["converted_date"] - 3.months..output.last["converted_date"] + 3.months).to_a
+			b = (output.first["converted_date"]..output.last["converted_date"]).to_a
 			zeroValueDates = (b.map{ |date| date.strftime("%b %Y") } - a.map{ |date| date.strftime("%b %Y") }).uniq
 			
 			zeroValueDates.each do |zvd|
@@ -143,7 +143,7 @@ module Issues_Aggregation
 			output.each do |x|
 				a << x["converted_date"]
 			end
-			b = (output.first["converted_date"] - 3.months..output.last["converted_date"] + 3.months).to_a
+			b = (output.first["converted_date"]..output.last["converted_date"]).to_a
 			zeroValueDates = (b.map{ |date| date.strftime("%b %Y") } - a.map{ |date| date.strftime("%b %Y") }).uniq
 			
 			zeroValueDates.each do |zvd|
