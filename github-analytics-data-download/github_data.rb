@@ -24,6 +24,7 @@ module GitHub_Data
 
 		@ghClient = ghUser
 		# Octokit.auto_paginate = true
+		Octokit.per_page = 100
 		return @ghClient
 
 	end
@@ -33,12 +34,14 @@ module GitHub_Data
 										:login => username.to_s, 
 										:password => password.to_s, 
 										# :auto_paginate => true
+										:per_page => 100
 										)
 	end
 
 	def self.get_Issues(repo)
 		issueResultsOpen = @ghClient.list_issues(repo, {
-			:state => :open
+			:state => :open,
+			:per_page => 100
 			})
 
 		ghLastReponseOpen = @ghClient.last_response
@@ -51,7 +54,8 @@ module GitHub_Data
 
 
 		issueResultsClosed = @ghClient.list_issues(repo, {
-			:state => :closed
+			:state => :closed,
+			:per_page => 100
 			})
 
 		ghLastReponseClosed = @ghClient.last_response
@@ -78,7 +82,9 @@ module GitHub_Data
 	# end
 
 	def self.get_Issue_Comments(repo, issueNumber)
-		issueComments = @ghClient.issue_comments(repo, issueNumber)
+		issueComments = @ghClient.issue_comments(repo, issueNumber, {
+			:per_page => 100
+			})
 		
 		ghLastReponseComments = @ghClient.last_response
 
