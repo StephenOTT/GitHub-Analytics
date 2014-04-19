@@ -23,13 +23,18 @@ Primary use at this point is project management based analytics that are not cur
 Github Analytics: Ruby Ottawa Meetup (http://bit.ly/1cVFe9s)
 
 
-Process Overview:
+
+##Screenshots:
+![screen shot 2014-04-19 at 2 06 35 am](https://cloud.githubusercontent.com/assets/1994838/2747795/e1c498a4-c788-11e3-874d-29a6c54dae9f.png)
+
+
+##Process Overview:
 ![github-analytics process overview](https://f.cloud.github.com/assets/1994838/1708517/a88ca764-610f-11e3-8d0a-48500edb0d83.png)
 
 
 -
 
-### Actionable Reporting and Analysis
+## Actionable Reporting and Analysis
 
 1. Issues Assigned to each user with size/complexity of issue identified: See Sprint.ly for great example: https://github.com/StephenOTT/GitHub-Analytics/issues/1#issuecomment-30169941
 
@@ -60,7 +65,7 @@ Process Overview:
 
 
 
-###Types of Analysis:
+## Types of Analysis:
 
 1. Issues Closed (Count) per user.
 2. Total comments made per user.
@@ -124,7 +129,7 @@ Process Overview:
 50. Compare Stared Repos of 2 or more users: The Repos the users have Stared.  See which Repos they users have in common.
 
 
-###Events Analysis:
+##Events Analysis:
 
 1. hourly or daily download of events
 2. types of events most popular, per user, etc.
@@ -170,16 +175,16 @@ Pie chart of Issue Event Types - All Issue events for all issues
 - [x] Downloading of Team data
 - [x] Turn Github DateTime string into recognized Mongodb dateTime.  Currently github datetime string is not properly recognized by Mongodb. 
 - [x] refactor method usage of Date conversions
-- [ ] refactor analyze methods names and structure
-- [ ] refactor methods into multifile MVC part of sinatra conversion
+- [x] refactor analyze methods names and structure
+- [x] refactor methods into multifile MVC part of sinatra conversion
 - [ ] Build Dashboard that is equiv of the Github Survivor app (https://github.com/99designs/githubsurvivor)
 - [ ] PRIORITY: Develop Temp glue code for proper timezone query and output.  Because of Mongos lack of timeline support at the query level for the Aggregation framework.
 - [ ] Refactor code to follow worker/job model to support sidekiq for calling jobs.  Current issue is mainly based in the calling of issues, issue comments, and issue events.  Each of these three can easily tax out the GitHub API hourly rate limit for the specific user.  This mainly occurs for large projects such as WET-BOEW/WET-BOEW.
-- [ ] Refactor code for more ruby like Naming conventions and integration of methods and classes. 
+- [x] Refactor code for more ruby like Naming conventions and integration of methods and classes. 
 
 
 
-## Data structure Overview :
+## Data structure Overview (Out of Date):
 ---
 https://github.com/StephenOTT/GitHub-Analytics/issues/1#issuecomment-29685800
 
@@ -209,7 +214,7 @@ https://github.com/StephenOTT/GitHub-Analytics/issues/1#issuecomment-29685800
 
 1. With some simple modifications for uploading to GitHub rather than just downloading from GitHub, a full GitHub "Backup your Repo" solution can be provided.  Backup.co is currently providing a private beta for this.  This would be a easy solution to provide
 
-2. Time Tracking.  Using GFM and text searching on the DB side we can gather time tracking information.
+2. ~~Time Tracking.  Using GFM and text searching on the DB side we can gather time tracking information~~  Added as part of GitHub-Time-Tracking Web App.
 
 3. Network Analysis of GitHub Issues to show network graph of issue mentions and use mentions.  This can show dependencies within the project/issue tracker and show who is the most popular user to be mentioned for types of issues.  This would produce very interesting graphics for large projects.
 
