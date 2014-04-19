@@ -1,6 +1,6 @@
 require_relative './mongo'
 require 'date'
-require "active_support/all"
+require "active_support/core_ext"
 
 
 module Issues_Aggregation
