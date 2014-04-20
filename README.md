@@ -54,6 +54,12 @@ Github Analytics: Ruby Ottawa Meetup (http://bit.ly/1cVFe9s)
 ![screen shot 2014-04-19 at 2 06 35 am](https://cloud.githubusercontent.com/assets/1994838/2747795/e1c498a4-c788-11e3-874d-29a6c54dae9f.png)
 
 
+-----
+
+
+![screen shot 2014-04-20 at 4 08 23 pm](https://cloud.githubusercontent.com/assets/1994838/2751355/a3b7bc9a-c8c7-11e3-8430-a2c065a2c98f.png)
+
+
 ##Process Overview:
 ![github-analytics process overview](https://f.cloud.github.com/assets/1994838/1708517/a88ca764-610f-11e3-8d0a-48500edb0d83.png)
 
