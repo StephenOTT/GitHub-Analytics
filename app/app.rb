@@ -98,8 +98,8 @@ module Example
       # authenticate!
       if authenticated? == true
 
-        @issuesOpenedPerMonth = Sinatra_Helpers.analyze_issues_opened_per_month(params['user'], params['repo'], get_auth_info )
-        @issuesClosedPerMonth = Sinatra_Helpers.analyze_issues_closed_per_month(params['user'], params['repo'], get_auth_info )
+        @issuesOpenedPerMonth = Sinatra_Helpers.analyze_issues_opened_per_month(params['user'], params['repo'], get_auth_info)
+        @issuesClosedPerMonth = Sinatra_Helpers.analyze_issues_closed_per_month(params['user'], params['repo'], get_auth_info)
         @issuesOpenedPerMonthChartReady ={}
         @issuesClosedPerMonthChartReady ={}
 
@@ -110,6 +110,25 @@ module Example
         @issuesClosedPerMonth.each do |i|
           @issuesClosedPerMonthChartReady[i["converted_date"].strftime("%b %Y")] = i["count"]
         end
+
+
+
+        @issuesOpenedPerWeek = Sinatra_Helpers.analyze_issues_opened_per_week(params['user'], params['repo'], get_auth_info)
+        @issuesClosedPerWeek = Sinatra_Helpers.analyze_issues_closed_per_week(params['user'], params['repo'], get_auth_info)
+        @issuesOpenedPerWeekChartReady ={}
+        @issuesClosedPerWeekChartReady ={}
+
+        @issuesOpenedPerWeek.each do |i|
+          @issuesOpenedPerWeekChartReady["Week #{i["converted_date"].strftime("%U, %Y")}"] = i["count"]
+        end
+
+        @issuesClosedPerWeek.each do |i|
+          @issuesClosedPerWeekChartReady["Week #{i["converted_date"].strftime("%U, %Y")}"] = i["count"]
+        end
+
+
+
+
       
         erb :analyze_issues_opened_closed_per_month
       else

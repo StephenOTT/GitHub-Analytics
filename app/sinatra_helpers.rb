@@ -29,4 +29,14 @@ module Sinatra_Helpers
 		Issues_Processor.analyze_issues_closed_per_month(userRepo, githubAuthInfo)
     end
 
+    def self.analyze_issues_opened_per_week(user, repo, githubAuthInfo)
+        userRepo = "#{user}/#{repo}" 
+        Issues_Processor.analyze_issues_opened_per_week(userRepo, githubAuthInfo)
+    end
+
+    def self.analyze_issues_closed_per_week(user, repo, githubAuthInfo)
+        userRepo = "#{user}/#{repo}" 
+        Issues_Processor.analyze_issues_closed_per_week(userRepo, githubAuthInfo)
+    end
+
 end

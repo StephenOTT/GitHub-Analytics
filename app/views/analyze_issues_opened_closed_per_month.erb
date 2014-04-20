@@ -1,7 +1,7 @@
 <script src="//www.google.com/jsapi"></script>
 <script src="/vendor/chartkick.js"></script>
 
-<h1>Issues Opened/Closed Per Month</h1>
+<h1>Issues Opened/Closed Timeline Analysis</h1>
 
 <div class="container">
 	<div class="row clearfix">
@@ -71,14 +71,15 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h3 class="panel-title">
-						Line Chart of Issues Open/Closed Per Month
+						Column Chart of Issues Open/Closed Per Month
 					</h3>
 				</div>
 				<div class="panel-body">
 					<%= column_chart ([
-						{name: "Opened", data: @issuesOpenedPerMonthChartReady} ,
+						{name: "Opened", data: @issuesOpenedPerMonthChartReady},
 						{name: "Closed", data: @issuesClosedPerMonthChartReady}
-						]),:library => {:hAxis => {:format => 'MMM y'}, :isStacked => true}
+						]),:library => { :isStacked => true,
+										  }
 					%>
 				</div>
 
@@ -88,4 +89,96 @@
 			</div>			
 		</div>
 	</div>
+	
+
+	<hr>
+	
+
+	<div class="row clearfix">
+		<div class="col-md-6 column">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						Opened Issues Per Week
+					</h3>
+				</div>
+				<div class="panel-body">
+
+					 <table class="table">
+					  <tbody>
+					    <tr>
+					      <th>Date</th> 
+					      <th>Count</th>
+					    </tr>
+					    <% @issuesOpenedPerWeek.each do |i| %>
+					        <tr>
+					          <td><%= i["converted_date"].strftime("Week %U, %Y") %></td>
+					          <td><%= i["count"] %></td>
+					        </tr>
+					    <% end %>
+					  </tbody>
+					</table>
+
+				</div>
+<!-- 				<div class="panel-footer">
+					Panel footer
+				</div> -->
+			</div>
+		</div>
+
+		<div class="col-md-6 column">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						Closed Issues Per Week
+					</h3>
+				</div>
+				<div class="panel-body">
+					 
+					 <table class="table">
+					  <tbody>
+					    <tr>
+					      <th>Date</th> 
+					      <th>Count</th>
+					    </tr>
+					    <% @issuesClosedPerWeek.each do |i| %>
+					        <tr>
+					          <td><%= i["converted_date"].strftime("Week %U, %Y") %></td>
+					          <td><%= i["count"] %></td>
+					        </tr>
+					    <% end %>
+					  </tbody>
+					</table>
+
+				</div>
+<!-- 				<div class="panel-footer">
+					Panel footer
+				</div> -->
+			</div>
+		</div>
+	</div>
+
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						Column Chart of Issues Open/Closed Per Week
+					</h3>
+				</div>
+				<div class="panel-body">
+					<%= column_chart ([
+						{name: "Opened", data: @issuesOpenedPerWeekChartReady},
+						{name: "Closed", data: @issuesClosedPerWeekChartReady}
+						]),:library => { :isStacked => true,
+										  }
+					%>
+				</div>
+
+<!-- 				<div class="panel-footer">
+					Panel footer
+				</div> -->
+			</div>			
+		</div>
+	</div>	
 </div>

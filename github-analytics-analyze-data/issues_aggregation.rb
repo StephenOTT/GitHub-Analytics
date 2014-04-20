@@ -159,6 +159,140 @@ module Issues_Aggregation
 	end
 
 
+	def self.get_issues_created_per_week(repo, githubAuthInfo)
+		totalIssuesOpen = Mongo_Connection.aggregate_test([
+			{ "$match" => { downloaded_by_username: githubAuthInfo[:username], downloaded_by_userID: githubAuthInfo[:userID] }},
+			# { "$match" => {state: { 
+			# 							"$ne" => "closed"
+			# 							}}},
+			{"$project" => {number: 1, 
+							_id: 1, 
+							repo: 1,
+							state: 1,
+							created_at: 1,
+							# closed_at: 1,
+							created_month: {"$week" => "$created_at"}, 
+							created_year: {"$year" => "$created_at"}, 
+							# closed_month: {"$month" => "$closed_at"}, 
+							# closed_year: {"$year" => "$closed_at"}
+							}},			
+
+			{ "$match" => { repo: repo }},
+
+			{ "$group" => { _id: {
+							repo: "$repo",
+							# state: "$state",
+							# user: "$user.login",},
+							created_year: "$created_year",
+							created_month: "$created_month"},
+							issues_opened_count: { "$sum" => 1 }
+							}},
+		    { "$sort" => {"_id.created_year" => 1, "_id.created_month" => 1}}
+			])
+		output = []
+		totalIssuesOpen.each do |x|
+			x["_id"]["count"] = x["issues_opened_count"]
+			x["_id"]["converted_date"] = DateTime.commercial(x["_id"]["created_year"], x["_id"]["created_month"])
+			# x["_id"]["date1"] = Date.new(x["_id"]["created_year"],2,3) 
+			output << x["_id"]
+		end
+
+		# TODO build this out into its own method to ensure DRY.
+		if output.empty? == false
+			# Get Missing Months/Years from Date Range
+			a = []
+			output.each do |x|
+				a << x["converted_date"]
+			end
+			b = (output.first["converted_date"]..output.last["converted_date"]).to_a
+			zeroValueDates = (b.map{ |date| date.strftime("%U %Y") } - a.map{ |date| date.strftime("%U %Y") }).uniq
+			
+			zeroValueDates.each do |zvd|
+				zvd = DateTime.parse(zvd)
+				output << {"repo"=> repo , "state"=>"open", "created_year"=>zvd.strftime("%Y").to_i, "created_month"=>zvd.strftime("%U").to_i, "count"=>0, "converted_date"=>zvd}
+			end
+			# END of Get Missing Months/Years From Date Range
+		end
+
+		# Sorts the Output hash so the dates are in order
+		output = output.sort_by { |hsh| hsh["converted_date"] }
+		return output
+	end
+
+
+
+	def self.get_issues_closed_per_week(repo, githubAuthInfo)
+		
+		totalIssuesClosed = Mongo_Connection.aggregate_test([
+			{ "$match" => { downloaded_by_username: githubAuthInfo[:username], downloaded_by_userID: githubAuthInfo[:userID] }},
+			{ "$match" => {state: { 
+										"$ne" => "open" 
+										}}},
+			{"$project" => {number: 1, 
+							_id: 1, 
+							repo: 1,
+							# state: 1,
+							# created_at: 1,
+							closed_at: 1,
+							closed_month: {"$week" => "$closed_at"}, 
+							closed_year: {"$year" => "$closed_at"}, 
+							# closed_month: {"$month" => "$closed_at"}, 
+							# closed_year: {"$year" => "$closed_at"}
+							}},			
+
+			{ "$match" => { repo: repo }},
+
+			{ "$group" => { _id: {
+							repo: "$repo",
+							# state: "$state",
+							# user: "$user.login",},
+							closed_year: "$closed_year",
+							closed_month: "$closed_month"},
+							issues_opened_count: { "$sum" => 1 }
+							}},
+		    { "$sort" => {"_id.closed_year" => 1, "_id.closed_month" => 1}}
+			])
+
+
+		output = []
+		
+		totalIssuesClosed.each do |x|
+			x["_id"]["count"] = x["issues_opened_count"]
+			x["_id"]["converted_date"] = DateTime.commercial(x["_id"]["closed_year"], x["_id"]["closed_month"])
+			# x["_id"]["date1"] = Date.new(x["_id"]["created_year"],2,3) 
+			output << x["_id"]
+		end
+
+		# TODO build this out into its own method
+		if output.empty? == false
+			# Get Missing Months/Years from Date Range
+			a = []
+			output.each do |x|
+				a << x["converted_date"]
+			end
+			b = (output.first["converted_date"]..output.last["converted_date"]).to_a
+			zeroValueDates = (b.map{ |date| date.strftime("%U %Y") } - a.map{ |date| date.strftime("%U %Y") }).uniq
+			
+			zeroValueDates.each do |zvd|
+				zvd = DateTime.parse(zvd)
+				output << {"repo"=> repo , "state"=>"closed", "closed_year"=>zvd.strftime("%Y").to_i, "closed_month"=>zvd.strftime("%U").to_i, "count"=>0, "converted_date"=>zvd}
+			end
+			# END of Get Missing Months/Years From Date Range
+		end
+
+		# Sorts the Output hash so the dates are in order
+		output = output.sort_by { |hsh| hsh["converted_date"] }
+
+		return output
+	end
+
+
+
+
+
+
+
+
 
 
 	# def self.get_issues_created_closed_per_month
@@ -503,6 +637,8 @@ end
 # puts Issues_Aggregation.get_issues_opened_per_user("StephenOTT/Test1", {:username => "StephenOTT", :userID => 1994838})
 # puts Issues_Aggregation.get_issues_created_per_month("StephenOTT/OPSEU", {:username => "StephenOTT", :userID => 1994838})
 # puts Issues_Aggregation.get_issues_closed_per_month("StephenOTT/OPSEU", {:username => "StephenOTT", :userID => 1994838})
+# puts Issues_Aggregation.get_issues_closed_per_week("StephenOTT/OPSEU", {:username => "StephenOTT", :userID => 1994838})
+# puts Issues_Aggregation.get_issues_created_per_week("StephenOTT/OPSEU", {:username => "StephenOTT", :userID => 1994838})
 
 
 

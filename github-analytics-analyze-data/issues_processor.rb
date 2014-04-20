@@ -25,6 +25,20 @@ module Issues_Processor
       return issuesClosedPerMonth
     end
 
+    def self.analyze_issues_opened_per_week(repo, githubAuthInfo)
+      Issues_Aggregation.controller
+      issuesOpenedPerWeek = Issues_Aggregation.get_issues_created_per_week(repo, githubAuthInfo)
+
+      return issuesOpenedPerWeek
+    end
+
+    def self.analyze_issues_closed_per_week(repo, githubAuthInfo)
+      Issues_Aggregation.controller
+      issuesClosedPerWeek = Issues_Aggregation.get_issues_closed_per_week(repo, githubAuthInfo)
+
+      return issuesClosedPerWeek
+    end
+
 
 
     # def self.process_issues_for_budget_left(issues)
