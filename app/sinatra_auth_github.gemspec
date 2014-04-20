@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec",     "~>2.4.0"
-  # s.add_development_dependency "shotgun"
+  s.add_development_dependency "shotgun"  # Disable this when you want to test the Flash Messaging system
   s.add_development_dependency "randexp",   "~>0.1.5"
   s.add_development_dependency "rack-test", "~>0.5.3"
 

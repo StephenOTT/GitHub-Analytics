@@ -57,6 +57,8 @@ GEM
     sawyer (0.5.4)
       addressable (~> 2.3.5)
       faraday (~> 0.8, < 0.10)
+    shotgun (0.9)
+      rack (>= 1.0)
     sinatra (1.4.5)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -82,3 +84,4 @@ DEPENDENCIES
   rake
   randexp (~> 0.1.5)
   rspec (~> 2.4.0)
+  shotgun
