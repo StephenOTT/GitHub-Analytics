@@ -1,5 +1,6 @@
 require_relative '../github-analytics-data-download/controller'
 require_relative '../github-analytics-analyze-data/issues_processor'
+require_relative '../github-analytics-analyze-data/labels_processor'
 require_relative '../github-analytics-analyze-data/system_wide_processor'
 
 
@@ -38,5 +39,11 @@ module Sinatra_Helpers
         userRepo = "#{user}/#{repo}" 
         Issues_Processor.analyze_issues_closed_per_week(userRepo, githubAuthInfo)
     end
+
+    def self.analyze_labels_count_per_repo(user, repo, githubAuthInfo)
+        userRepo = "#{user}/#{repo}" 
+        Labels_Processor.analyze_labels_count_for_repo(userRepo, githubAuthInfo)
+    end
+
 
 end
