@@ -17,12 +17,16 @@ def self.convertIssueCommentDatesInMongo(issueComments)
 	end
 
 	def self.convertRepoEventsDates(repoEvents)
-		repoEvents["created_at"] = Time.strptime(repoEvents["created_at"], '%Y-%m-%dT%H:%M:%S%z').utc
+		if repoEvents["created_at"] != nil
+			repoEvents["created_at"] = Time.strptime(repoEvents["created_at"], '%Y-%m-%dT%H:%M:%S%z').utc
+		end
 		return repoEvents
 	end
 
 	def self.convertIssueEventsDates(issueEvents)
-		issueEvents["created_at"] = Time.strptime(issueEvents["created_at"], '%Y-%m-%dT%H:%M:%S%z').utc
+		if issueEvents["created_at"] != nil
+			issueEvents["created_at"] = Time.strptime(issueEvents["created_at"], '%Y-%m-%dT%H:%M:%S%z').utc
+		end
 		return issueEvents
 	end
 
