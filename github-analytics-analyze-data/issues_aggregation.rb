@@ -63,6 +63,7 @@ module Issues_Aggregation
 							}},
 		    { "$sort" => {"_id.created_year" => 1, "_id.created_month" => 1}}
 			])
+		# puts totalIssuesOpen
 
 		output = []
 		totalIssuesOpen.each do |x|
@@ -72,25 +73,28 @@ module Issues_Aggregation
 			output << x["_id"]
 		end
 
-		# TODO build this out into its own method to ensure DRY.
-		if output.empty? == false
-			# Get Missing Months/Years from Date Range
-			a = []
-			output.each do |x|
-				a << x["converted_date"]
-			end
-			b = (output.first["converted_date"]..output.last["converted_date"]).to_a
-			zeroValueDates = (b.map{ |date| date.strftime("%b %Y") } - a.map{ |date| date.strftime("%b %Y") }).uniq
+		# # TODO build this out into its own method to ensure DRY.
+		# if output.empty? == false
+		# 	# Get Missing Months/Years from Date Range
+		# 	a = []
+		# 	output.each do |x|
+		# 		a << x["converted_date"]
+		# 	end
+		# 	b = (output.first["converted_date"]..output.last["converted_date"]).to_a
 			
-			zeroValueDates.each do |zvd|
-				zvd = DateTime.parse(zvd)
-				output << {"repo"=> repo , "state"=>"open", "created_year"=>zvd.strftime("%Y").to_i, "created_month"=>zvd.strftime("%m").to_i, "count"=>0, "converted_date"=>zvd}
-			end
-			# END of Get Missing Months/Years From Date Range
-		end
+		# 	# zeroValueDates = (b.map{ |date| date } - a.map{ |date| date }).uniq
+		# 	zeroValueDates = (b.map{ |date| date.strftime("%b %Y") } - a.map{ |date| date.strftime("%b %Y") }).uniq
+		# 	puts zeroValueDates
+		# 	zeroValueDates.each do |zvd|
+		# 		zvd = DateTime.parse(zvd)
+		# 		# zvd = DateTime.parse(zvd)
+		# 		output << {"repo"=> repo, "created_year"=>zvd.strftime("%Y").to_i, "created_month"=>zvd.strftime("%m").to_i, "count"=>0, "converted_date"=>zvd}
+		# 	end
+		# 	# END of Get Missing Months/Years From Date Range
+		# end
 
-		# Sorts the Output hash so the dates are in order
-		output = output.sort_by { |hsh| hsh["converted_date"] }
+		# # Sorts the Output hash so the dates are in order
+		# output = output.sort_by { |hsh| hsh["converted_date"] }
 		return output
 	end
 
@@ -148,7 +152,7 @@ module Issues_Aggregation
 			
 			zeroValueDates.each do |zvd|
 				zvd = DateTime.parse(zvd)
-				output << {"repo"=> repo , "state"=>"closed", "closed_year"=>zvd.strftime("%Y").to_i, "closed_month"=>zvd.strftime("%m").to_i, "count"=>0, "converted_date"=>zvd}
+				output << {"repo"=> repo, "closed_year"=>zvd.strftime("%Y").to_i, "closed_month"=>zvd.strftime("%m").to_i, "count"=>0, "converted_date"=>zvd}
 			end
 			# END of Get Missing Months/Years From Date Range
 		end
@@ -193,10 +197,10 @@ module Issues_Aggregation
 		totalIssuesOpen.each do |x|
 			x["_id"]["count"] = x["issues_opened_count"]
 			x["_id"]["converted_date"] = DateTime.commercial(x["_id"]["created_year"], x["_id"]["created_month"])
-			# x["_id"]["date1"] = Date.new(x["_id"]["created_year"],2,3) 
 			output << x["_id"]
 		end
 
+		# TODO - still needs cleanup because of Week Number issues related to Ruby bug
 		# TODO build this out into its own method to ensure DRY.
 		if output.empty? == false
 			# Get Missing Months/Years from Date Range
@@ -204,12 +208,14 @@ module Issues_Aggregation
 			output.each do |x|
 				a << x["converted_date"]
 			end
+			# puts Date.strptime('2013 0', '%G %W')
 			b = (output.first["converted_date"]..output.last["converted_date"]).to_a
-			zeroValueDates = (b.map{ |date| date.strftime("%U %Y") } - a.map{ |date| date.strftime("%U %Y") }).uniq
-			
+			zeroValueDates = (b.map{ |date| date.strftime("%U %V").to_s} - a.map{ |date| date.strftime("%U %V").to_s }).uniq
 			zeroValueDates.each do |zvd|
-				zvd = DateTime.parse(zvd)
-				output << {"repo"=> repo , "state"=>"open", "created_year"=>zvd.strftime("%Y").to_i, "created_month"=>zvd.strftime("%U").to_i, "count"=>0, "converted_date"=>zvd}
+				puts zvd
+				zvd = zvd.split(" ")
+				zvd = DateTime.commercial(zvd[0].to_i, zvd[1].to_i)
+				output << {"repo"=> repo , "state"=>"open", "created_year"=>zvd.strftime("%g").to_i, "created_month"=>zvd.strftime("%V").to_i, "count"=>0, "converted_date"=>zvd}
 			end
 			# END of Get Missing Months/Years From Date Range
 		end
