@@ -35,6 +35,7 @@ module Analytics_Download_Controller
 			i["downloaded_by_username"] = githubAuthInfo[:username]
 			i["downloaded_by_userID"] = githubAuthInfo[:userID]
 			i["repo"] = repo
+			i["type"] = "Issue"
 			# Parses the specific issue for time tracking information
 			# processedIssues = Gh_Issue.process_issue(repo, i, issueComments, githubAuthInfo)
 
@@ -55,6 +56,7 @@ module Analytics_Download_Controller
 			rie["downloaded_by_username"] = githubAuthInfo[:username]
 			rie["downloaded_by_userID"] = githubAuthInfo[:userID]
 			rie["repo"] = repo
+			rie["type"] = "Repo Issue Event"
 
 			# if rie.empty? == false
 				Mongo_Connection.putIntoMongoCollTimeTrackingCommits(rie)
