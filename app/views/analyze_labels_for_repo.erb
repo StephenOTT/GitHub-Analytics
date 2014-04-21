@@ -1,0 +1,94 @@
+<script src="//www.google.com/jsapi"></script>
+<script src="/vendor/chartkick.js"></script>
+
+<h1>Labels Assignment Analysis for Repo</h1>
+
+<div class="container">
+	
+	<div class="row clearfix">
+    <div class="col-md-12 column">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h2 class="panel-title">
+            Repository Information
+          </h2>
+        </div>
+        <div class="panel-body">
+          <p><%= @labelsCountForRepo.first["repo"] %></p>
+        </div>
+<!--         <div class="panel-footer">
+          Panel footer
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+
+	<div class="row clearfix">
+		<div class="col-md-6 column">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						Labels Assignment Listing
+					</h3>
+				</div>
+				<div class="panel-body">
+
+					 <table class="table">
+					  <tbody>
+					    <tr>
+					      <th>Label Name</th> 
+					      <th>Count</th>
+					    </tr>
+					    <% @labelsCountForRepo.each do |l| %>
+					        <tr>
+					          <td><%= l["label"] %></td>
+					          <td><%= l["count"] %></td>
+					        </tr>
+					    <% end %>
+					  </tbody>
+					</table>
+
+				</div>
+<!-- 				<div class="panel-footer">
+					Panel footer
+				</div> -->
+			</div>
+		</div>
+		<div class="col-md-6 column">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						Labels Assignment Histogram
+					</h3>
+				</div>
+				<div class="panel-body">
+					<!-- Add Histogram support in the future -->
+					<%= bar_chart (@labelsCountForRepoChartReady),:library => { hAxis: {showTextEvery:1}, chartArea: {  right:0, left: "30%" } };
+					%>
+				</div>
+<!-- 				<div class="panel-footer">
+					Panel footer
+				</div> -->
+			</div>
+		</div>
+	</div>
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						xxxx
+					</h3>
+				</div>
+				<div class="panel-body">
+					xxxxx
+				</div>
+
+<!-- 				<div class="panel-footer">
+				</div> -->
+			</div>			
+		</div>
+	</div>
+	
+</div>

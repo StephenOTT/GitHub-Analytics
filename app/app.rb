@@ -94,6 +94,27 @@ module Example
       end
     end
 
+
+    get '/analyze/labels/:user/:repo' do
+      # authenticate!
+      if authenticated? == true
+
+        @labelsCountForRepo = Sinatra_Helpers.analyze_labels_count_per_repo(params['user'], params['repo'], get_auth_info )
+        @labelsCountForRepoChartReady ={}
+
+        @labelsCountForRepo.each do |l|
+          @labelsCountForRepoChartReady[l["label"]] = l["count"]
+        end
+      
+        erb :analyze_labels_for_repo
+      else
+        redirect '/'
+      end
+    end
+
+
+
+
     get '/analyze/issues/statetimeline/:user/:repo' do
       # authenticate!
       if authenticated? == true
