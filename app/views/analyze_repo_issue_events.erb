@@ -1,0 +1,125 @@
+<script src="//www.google.com/jsapi"></script>
+<script src="/vendor/chartkick.js"></script>
+
+<h1>Repo Issue Events Analysis </h1>
+
+<div class="container">
+	
+	<div class="row clearfix">
+    <div class="col-md-12 column">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h2 class="panel-title">
+            Repository Information
+          </h2>
+        </div>
+        <div class="panel-body">
+          <p><%= @repoIssueEvents.first["repo"] %></p>
+        </div>
+<!--         <div class="panel-footer">
+          Panel footer
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+
+	<div class="row clearfix">
+		<div class="col-md-6 column">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						Repo Issue Events Per Month
+					</h3>
+				</div>
+				<div class="panel-body">
+
+					 <table class="table">
+					  <tbody>
+					    <tr>
+					      <th>Event</th> 
+					      <th>Count</th>
+					      <th>Date</th>
+					    </tr>
+					    <% @repoIssueEvents.each do |l| %>
+					        <tr>
+					          <td><%= l["event"] %></td>
+					          <td><%= l["count"] %></td>
+					          <td><%= l["converted_date"].strftime("%B %Y") %></td>					          
+					        </tr>
+					    <% end %>
+					  </tbody>
+					</table>
+
+				</div>
+<!-- 				<div class="panel-footer">
+					Panel footer
+				</div> -->
+			</div>
+		</div>
+		<div class="col-md-6 column">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						Repo Issue Events Assignment Histogram
+					</h3>
+				</div>
+				<div class="panel-body">
+
+					<% 
+					# Rebuild as a method for reuse.
+					eventsArray =[]
+					
+					# Get all event Types in the Data
+					eventTypes = []
+					@repoIssueEvents.each do |r|
+						eventTypes << r["event"]
+					end
+					eventTypes = eventTypes.uniq
+
+					eventTypes.each do |x|
+						selectedEvents = @repoIssueEvents.select {|eventType| eventType["event"] == x }
+						
+						eventsData = {}
+						selectedEvents.each do |y|
+							eventsData[y["converted_date"].strftime("%B %Y")] = y["count"]
+						end
+
+						eventsArray << {name: x, data: eventsData }
+					end
+					%>
+
+					<!-- Add Histogram support in the future -->
+					<%= bar_chart (eventsArray),:library => { hAxis: {showTextEvery:1}, chartArea: {
+																									width: '50%',
+																									left: '20%'
+																									}
+															};
+					%>
+
+				</div>
+<!-- 				<div class="panel-footer">
+					Panel footer
+				</div> -->
+			</div>
+		</div>
+	</div>
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						xxxx
+					</h3>
+				</div>
+				<div class="panel-body">
+					xxxxx
+				</div>
+
+<!-- 				<div class="panel-footer">
+				</div> -->
+			</div>			
+		</div>
+	</div>
+	
+</div>

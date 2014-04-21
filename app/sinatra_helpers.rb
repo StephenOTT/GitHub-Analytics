@@ -1,6 +1,7 @@
 require_relative '../github-analytics-data-download/controller'
 require_relative '../github-analytics-analyze-data/issues_processor'
 require_relative '../github-analytics-analyze-data/labels_processor'
+require_relative '../github-analytics-analyze-data/events_processor'
 require_relative '../github-analytics-analyze-data/system_wide_processor'
 
 
@@ -43,6 +44,12 @@ module Sinatra_Helpers
     def self.analyze_labels_count_per_repo(user, repo, githubAuthInfo)
         userRepo = "#{user}/#{repo}" 
         Labels_Processor.analyze_labels_count_for_repo(userRepo, githubAuthInfo)
+    end
+
+
+    def self.analyze_repo_issues_Events_per_month(user, repo, githubAuthInfo)
+        userRepo = "#{user}/#{repo}" 
+        Events_Processor.analyze_repo_issues_Events_per_month(userRepo, githubAuthInfo)
     end
 
 

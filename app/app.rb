@@ -113,6 +113,27 @@ module Example
     end
 
 
+    get '/analyze/issues/events/:user/:repo' do
+      # authenticate!
+      if authenticated? == true
+
+        @repoIssueEvents = Sinatra_Helpers.analyze_repo_issues_Events_per_month(params['user'], params['repo'], get_auth_info )
+        # @repoIssueEventsChartReady ={}
+
+        # @repoIssueEvents.each do |l|
+        #   @repoIssueEventsChartReady[l["events"]] = l["count"]
+        # end
+      
+        erb :analyze_repo_issue_events
+      else
+        redirect '/'
+      end
+    end
+
+
+
+
+
 
 
     get '/analyze/issues/statetimeline/:user/:repo' do

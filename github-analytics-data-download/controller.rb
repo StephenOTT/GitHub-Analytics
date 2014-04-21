@@ -45,6 +45,22 @@ module Analytics_Download_Controller
 		end
 		#======End of Issues=======
 
+		#======Repo Issue Events======
+		repoIssueEvents = GitHub_Data.get_repo_issue_events(repo)
+		# puts repoIssueEvents.to_s
+		repoIssueEvents.each do |rie|
+
+			rie = Dates_Convert_For_MongoDB.convertRepoEventsDates(rie)
+
+			rie["downloaded_by_username"] = githubAuthInfo[:username]
+			rie["downloaded_by_userID"] = githubAuthInfo[:userID]
+			rie["repo"] = repo
+
+			# if rie.empty? == false
+				Mongo_Connection.putIntoMongoCollTimeTrackingCommits(rie)
+			# end
+		end
+
 	end
 end
 

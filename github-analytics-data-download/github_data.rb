@@ -1,5 +1,5 @@
 require 'octokit'
-# require 'pp'
+require 'pp'
 require 'json'
 
 
@@ -86,7 +86,6 @@ module GitHub_Data
 			})
 		
 		ghLastReponseComments = @ghClient.last_response
-
 		responseComments = JSON.parse(@ghClient.last_response.response_body)
 	
 		while ghLastReponseComments.rels.include?(:next) do
@@ -104,9 +103,29 @@ module GitHub_Data
 	# def self.get_commit_comments(repo, sha)
 	# 	commitComments = @ghClient.commit_comments(repo, sha)
 	# end
+
+
+	def self.get_repo_issue_events(repo)
+		issueResultsOpen = @ghClient.repository_issue_events(repo, {
+			:per_page => 100
+			})
+		ghLastReponseRepoIssueEvents = @ghClient.last_response
+		responseRepoEvents = JSON.parse(@ghClient.last_response.response_body)
+		
+		while ghLastReponseRepoIssueEvents.rels.include?(:next) do
+			ghLastReponseRepoIssueEvents = ghLastReponseRepoIssueEvents.rels[:next].get
+			responseRepoEvents.concat(JSON.parse(ghLastReponseRepoIssueEvents.response_body))
+		end
+		return responseRepoEvents
+	end
+
+
+
 end
 
 
-# cat = GitHub_Data.gh_authenticate("USERNAME", "PASSWORD")
+# GitHub_Data.gh_authenticate("StephenOTT", "PASSWORD")
 # issues = GitHub_Data.get_Issues("StephenOTT/Test1")
+# repoIssueEvents = GitHub_Data.get_repo_events("StephenOTT/Test1")
 # pp issues
+# puts repoIssueEvents
