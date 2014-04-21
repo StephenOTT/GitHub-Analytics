@@ -173,38 +173,34 @@ module Issues_Aggregation
 			# { "$match" => {state: { 
 			# 							"$ne" => "closed"
 			# 							}}},
-			{"$project" => {number: 1, 
+			{"$project" => { 
 							_id: 1, 
 							repo: 1,
-							state: 1,
 							created_at: 1,
-							# closed_at: 1,
-							created_month: {"$week" => "$created_at"}, 
-							created_year: {"$year" => "$created_at"}, 
-							# closed_month: {"$month" => "$closed_at"}, 
-							# closed_year: {"$year" => "$closed_at"}
+							dayofweek: {"$dayOfWeek" => "$created_at" },
+							week: {"$week" => "$created_at"}, 
+							year: {"$year" => "$created_at"}, 
 							}},			
 
 			{ "$match" => { repo: repo }},
 
 			{ "$group" => { _id: {
 							repo: "$repo",
-							# state: "$state",
-							# user: "$user.login",},
-							created_year: "$created_year",
-							created_month: "$created_month"},
-							issues_opened_count: { "$sum" => 1 }
+							year: "$year",
+							week: "$week",
+							dayofweek: "$dayofweek"
+							},
+							count: { "$sum" => 1 }
 							}},
-		    { "$sort" => {"_id.created_year" => 1, "_id.created_month" => 1}}
+		    { "$sort" => {"_id.year" => 1, "_id.week" => 1, "_id.dayofweek" => 1}}
 			])
 		output = []
 		totalIssuesOpen.each do |x|
-			x["_id"]["count"] = x["issues_opened_count"]
-			x["_id"]["converted_date"] = DateTime.commercial(x["_id"]["created_year"], x["_id"]["created_month"])
+			x["_id"]["count"] = x["count"]
+			x["_id"]["converted_date"] = DateTime.strptime("#{x["_id"]["year"]}-#{x["_id"]["week"]}-#{x["_id"]["dayofweek"]}", "%Y-%U-%u")
 			output << x["_id"]
 		end
 
-		# TODO - still needs cleanup because of Week Number issues related to Ruby bug
 		# TODO build this out into its own method to ensure DRY.
 		if output.empty? == false
 			# Get Missing Months/Years from Date Range
@@ -212,14 +208,12 @@ module Issues_Aggregation
 			output.each do |x|
 				a << x["converted_date"]
 			end
-			# puts Date.strptime('2013 0', '%G %W')
 			b = (output.first["converted_date"]..output.last["converted_date"]).to_a
-			zeroValueDates = (b.map{ |date| date.strftime("%U %V").to_s} - a.map{ |date| date.strftime("%U %V").to_s }).uniq
+			zeroValueDates = (b.map{ |date| date = {"shortDate" => date.strftime("%Y %U").to_s, "fullDate" => date}} - a.map{ |date| {"shortDate" => date.strftime("%Y %U").to_s, "fullDate" => date}}).uniq { |s| s["shortDate"] }
+
 			zeroValueDates.each do |zvd|
-				puts zvd
-				zvd = zvd.split(" ")
-				zvd = DateTime.commercial(zvd[0].to_i, zvd[1].to_i)
-				output << {"repo"=> repo , "state"=>"open", "created_year"=>zvd.strftime("%g").to_i, "created_month"=>zvd.strftime("%V").to_i, "count"=>0, "converted_date"=>zvd}
+				zvd = zvd["fullDate"]
+				output << {"repo"=> repo , "year"=>zvd.strftime("%Y").to_i, "week"=>zvd.strftime("%U").to_i, "dayofweek"=>zvd.strftime("%w").to_i, "count"=>0, "converted_date"=>zvd}
 			end
 			# END of Get Missing Months/Years From Date Range
 		end
@@ -242,39 +236,34 @@ module Issues_Aggregation
 			{"$project" => {number: 1, 
 							_id: 1, 
 							repo: 1,
-							# state: 1,
-							# created_at: 1,
-							closed_at: 1,
-							closed_month: {"$week" => "$closed_at"}, 
-							closed_year: {"$year" => "$closed_at"}, 
-							# closed_month: {"$month" => "$closed_at"}, 
-							# closed_year: {"$year" => "$closed_at"}
+							dayofweek: {"$dayOfWeek" => "$closed_at" },
+							week: {"$week" => "$closed_at"}, 
+							year: {"$year" => "$closed_at"}, 
 							}},			
 
 			{ "$match" => { repo: repo }},
 
 			{ "$group" => { _id: {
 							repo: "$repo",
-							# state: "$state",
-							# user: "$user.login",},
-							closed_year: "$closed_year",
-							closed_month: "$closed_month"},
-							issues_opened_count: { "$sum" => 1 }
+							year: "$year",
+							week: "$week",
+							dayofweek: "$dayofweek" },
+							count: { "$sum" => 1 }
 							}},
-		    { "$sort" => {"_id.closed_year" => 1, "_id.closed_month" => 1}}
+		    { "$sort" => {"_id.year" => 1, "_id.week" => 1, "_id.dayofweek" => 1}}
 			])
 
 
 		output = []
 		
 		totalIssuesClosed.each do |x|
-			x["_id"]["count"] = x["issues_opened_count"]
-			x["_id"]["converted_date"] = DateTime.commercial(x["_id"]["closed_year"], x["_id"]["closed_month"])
-			# x["_id"]["date1"] = Date.new(x["_id"]["created_year"],2,3) 
+			# puts x
+			x["_id"]["count"] = x["count"]
+			x["_id"]["converted_date"] = DateTime.strptime("#{x["_id"]["year"]}-#{x["_id"]["week"]}-#{x["_id"]["dayofweek"]}", "%Y-%U-%u")
 			output << x["_id"]
 		end
 
-		# TODO build this out into its own method
+		# TODO build this out into its own method to ensure DRY.
 		if output.empty? == false
 			# Get Missing Months/Years from Date Range
 			a = []
@@ -282,18 +271,17 @@ module Issues_Aggregation
 				a << x["converted_date"]
 			end
 			b = (output.first["converted_date"]..output.last["converted_date"]).to_a
-			zeroValueDates = (b.map{ |date| date.strftime("%U %Y") } - a.map{ |date| date.strftime("%U %Y") }).uniq
-			
+			zeroValueDates = (b.map{ |date| date = {"shortDate" => date.strftime("%Y %U").to_s, "fullDate" => date}} - a.map{ |date| {"shortDate" => date.strftime("%Y %U").to_s, "fullDate" => date}}).uniq { |s| s["shortDate"] }
+
 			zeroValueDates.each do |zvd|
-				zvd = DateTime.parse(zvd)
-				output << {"repo"=> repo , "state"=>"closed", "closed_year"=>zvd.strftime("%Y").to_i, "closed_month"=>zvd.strftime("%U").to_i, "count"=>0, "converted_date"=>zvd}
+				zvd = zvd["fullDate"]
+				output << {"repo"=> repo , "year"=>zvd.strftime("%Y").to_i, "week"=>zvd.strftime("%U").to_i, "dayofweek"=>zvd.strftime("%w").to_i, "count"=>0, "converted_date"=>zvd}
 			end
 			# END of Get Missing Months/Years From Date Range
 		end
 
 		# Sorts the Output hash so the dates are in order
 		output = output.sort_by { |hsh| hsh["converted_date"] }
-
 		return output
 	end
 

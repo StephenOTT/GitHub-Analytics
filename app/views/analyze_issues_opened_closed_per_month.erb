@@ -191,7 +191,7 @@
 					<%= column_chart ([
 						{name: "Opened", data: @issuesOpenedPerWeekChartReady},
 						{name: "Closed", data: @issuesClosedPerWeekChartReady}
-						]),:library => { :isStacked => true,
+						]),:library => { :isStacked => true, hAxis: {showTextEvery:0}, chartArea: {  height:"40%", top:"10%" }
 										  }
 					%>
 				</div>

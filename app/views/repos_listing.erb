@@ -21,13 +21,11 @@
 					<td><%= r["username"] %></td>
 					<td><%= r["repo"] %></td>
 					<td><%= r["repo_name_full"] %></td>
-					<td><p><a href="analyze/issues/<%= r["repo_name_full"] %>">Issues Opened/Closed Per User</a></p>
-<p><a href="analyze/issues/statetimeline/<%= r["repo_name_full"] %>"><strike>Issues Opened/Closed Timeline Analysis</strike></a> Do not use at this time because of Ruby bug with Week Number parsing</p>
-
-<p><a href="analyze/labels/<%= r["repo_name_full"] %>">Labels Analysis</a></p>
-
-<p><a href="analyze/issues/events/<%= r["repo_name_full"] %>">Issue Events Analysis</a></p>
-
+					<td>
+						<p><a href="analyze/issues/<%= r["repo_name_full"] %>">Issues Opened/Closed Per User</a></p>
+						<p><a href="analyze/issues/statetimeline/<%= r["repo_name_full"] %>">Issues Opened/Closed Analysis</a></p>
+						<p><a href="analyze/labels/<%= r["repo_name_full"] %>">Labels Analysis</a></p>
+						<p><a href="analyze/issues/events/<%= r["repo_name_full"] %>">Issue Events Analysis</a></p>
 					</td>
 				</tr>
 			<% end %>
