@@ -15,6 +15,9 @@ module Issues_Processor
       Issues_Aggregation.controller
       issuesOpenedPerMonth = Issues_Aggregation.get_issues_created_per_month(repo, githubAuthInfo)
 
+      issuesOpenedPerMonth = Helpers.get_missing_dates(repo, issuesOpenedPerMonth, Helpers.get_date_formatter(:month))
+      issuesOpenedPerMonth = Helpers.sort_dates_array_hash(issuesOpenedPerMonth, "converted_date")
+
       return issuesOpenedPerMonth
     end
 
