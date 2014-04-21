@@ -10,6 +10,7 @@ module Labels_Aggregation
 
 	def self.get_labels_count_for_repo(repo, githubAuthInfo)
 		totalIssueSpentHoursBreakdown = Mongo_Connection.aggregate_test([
+			{ "$match" => {type: "Issue"}},
 			{ "$match" => { downloaded_by_username: githubAuthInfo[:username], downloaded_by_userID: githubAuthInfo[:userID] }},
 			{"$project" => {_id: 1, 
 							repo: 1,
