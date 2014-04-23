@@ -56,13 +56,13 @@ module Events_Aggregation
 			
 			zeroValueDates.each do |zvd|
 				zvd = DateTime.parse(zvd)
-				output << {"repo"=> repo, "created_year"=>zvd.strftime("%Y").to_i, "created_month"=>zvd.strftime("%m").to_i, "count"=>0, "converted_date"=>zvd}
+				output << {"repo"=> repo, "event" => "n/a", "created_year"=>zvd.strftime("%Y").to_i, "created_month"=>zvd.strftime("%m").to_i, "count"=>0, "converted_date"=>zvd}
 			end
 			# END of Get Missing Months/Years From Date Range
 		end
 
 		# Sorts the Output hash so the dates are in order
-		output = output.sort_by { |hsh| [hsh["event"], hsh["converted_date"]] }
+		output = output.sort_by { |hsh| hsh["converted_date"] }
 		return output
 	end
 end
@@ -70,7 +70,7 @@ end
 
 # Debug code
 # Events_Aggregation.controller
-# puts Events_Aggregation.get_repo_issues_Events_per_month("StephenOTT/OPSEU", {:username => "StephenOTT", :userID => 1994838})
+# puts Events_Aggregation.get_repo_issues_Events_per_month("StephenOTT/Test1", {:username => "StephenOTT", :userID => 1994838})
 
 
 

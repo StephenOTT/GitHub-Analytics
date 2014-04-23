@@ -71,10 +71,11 @@
 					eventsArray =[]
 					
 					# Get all event Types in the Data
-					eventTypes = []
-					@repoIssueEvents.each do |r|
-						eventTypes << r["event"]
-					end
+					eventTypes = @repoIssueEvents.map {|item| item["event"]}
+
+					# @repoIssueEvents.each do |r|
+					# 	eventTypes << r["event"]
+					# end
 					eventTypes = eventTypes.uniq
 
 					eventTypes.each do |x|
@@ -90,11 +91,7 @@
 					%>
 
 					<!-- Add Histogram support in the future -->
-					<%= bar_chart (eventsArray),:library => { hAxis: {showTextEvery:1}, chartArea: {
-																									width: '50%',
-																									left: '20%'
-																									}
-															};
+					<%= bar_chart (eventsArray),:library => { hAxis: {showTextEvery:1, format:"#"}, chartArea: {width:"60%", height:"90%", top:"0%"}};
 					%>
 
 				</div>
