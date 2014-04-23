@@ -39,6 +39,8 @@ module GitHub_Data
 	end
 
 	def self.get_Issues(repo)
+
+		puts "1: #{@ghClient.rate_limit.remaining}"
 		issueResultsOpen = @ghClient.list_issues(repo, {
 			:state => :open,
 			:per_page => 100
@@ -48,11 +50,12 @@ module GitHub_Data
 		responseOpen = JSON.parse(@ghClient.last_response.response_body)
 		
 		while ghLastReponseOpen.rels.include?(:next) do
+			puts "2: #{@ghClient.rate_limit.remaining}"
 			ghLastReponseOpen = ghLastReponseOpen.rels[:next].get
 			responseOpen.concat(JSON.parse(ghLastReponseOpen.response_body))
 		end
 
-
+		puts "3: #{@ghClient.rate_limit.remaining}"
 		issueResultsClosed = @ghClient.list_issues(repo, {
 			:state => :closed,
 			:per_page => 100
@@ -62,6 +65,7 @@ module GitHub_Data
 		responseClosed = JSON.parse(@ghClient.last_response.response_body)
 
 		while ghLastReponseClosed.rels.include?(:next) do
+			puts "4: #{@ghClient.rate_limit.remaining}"
 			ghLastReponseClosed = ghLastReponseClosed.rels[:next].get
 			responseClosed.concat(JSON.parse(ghLastReponseClosed.response_body))
 		end
@@ -81,6 +85,7 @@ module GitHub_Data
 	# end
 
 	def self.get_Issue_Comments(repo, issueNumber)
+		puts "5: #{@ghClient.rate_limit.remaining}"
 		issueComments = @ghClient.issue_comments(repo, issueNumber, {
 			:per_page => 100
 			})
@@ -89,6 +94,7 @@ module GitHub_Data
 		responseComments = JSON.parse(@ghClient.last_response.response_body)
 	
 		while ghLastReponseComments.rels.include?(:next) do
+			puts "6: #{@ghClient.rate_limit.remaining}"
 			ghLastReponseComments = ghLastReponseComments.rels[:next].get
 			responseComments.concat(JSON.parse(ghLastReponseComments.response_body))
 		end
