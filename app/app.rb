@@ -1,6 +1,5 @@
 require_relative 'sinatra_helpers'
 require 'chartkick'
-require 'active_support'
 
 module Example
   class App < Sinatra::Base
@@ -93,7 +92,6 @@ module Example
         redirect '/'
       end
     end
-
 
     get '/analyze/labels/:user/:repo' do
       # authenticate!

@@ -177,7 +177,7 @@ module Issues_Aggregation
 							_id: 1, 
 							repo: 1,
 							created_at: 1,
-							dayofweek: {"$dayOfWeek" => "$created_at" },
+							# dayofweek: {"$dayOfWeek" => "$created_at" },
 							week: {"$week" => "$created_at"}, 
 							year: {"$year" => "$created_at"}, 
 							}},			
@@ -188,17 +188,32 @@ module Issues_Aggregation
 							repo: "$repo",
 							year: "$year",
 							week: "$week",
-							dayofweek: "$dayofweek"
+							# dayofweek: "$dayofweek"
 							},
 							count: { "$sum" => 1 }
 							}},
-		    { "$sort" => {"_id.year" => 1, "_id.week" => 1, "_id.dayofweek" => 1}}
+		    { "$sort" => {"_id.year" => 1, "_id.week" => 1}}
 			])
+
 		output = []
 		totalIssuesOpen.each do |x|
 			x["_id"]["count"] = x["count"]
-			x["_id"]["converted_date"] = DateTime.strptime("#{x["_id"]["year"]}-#{x["_id"]["week"]}-#{x["_id"]["dayofweek"]}", "%Y-%U-%u")
+			# %w - Day of the week (Sunday is 0, 0..6)
+				
+				dayOfWeekNumber = 0
+
+				until dayOfWeekNumber == 6 do
+					begin
+						x["_id"]["converted_date"] = DateTime.strptime("#{x["_id"]["year"]}-#{x["_id"]["week"]}-#{dayOfWeekNumber}}", "%Y-%U-%w")
+						# puts x["_id"]["converted_date"]
+					rescue
+						dayOfWeekNumber += 1
+					else
+						break
+					end
+				end
 			output << x["_id"]
+			# puts output
 		end
 
 		# TODO build this out into its own method to ensure DRY.
@@ -208,12 +223,14 @@ module Issues_Aggregation
 			output.each do |x|
 				a << x["converted_date"]
 			end
-			b = (output.first["converted_date"]..output.last["converted_date"]).to_a
-			zeroValueDates = (b.map{ |date| date = {"shortDate" => date.strftime("%Y %U").to_s, "fullDate" => date}} - a.map{ |date| {"shortDate" => date.strftime("%Y %U").to_s, "fullDate" => date}}).uniq { |s| s["shortDate"] }
-
+			# puts a
+			b = (output.first["converted_date"]..output.last["converted_date"]).select {|d| d == d.beginning_of_week(:sunday)}
+			# puts b
+			zeroValueDates = (b.map{ |date| date = {"shortDate" => date.strftime("%Y %U"), "fullDate" => date}} - a.map{ |date| date = {"shortDate" => date.strftime("%Y %U"), "fullDate" => date}}).uniq { |s| s["shortDate"] }
+			# zeroValueDates = (b.map{ |date| date = {"shortDate" => date.strftime("%Y %U"), "fullDate" => date}} - a.map{ |date| date = {"shortDate" => date.strftime("%Y %U"), "fullDate" => date}})
 			zeroValueDates.each do |zvd|
 				zvd = zvd["fullDate"]
-				output << {"repo"=> repo , "year"=>zvd.strftime("%Y").to_i, "week"=>zvd.strftime("%U").to_i, "dayofweek"=>zvd.strftime("%w").to_i, "count"=>0, "converted_date"=>zvd}
+				output << {"repo"=> repo , "year"=>zvd.strftime("%Y").to_i, "week"=>zvd.strftime("%U").to_i, "count"=>0, "converted_date"=>zvd}
 			end
 			# END of Get Missing Months/Years From Date Range
 		end
@@ -233,12 +250,12 @@ module Issues_Aggregation
 			{ "$match" => {state: { 
 										"$ne" => "open" 
 										}}},
-			{"$project" => {number: 1, 
-							_id: 1, 
+			{"$project" => {_id: 1, 
 							repo: 1,
 							dayofweek: {"$dayOfWeek" => "$closed_at" },
 							week: {"$week" => "$closed_at"}, 
 							year: {"$year" => "$closed_at"}, 
+							closed_at:1 
 							}},			
 
 			{ "$match" => { repo: repo }},
@@ -247,20 +264,32 @@ module Issues_Aggregation
 							repo: "$repo",
 							year: "$year",
 							week: "$week",
-							dayofweek: "$dayofweek" },
-							count: { "$sum" => 1 }
-							}},
-		    { "$sort" => {"_id.year" => 1, "_id.week" => 1, "_id.dayofweek" => 1}}
+							# dayofweek: "$dayofweek"
+							},
+							count: { "$sum" => 1 },
+							}},						
+		    { "$sort" => {"_id.year" => 1, "_id.week" => 1}},		    
 			])
 
-
 		output = []
-		
 		totalIssuesClosed.each do |x|
-			# puts x
 			x["_id"]["count"] = x["count"]
-			x["_id"]["converted_date"] = DateTime.strptime("#{x["_id"]["year"]}-#{x["_id"]["week"]}-#{x["_id"]["dayofweek"]}", "%Y-%U-%u")
+			# %w - Day of the week (Sunday is 0, 0..6)
+				
+				dayOfWeekNumber = 0
+
+				until dayOfWeekNumber == 6 do
+					begin
+						x["_id"]["converted_date"] = DateTime.strptime("#{x["_id"]["year"]}-#{x["_id"]["week"]}-#{dayOfWeekNumber}}", "%Y-%U-%w")
+						# puts x["_id"]["converted_date"]
+					rescue
+						dayOfWeekNumber += 1
+					else
+						break
+					end
+				end
 			output << x["_id"]
+			# puts output
 		end
 
 		# TODO build this out into its own method to ensure DRY.
@@ -270,12 +299,14 @@ module Issues_Aggregation
 			output.each do |x|
 				a << x["converted_date"]
 			end
-			b = (output.first["converted_date"]..output.last["converted_date"]).to_a
-			zeroValueDates = (b.map{ |date| date = {"shortDate" => date.strftime("%Y %U").to_s, "fullDate" => date}} - a.map{ |date| {"shortDate" => date.strftime("%Y %U").to_s, "fullDate" => date}}).uniq { |s| s["shortDate"] }
-
+			# puts a
+			b = (output.first["converted_date"]..output.last["converted_date"]).select {|d| d == d.beginning_of_week(:sunday)}
+			# puts b
+			zeroValueDates = (b.map{ |date| date = {"shortDate" => date.strftime("%Y %U"), "fullDate" => date}} - a.map{ |date| date = {"shortDate" => date.strftime("%Y %U"), "fullDate" => date}}).uniq { |s| s["shortDate"] }
+			# zeroValueDates = (b.map{ |date| date = {"shortDate" => date.strftime("%Y %U"), "fullDate" => date}} - a.map{ |date| date = {"shortDate" => date.strftime("%Y %U"), "fullDate" => date}})
 			zeroValueDates.each do |zvd|
 				zvd = zvd["fullDate"]
-				output << {"repo"=> repo , "year"=>zvd.strftime("%Y").to_i, "week"=>zvd.strftime("%U").to_i, "dayofweek"=>zvd.strftime("%w").to_i, "count"=>0, "converted_date"=>zvd}
+				output << {"repo"=> repo , "year"=>zvd.strftime("%Y").to_i, "week"=>zvd.strftime("%U").to_i, "count"=>0, "converted_date"=>zvd}
 			end
 			# END of Get Missing Months/Years From Date Range
 		end
@@ -637,7 +668,7 @@ end
 # puts Issues_Aggregation.get_issues_created_per_month("StephenOTT/OPSEU", {:username => "StephenOTT", :userID => 1994838})
 # puts Issues_Aggregation.get_issues_closed_per_month("StephenOTT/OPSEU", {:username => "StephenOTT", :userID => 1994838})
 # puts Issues_Aggregation.get_issues_closed_per_week("StephenOTT/OPSEU", {:username => "StephenOTT", :userID => 1994838})
-# puts Issues_Aggregation.get_issues_created_per_week("StephenOTT/OPSEU", {:username => "StephenOTT", :userID => 1994838})
+# puts Issues_Aggregation.get_issues_created_per_week("StephenOTT/Test1", {:username => "StephenOTT", :userID => 1994838})
 
 
 
