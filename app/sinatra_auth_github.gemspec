@@ -3,7 +3,7 @@ $:.push File.expand_path("../lib", __FILE__)
 require "sinatra/auth/github/version"
 
 Gem::Specification.new do |s|
-  s.name        = "GitHub-Analytics Web App"
+  s.name        = "GitHub-Analytics-Web-App"
   s.version     = Sinatra::Auth::Github::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Stephen Russett"]
